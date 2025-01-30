@@ -1,0 +1,105 @@
+<ng-image-slider class="w-full" [images]="imageObject" [slideImage]="1"
+[imageSize]="{ width: '400px', height: '300px' }"
+[lazyLoading]="false"></ng-image-slider>
+
+<div class="w-full border-2 flex p-18">
+    <div class="flex-1 flex flex-col">
+
+        <!--Price and stand-out info-->
+        <div class="flex justify-between pr-60">
+
+            <!--Price and Address-->
+            <div class="flex flex-col">
+                <p class="text-4xl font-semibold">500.000$</p>
+                <p class="text-gray-500 text-2xl font-light">C.so Amedeo di Savoia</p>
+            </div>
+
+            <!--Beds,Baths,Sqft-->
+            <div class="flex space-x-20">
+
+                <div class="flex flex-col">
+                    <p class="text-4xl font-semibold">2</p>
+                    <p class="text-gray-500">Beds</p>
+                </div>
+                <div class="flex flex-col">
+                    <p class="text-4xl font-semibold">1</p>
+                    <p class="text-gray-500">Bath</p>
+                </div>
+                <div class="flex flex-col">
+                    <p class="text-4xl font-semibold">3.332</p>
+                    <p class="text-gray-500">Sqft</p>
+                </div>
+
+            </div>
+        
+        </div>
+
+        <!--Wrapper of important Apartment Features-->
+        <div class="flex flex-col pr-60 pt-15">
+
+        <!--What's special text-->
+        <h3 class="text-2xl">Stand Out Features</h3>
+
+         <!--Important Apartment Features-->
+         <div class="grid grid-cols-3 gap-4 pt-5">
+            <div class="p-5 relative flex space-x-2">
+                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                <img src="icon">
+                <p>Item 1</p>
+            </div>
+            <div class="p-5 relative flex space-x-2">
+                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                <img src="icon">
+                <p>Item 2</p>
+            </div>
+            <div class="p-5 relative flex space-x-2">
+                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                <img src="icon">
+                <p>Item 3</p>
+            </div>
+            <div class="p-5 relative flex space-x-2">
+                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                <img src="icon">
+                <p>Item 4</p>
+            </div>
+            <div class="p-5 relative flex space-x-2">
+                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                <img src="icon">
+                <p>Item 5</p>
+            </div>
+        </div>
+
+
+        </div>
+
+    </div>
+
+    <!--image name reviews...-->
+    <div class="flex flex-col h-80 w-100 border-1 border-gray-300 rounded-lg items-center p-5">
+
+        <!--image and name-->
+        <div class="flex flex-col items-center">
+            <div class="w-24 h-24">
+                <img 
+                  src="img/logo.png" 
+                  alt="Profile Picture" 
+                  class="rounded-full object-cover w-full h-full border-1 border-gray-400"
+                />
+            </div>
+
+            <h3 class="text-xl">Alfredo De Martino</h3>
+            <p class="text-gray-500">Immobiliari S.p.a.</p>
+
+
+        </div>
+
+        <div class="flex-1 w-full flex flex-col gap-2 justify-end">
+            <button class="w-full p-1 rounded-sm border-1 border-blue-450 text-blue-500 hover:bg-blue-500 hover:text-white transition">Contatta</button>
+            <button class="w-full p-3 rounded-sm border-1 bg-blue-500 text-white hover:bg-blue-600 transition">Richiedi Appuntamento</button>
+        </div>
+
+        
+
+
+    </div>
+</div>

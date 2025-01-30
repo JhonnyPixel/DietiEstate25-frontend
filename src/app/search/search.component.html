@@ -1,0 +1,177 @@
+<div class="flex flex-col h-screen">
+    <app-navbar></app-navbar>
+
+
+    <div class="flex flex-1 justify-items-start items-center flex-col" style="background: url(img/background.png); background-size:cover; background-position: center;">
+        
+        <img src="img/logo2.png">
+
+        <!--Search wrapper-->
+        <div class="w-230">
+
+            <!--Search filters-->
+            <div class="flex justify-between items-center bg-white p-1 rounded-3xl shadow-md">
+
+                <!-- Filtro 1 -->
+                <div class="relative group">
+                  <button class="flex px-4 py-2 hover:bg-gray-100 rounded-l-3xl flex items-center">
+
+                    <img src="icon">
+
+                    <!-- Button Text -->
+                    <div class="flex flex-col items-start">
+                        <p >Tipologia</p>
+                        <p class="text-sm text-gray-400">Casa, terreno ...</p>
+                    </div>
+
+                    <img src="icona2">
+                    
+                  </button>
+
+                  <!-- Dropdown -->
+                  <div class="absolute left-0 w-48 bg-white rounded-lg shadow-lg hidden group-hover:block">
+                    <div class="p-4">
+                        <label for="options" class="text-sm font-semibold">Scegli un'opzione</label>
+                        <select id="options" name="options" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900">
+                          <option value="opzione1">Casa</option>
+                          <option value="opzione2">Terreno</option>
+                          <option value="opzione3">Appartamento</option>
+                          <option value="opzione4">Opzione 4</option>
+                        </select>
+                      <button class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                        Applica
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- Filtro 2 -->
+                <div class="relative group">
+                    <button class="flex px-4 py-2 hover:bg-gray-100 flex items-center">
+
+                        <img src="icon">
+    
+                        <!-- Button Text -->
+                        <div class="flex flex-col items-start">
+                            <p >Prezzo</p>
+                            <p class="text-sm text-gray-400">Min. e max.</p>
+                        </div>
+    
+                        <img src="icona2">
+                        
+                      </button>
+                  <!-- Dropdown -->
+                  <div class="absolute left-0 w-48 bg-white rounded-lg shadow-lg hidden group-hover:block">
+                    <div class="p-4">
+                        <div class="flex flex-col items-center space-y-4">
+                            <label for="slider" class="text-sm font-semibold">Seleziona un valore:</label>
+                            <ngx-slider [(value)]="value" [options]="options" [(highValue)]="highValue" ></ngx-slider>
+                        </div>
+                      <button class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                        Applica
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filtro 3 -->
+                <div class="relative group">
+                    <button class="flex px-4 py-2 hover:bg-gray-100 flex items-center">
+
+                        <img src="icon">
+    
+                        <!-- Button Text -->
+                        <div class="flex flex-col items-start">
+                            <p >Superficie</p>
+                            <p class="text-sm text-gray-400">Min. e max.</p>
+                        </div>
+    
+                        <img src="icona2">
+                        
+                      </button>
+                  <!-- Dropdown -->
+                  <div class="absolute left-0 w-48 bg-white rounded-lg shadow-lg hidden group-hover:block">
+                 
+                    <div class="p-4">
+                        <div class="flex flex-col items-center space-y-4">
+                            <label for="slider" class="text-sm font-semibold">Seleziona un valore:</label>
+                            <ngx-slider [(value)]="value" [options]="options" [(highValue)]="highValue"></ngx-slider>
+                        </div>
+                      <button class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                        Applica
+                      </button>
+                    </div>
+
+                    
+                  </div>
+                </div>
+              
+                <!-- Filtro 4 -->
+                <div class="relative group">
+                    <button class="flex px-4 py-2 hover:bg-gray-100 rounded-r-3xl flex items-center">
+
+                        <img src="icon">
+    
+                        <!-- Button Text -->
+                        <div class="flex flex-col items-start">
+                            <p >Altri filtri</p>
+                            <p class="text-sm text-gray-400">Piano, bagni ...</p>
+                        </div>
+    
+                        <img src="icona2">
+                        
+                      </button>
+                  <!-- Dropdown -->
+                  <div class="absolute left-0 w-48 bg-white rounded-lg shadow-lg hidden group-hover:block">
+                    <div class="p-4">
+                      <p class="text-sm text-gray-700">.......</p>
+                      <button class="mt-3 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                        Applica
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <!--Search Bar-->
+              <div class="flex bg-white px-5 py-3 rounded-3xl mt-1.5 space-x-3 items-center">
+
+                <!--Acquista Affitta-->
+                <div class="flex border-1 border-gray-300 rounded-xl p-1 space-x-1 h-min">
+    
+                        <!-- Opzione 1 -->
+                        <label class="cursor-pointer">
+                          <input type="radio" name="options" value="acquista" class="hidden peer">
+                          <div class="px-1 py-2 rounded-xl  font-medium peer-checked:bg-orange-400 hover:bg-orange-100 transition-all duration-200" >
+                            Acquista
+                          </div>
+                        </label>
+                    
+                        <!-- Opzione 2 -->
+                        <label class="cursor-pointer">
+                          <input type="radio" name="options" value="affitta" class="hidden peer">
+                          <div class="px-1 py-2 rounded-xl  font-medium peer-checked:bg-orange-400  hover:bg-orange-100 transition-all duration-200">
+                            Affitta
+                          </div>
+                        </label>
+                    
+                </div>
+
+                <!--Search Input Field-->
+                <input type="search" placeholder="Cerca per comune, via, indirizzo..." class="flex-1">
+
+                <!--Search Button-->
+                <button class=" bg-orange-400 text-white py-5 px-7 rounded-lg hover:bg-orange-500">
+                    Cerca
+                </button>
+
+              </div>
+
+        </div>
+        
+    </div>
+
+
+</div>
