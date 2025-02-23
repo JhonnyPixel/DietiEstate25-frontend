@@ -9,8 +9,26 @@ import * as leaflet from 'leaflet'
 })
 export class LeafletMapComponent implements OnInit{
 
+  private marker!: L.Marker;
+  private circle!: L.Circle;
+  private radius: number = 500; // Raggio iniziale in metri
+  private isSelecting: boolean = false; // Controlla se l'utente sta selezionando un punto
+  private resizeMarker!: L.Marker;
+  private initialResizeOffset!: L.LatLng; 
+
+
+  
+ 
+
   ngOnInit(): void {
-    this.configMap()
+    this.configMap();
+
+      // Aggiungi il listener per il click sulla mappa
+      this.map.on('click', (event: any) => {
+        if (this.isSelecting) {
+          this.addMarker(event.latlng.lat, event.latlng.lng);
+        }
+      });
   }
 
   map:any
@@ -49,6 +67,65 @@ export class LeafletMapComponent implements OnInit{
 
   marker.addTo(this.map);
 
+  }
+
+  toggleSelection():void{
+    this.isSelecting= !this.isSelecting
+
+    console.log(this.isSelecting)
+
+    if(!this.isSelecting){
+      this.clear()
+    }
+  }
+
+  private clear(){
+    if (this.marker) {
+      console.log("ciaoooo")
+      this.map.removeLayer(this.marker);
+      this.map.removeLayer(this.circle);
+      this.map.removeLayer(this.resizeMarker);
+    }
+  }
+
+  private addMarker(lat: number, lng: number): void {
+   
+
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+      this.map.removeLayer(this.circle);
+      this.map.removeLayer(this.resizeMarker);
+    }
+  
+    this.marker = leaflet.marker([lat, lng], { draggable: true }).addTo(this.map);
+    this.circle = leaflet.circle([lat, lng], {
+      radius: this.radius,
+      color: 'blue',
+      fillColor: 'blue',
+      fillOpacity: 0.2
+    }).addTo(this.map);
+  
+    // Calcola posizione iniziale del marker per ridimensionamento
+    let resizeLatLng = leaflet.latLng(lat, lng + 0.01);
+    this.resizeMarker = leaflet.marker(resizeLatLng, { draggable: true, icon: leaflet.divIcon({ className: 'resize-icon', html: '⬤' }) })
+      .addTo(this.map);
+  
+    // Trascinamento del marker principale: aggiorna cerchio e resize marker
+    this.marker.on('drag', (event: any) => {
+      const newLatLng = event.target.getLatLng();
+      this.circle.setLatLng(newLatLng);
+      this.resizeMarker.setLatLng([newLatLng.lat, newLatLng.lng + 0.01]);
+    });
+  
+    // Trascinamento del marker di ridimensionamento
+    this.resizeMarker.on('drag', (event: any) => {
+      const center = this.marker.getLatLng();
+      const edge = event.target.getLatLng();
+      this.radius = center.distanceTo(edge); // Calcola distanza tra centro e marker di controllo
+      this.circle.setRadius(this.radius);
+    });
+
+    
   }
 
 }

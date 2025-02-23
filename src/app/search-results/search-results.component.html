@@ -43,10 +43,32 @@
 
   <!--Body-->
   <div class="flex-1 flex">
+   
 
     <!--Mappa-->
-    <div class="flex-1 bg-gray-400">
+    <div class="relative flex-1 bg-gray-400">
         <app-leaflet-map class="h-full w-full"></app-leaflet-map>
+
+        @if(isSelecting){
+
+          <div class="flex space-x-10 absolute z-9999 bottom-10 left-1/2 transform -translate-x-1/2 ">
+            <button (click)="toggleSelection()" class=" bottom-10 left-80 bg-red-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+              Annulla
+            </button>
+  
+            <button class="bottom-10 left-120 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+              Cerca
+            </button>
+          </div>
+
+          
+        }@else {
+          <button (click)="toggleSelection()" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+            Cerca da un punto
+          </button>
+        }
+
+
     </div>
 
     <!--Risultati-->

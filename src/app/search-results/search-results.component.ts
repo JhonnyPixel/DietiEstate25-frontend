@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild } from '@angular/core';
 import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
 @Component({
   selector: 'app-search-results',
@@ -7,5 +7,14 @@ import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
   styleUrl: './search-results.component.scss'
 })
 export class SearchResultsComponent {
+
+  @ViewChild(LeafletMapComponent) leafletMap!: LeafletMapComponent;
+
+  isSelecting:Boolean = false
+
+  toggleSelection():void{
+    this.leafletMap.toggleSelection();
+    this.isSelecting= !this.isSelecting
+  }
 
 }
