@@ -7,9 +7,21 @@
   
       <!-- Navigation Links -->
       <nav class="hidden md:flex space-x-3 items-center">
+        @if(false){ <!--if is logged in-->
         <p class="text-black text-center underline text-gray-400 hover:text-gray-700 transition"> Sei un agenzia o ne fai parte? <br> Continua Qui </p>
         <a href="#" class="text-black px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #2EC4B6 ;">Login</a>
         <a href="#" class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
+        }
+        @else{
+          <button class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Annunci</button>
+          <button (click)="toggleNotifiche()" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black relative hover:bg-gray-100 hover:border-gray-100 transition">
+            <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5"></span>
+            <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5 animate-ping"></span>
+            Notifiche
+          </button>
+          <button class=" border-1 border-gray-300 px-5 py-1.5 text-black">My Profile</button>
+          
+        }
       </nav>
   
       <!-- Mobile Menu Icon -->
@@ -20,5 +32,9 @@
       </button>
     </div>
   </header>
+
+  @if(isNotificationPanelOpen){
+    <app-notification-panel (close)="toggleNotifiche()"></app-notification-panel> 
+  }
 
 

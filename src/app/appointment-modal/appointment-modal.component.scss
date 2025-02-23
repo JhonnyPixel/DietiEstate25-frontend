@@ -1,0 +1,40 @@
+/* Classe base comune */
+.option-box, .h-option-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    flex-shrink: 0;
+}
+
+/* Padding specifico per l'option-box */
+.option-box {
+    padding: 40px;
+}
+
+/* Padding specifico per la h-option-box */
+.h-option-box {
+    padding: 15px 40px;
+}
+
+  .option-box:hover {
+    background-color: #f0f0f0;
+    border-color: #aaa;
+  }
+  
+  .option-box input,.h-option-box input {
+    display: none;
+  }
+  
+  .option-box:has(input:checked),.h-option-box:has(input:checked){
+    background-color: #0150fb;
+    color: white;
+    border-color: #0150fb;
+  }
+  
+  .checkbox-label {
+    text-align: center;
+  }

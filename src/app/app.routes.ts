@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { SearchComponent } from './search/search.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { ListingViewComponent } from './listing-view/listing-view.component';
+import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 
 export const routes: Routes = [
     {
@@ -24,5 +25,9 @@ export const routes: Routes = [
         path:"listing",
         title:"Annuncio",
         component:ListingViewComponent
+    },
+    {
+        path:"map",
+        component:LeafletMapComponent
     }
 ];
