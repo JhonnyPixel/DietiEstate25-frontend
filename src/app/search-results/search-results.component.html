@@ -3,12 +3,14 @@
 <header class="text-white p-2 border-b-1 border-gray-400">
     <div class=" flex items-center justify-between px-1 space-x-4">
       <!-- Logo -->
-      <!--<div class="flex items-center">
+     
+      <div class="flex items-center">
         <img src="img/logo.png" alt="Logo" class="w-28 ml-2" />
-      </div>-->
+      </div>
 
       <!--Search bar-->
-      <input type="search" placeholder="Cerca" class="text-black rounded-2xl flex-grow lg:mr-70 md:mr-20 border-1 border-gray-400 py-1 px-2">
+      <!-- <input type="search" placeholder="Cerca" class="text-black rounded-2xl flex-grow lg:mr-70 md:mr-20 border-1 border-gray-400 py-1 px-2"> -->
+      <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (addressSelected)="addressSelected($event)" class="w-200"></app-address-search>
   
       <!-- Navigation Links -->
       <nav class="hidden md:flex space-x-3 items-center">
@@ -27,7 +29,7 @@
   </header>
 
   <!--Filter bar-->
-  <div class=" flex space-x-4 p-2 border-b-1 border-gray-400">
+  <!-- <div class=" flex space-x-4 p-2 border-b-1 border-gray-400">
     <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
         <p>Filtro</p>
     </div>
@@ -39,7 +41,82 @@
     <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
         <p>Filtro</p>
     </div>
+  </div> -->
+
+  <!-- Filter bar -->
+<!-- Filter bar -->
+<!-- <div class="flex space-x-4 p-2 border-b-1 border-gray-400">
+
+  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="tipologia" class="block text-sm font-medium">Tipologia</label>
+    <select id="tipologia" [(ngModel)]="tipologia" class="border rounded px-2 py-1">
+      <option value="">Tutte</option>
+      <option value="vendita">Vendita</option>
+      <option value="affitto">Affitto</option>
+    </select>
   </div>
+
+   <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="tipologia" class="block text-sm font-medium">Tipologia</label>
+    <select id="tipologia" [(ngModel)]="tipologia" class="border rounded px-2 py-1">
+      <option value="">Tutte</option>
+      <option value="vendita">Vendita</option>
+      <option value="affitto">Affitto</option>
+    </select>
+  </div>
+
+  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="prezzoMin" class="block text-sm font-medium">Prezzo Min</label>
+    <input type="number" id="prezzoMin" [(ngModel)]="prezzoMin" class="border rounded px-2 py-1 w-24" placeholder="€">
+  </div>
+
+  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="prezzoMax" class="block text-sm font-medium">Prezzo Max</label>
+    <input type="number" id="prezzoMax" [(ngModel)]="prezzoMax" class="border rounded px-2 py-1 w-24" placeholder="€">
+  </div>
+
+  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="stanze" class="block text-sm font-medium">Stanze</label>
+    <select id="stanze" [(ngModel)]="stanze" class="border rounded px-2 py-1">
+      <option value="">Qualsiasi</option>
+      <option value="1">1+</option>
+      <option value="2">2+</option>
+      <option value="3">3+</option>
+      <option value="4">4+</option>
+      <option value="5">5+</option>
+    </select>
+  </div>
+
+  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="classeEnergetica" class="block text-sm font-medium">Classe Energ.</label>
+    <select id="classeEnergetica" [(ngModel)]="classeEnergetica" class="border rounded px-2 py-1">
+      <option value="">Qualsiasi</option>
+      <option value="A4">A4</option>
+      <option value="A3">A3</option>
+      <option value="A2">A2</option>
+      <option value="A1">A1</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="D">D</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="G">G</option>
+    </select>
+  </div>
+
+  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+    <label for="posizione" class="block text-sm font-medium">Posizione</label>
+    <input type="text" id="posizione" [(ngModel)]="posizione" class="border rounded px-2 py-1 w-32" placeholder="Città/Comune">
+  </div>
+
+  <div class="rounded-lg bg-blue-500 text-white px-4 py-2 cursor-pointer hover:bg-blue-600">
+    <button (click)="applyFilter()">Cerca</button>
+  </div>
+
+</div> -->
+
+  <app-filter-bar (filtersApplied)="onFiltersApplied($event)"></app-filter-bar>
+
 
   <!--Body-->
   <div class="flex-1 flex">
@@ -56,7 +133,7 @@
               Annulla
             </button>
   
-            <button class="bottom-10 left-120 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+            <button (click)="searchFromPoint()" class="bottom-10 left-120 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
               Cerca
             </button>
           </div>
@@ -74,8 +151,29 @@
     <!--Risultati-->
     <div class="flex-1 flex flex-col space-y-10 p-5">
 
+        @for(listing of this.listings;track listing.id){
         <!--Result item-->
-        <div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed">
+        
+        <div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed cursor-pointer"  (click)="openListingDetails(listing)">
+            <div class="w-45 h-45 bg-gray-400">
+                <img [src]="listing.photos?.[0] ?? 'img/logo.png'" class="">
+            </div>
+
+            <div class="flex-1 ml-5 flex flex-col space-y-2">
+                <h3 class="text-2xl ">{{listing.title}} </h3>
+                <p class="text-md h-29 text-gray-400 overflow-y-hidden break-words">
+                  {{listing.description}} 
+                </p>
+                <p class="font-light text-2xl text-gray-700">
+                    {{listing.price}}
+                </p>
+            </div>
+        </div>
+      }
+
+
+        <!--Result item-->
+        <!-- <div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed">
             <div class="w-45 h-45 bg-gray-400">
                 <img src="img/logo.png" class="">
             </div>
@@ -96,36 +194,13 @@
                     500.000 $
                 </p>
             </div>
-        </div>
-
-
-        <!--Result item-->
-        <div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed">
-            <div class="w-45 h-45 bg-gray-400">
-                <img src="img/logo.png" class="">
-            </div>
-
-            <div class="flex-1 ml-5 flex flex-col space-y-2">
-                <h3 class="text-2xl ">Annuncio</h3>
-                <p class="text-md h-29 text-gray-400 overflow-y-hidden break-words">
-                    Loaoo asdad adasdad sdasdsda dsdadsad adsdsadsd adsdasdsad adasdsdsadad adsdasa dsadadsads dadsdsd adsadsad
-                    ada
-                    dsdsdada adsdasd d as asdas asdasd  dsadsda ds a asdsa asd ad sad asd asds a asds asdsa da asdsad dddddda sd
-
-                    Loaoo asdad adasdad sdasdsda dsdadsad adsdsadsd adsdasdsad adasdsdsadad  ciao  adosod a dsa dadsdasa dsadadsads dadsdsd adsadsad
-                    ada
-                    dsdsdada adsdasd d as asdas asdasd  dsadsda ds a asdsa asd ad sad asd asds a asds asdsa da asdsad dddddda sd
-                    
-                </p>
-                <p class="font-light text-2xl text-gray-700">
-                    500.000 $
-                </p>
-            </div>
-        </div>
+        </div> -->
 
 
 
     </div>
+
+    
 
 
   </div>

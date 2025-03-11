@@ -10,24 +10,29 @@
 
             <!--Price and Address-->
             <div class="flex flex-col">
-                <p class="text-5xl font-semibold">500.000$</p>
-                <p class="text-gray-500 text-2xl ">C.so Amedeo di Savoia, Garnet Valley, PA 1909</p>
+                <p class="text-5xl font-semibold">{{listing.price?? '500.000'}}$</p>
+                <p class="text-gray-500 text-2xl ">{{listing.location.address?? 'C.so Amedeo di Savoia, Garnet Valley, PA 1909'}}</p>
             </div>
 
             <!--Beds,Baths,Sqft-->
-            <div class="flex space-x-20">
+            <div class="flex space-x-18">
 
                 <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">2</p>
-                    <p class="text-gray-500 text-2xl">beds</p>
+                    <p class="text-4xl font-semibold">{{listing.nRooms ?? 1}}</p>
+                    <p class="text-gray-500 text-2xl">room</p>
                 </div>
                 <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">1</p>
+                    <p class="text-4xl font-semibold">{{listing.nBathrooms ?? 1}}</p>
                     <p class="text-gray-500 text-2xl">bath</p>
                 </div>
                 <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">3.332</p>
+                    <p class="text-4xl font-semibold">{{listing.squareMeters ?? 332}}</p>
                     <p class="text-gray-500 text-2xl">sqft</p>
+                </div>
+
+                <div class="flex flex-col">
+                    <p class="text-4xl font-semibold">{{listing.floor ?? '2'}}</p>
+                    <p class="text-gray-500 text-2xl">floor</p>
                 </div>
 
             </div>
@@ -42,7 +47,21 @@
 
          <!--Important Apartment Features-->
          <div class="grid grid-cols-3 gap-4 pt-5">
-            <div class="p-5 relative flex space-x-2">
+            @if(listing.elevator){
+                <div class="p-5 relative flex space-x-2 items-center">
+                    <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                    <fa-icon class="text-xl" [icon]="faElevator" [style.color]="'orange'"></fa-icon>
+                    <p>Elevator</p>
+                </div>
+            }
+            @if(listing.energyClass){
+                <div class="p-5 relative flex space-x-2 items-center">
+                    <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                    <fa-icon class="text-xl" [icon]="faLightbulb" [style.color]="'orange'"></fa-icon>
+                    <p>{{listing.energyClass}} Energy Class</p>
+                </div>
+            }
+            <!-- <div class="p-5 relative flex space-x-2">
                 <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
                 <img src="icon">
                 <p>Item 1</p>
@@ -66,7 +85,8 @@
                 <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
                 <img src="icon">
                 <p>Item 5</p>
-            </div>
+            </div> -->
+
         </div>
 
 
@@ -87,8 +107,8 @@
                 />
             </div>
 
-            <h3 class="text-xl">Alfredo De Martino</h3>
-            <p class="text-gray-500">Immobiliari S.p.a.</p>
+            <h3 class="text-xl">{{listing.agent.firstName+' '+listing.agent.lastName }}</h3>
+            <p class="text-gray-500">{{listing.agent.agency.ragioneSociale ?? 'Immobiliari S.p.a.'}}</p>
 
 
         </div>
@@ -102,28 +122,45 @@
 
 
     </div>
+
 </div>
 
 <div class="flex flex-col px-18 space-y-8">
     <h3 class="text-2xl font-semibold">Altre Feature</h3>
 
     <div class="w-[50%] flex flex-wrap gap-3">
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
-        <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">FEATURE</p>
+        @for(feature of listing.otherFeatures;track feature){
+            <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">{{feature}}</p>
+        }@empty{
+            <p>No feature</p>
+        }
     </div>
 
 </div>
 
+<!--Description of the apartment-->
+<div class="p-18">
+    <h3 class="text-2xl font-semibold">Descrizione</h3>
+    <p>
+        {{listing.description}}
+    </p>
+    
+</div>
+
 @if(isModalOpen){
 
-    <app-appointment-modal (close)="closeModal()"></app-appointment-modal>
+    @if(loading){
+
+        <div class="absolute flex items-center pr-3 transform left-[50%] top-[50%] -translate-[50%]">
+            <svg class="animate-spin h-40 w-40 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+
+    }@else{
+        <app-appointment-modal  [forecast]="forecasts" (close)="closeModal()"></app-appointment-modal>
+    }
+
 
 }

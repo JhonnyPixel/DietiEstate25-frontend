@@ -1,0 +1,159 @@
+<div class="flex space-x-4 p-2 border-b-1 border-gray-400 overflow-x-auto" [formGroup]="filterForm">
+
+    <!-- Categoria -->
+    
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+        <label for="categoria" class="block text-sm font-medium">Categoria</label>
+        <select id="categoria" (change)="onCategoryChange($event)" formControlName="category" class="border rounded px-2 py-1">
+          <option selected value="houses">Case</option>
+          <option value="buildings">Edifici</option>
+          <option value="garages">Garage</option>
+          <option value="lands">Terreni</option>
+        </select>
+    </div>
+    
+
+    <!-- Tipologia -->
+    @if(availableFilters.includes('listingType')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="tipologia" class="block text-sm font-medium">Tipologia</label>
+      <select id="tipologia" formControlName="listingType" class="border rounded px-2 py-1">
+        <option value="">Tutte</option>
+        <option selected value="BUY">Vendita</option>
+        <option value="RENT">Affitto</option>
+      </select>
+    </div>
+    }
+
+    <!-- Prezzo Min -->
+    @if(availableFilters.includes('priceMin')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="priceMin" class="block text-sm font-medium">Prezzo Min</label>
+      <input type="number" id="priceMin" formControlName="priceMin" class="border rounded px-2 py-1 w-24" placeholder="€">
+    </div>
+    }
+
+    <!-- Prezzo Max -->
+    @if(availableFilters.includes('priceMax')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="priceMax" class="block text-sm font-medium">Prezzo Max</label>
+      <input type="number" id="priceMax" formControlName="priceMax" class="border rounded px-2 py-1 w-24" placeholder="€">
+    </div>
+    }
+
+    <!-- Classe Energetica -->
+    @if(availableFilters.includes('energyClassMin')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="energyClassMin" class="block text-sm font-medium">Classe Energ.</label>
+      <select id="energyClassMin" formControlName="energyClassMin" class="border rounded px-2 py-1">
+        <option value="">Qualsiasi</option>
+        <option value="A4">A4</option>
+        <option value="A3">A3</option>
+        <option value="A2">A2</option>
+        <option value="A1">A1</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+      </select>
+    </div>
+    }
+
+    <!-- Regione -->
+    @if(availableFilters.includes('region')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+        <label for="region" class="block text-sm font-medium">Regione</label>
+        <input type="text" id="region" formControlName="region" class="border rounded px-2 py-1 w-32" placeholder="Regione">
+    </div>
+    }
+
+    <!-- Città -->
+    @if(availableFilters.includes('city')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="city" class="block text-sm font-medium">Città</label>
+      <input type="text" id="city" formControlName="city" class="border rounded px-2 py-1 w-32" placeholder="Città/Comune">
+    </div>
+    }
+
+    <!-- MQ Min -->
+    @if(availableFilters.includes('squareMetersMin')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+        <label for="squareMetersMin" class="block text-sm font-medium">MQ Min</label>
+        <input type="number" id="squareMetersMin" formControlName="squareMetersMin" class="border rounded px-2 py-1 w-24" placeholder="m²">
+    </div>
+    }
+    
+    <!-- MQ Max -->
+    @if(availableFilters.includes('squareMetersMax')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="squareMetersMax" class="block text-sm font-medium">MQ Max</label>
+      <input type="number" id="squareMetersMax" formControlName="squareMetersMax" class="border rounded px-2 py-1 w-24" placeholder="m²">
+    </div>
+    }
+    
+    <!-- Stanze Min -->
+    @if(availableFilters.includes('nRoomsMin')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="nRoomsMin" class="block text-sm font-medium">Stanze Min</label>
+      <input type="number" id="nRoomsMin" formControlName="nRoomsMin" class="border rounded px-2 py-1 w-24">
+    </div>
+    }
+    
+    <!-- Stanze Max -->
+    @if(availableFilters.includes('nRoomsMax')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="nRoomsMax" class="block text-sm font-medium">Stanze Max</label>
+      <input type="number" id="nRoomsMax" formControlName="nRoomsMax" class="border rounded px-2 py-1 w-24">
+    </div>
+    }
+
+    <!-- Bagni Min -->
+    @if(availableFilters.includes('nBathroomsMin')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="nBathroomsMin" class="block text-sm font-medium">Bagni Min</label>
+      <input type="number" id="nBathroomsMin" formControlName="nBathroomsMin" class="border rounded px-2 py-1 w-24">
+    </div>
+    }
+
+    <!-- Bagni Max -->
+    @if(availableFilters.includes('nBathroomsMax')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="nBathroomsMax" class="block text-sm font-medium">Bagni Max</label>
+      <input type="number" id="nBathroomsMax" formControlName="nBathroomsMax" class="border rounded px-2 py-1 w-24">
+    </div>
+    }
+
+    <!-- Piano Min -->
+    @if(availableFilters.includes('floorMin')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="floorMin" class="block text-sm font-medium">Piano Min</label>
+      <input type="number" id="floorMin" formControlName="floorMin" class="border rounded px-2 py-1 w-24">
+    </div>
+    }
+
+    <!-- Piano Max -->
+    @if(availableFilters.includes('floorMax')) {
+    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+      <label for="floorMax" class="block text-sm font-medium">Piano Max</label>
+      <input type="number" id="floorMax" formControlName="floorMax" class="border rounded px-2 py-1 w-24">
+    </div>
+    }
+
+    <!-- Piano Max -->
+    @if(availableFilters.includes('building')) {
+        <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
+          <label for="hasBuilding" class="block text-sm font-medium">Edificato</label>
+          <input type="checkbox" id="hasBuilding" formControlName="building" class="border rounded px-2 py-1 w-24">
+        </div>
+    }
+  
+    <!-- Bottone di ricerca -->
+    <div class="rounded-lg bg-blue-500 text-white px-4 py-2 cursor-pointer hover:bg-blue-600">
+      <button (click)="applyFilter()">Cerca</button>
+    </div>
+
+</div>
+
+  

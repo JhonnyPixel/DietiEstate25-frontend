@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { NotificationPanelComponent } from '../notification-panel/notification-panel.component';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,20 @@ import { NotificationPanelComponent } from '../notification-panel/notification-p
 })
 export class NavbarComponent {
 
+  constructor(public authService:AuthService){}
+
   isNotificationPanelOpen:boolean=false
+  isAgentProfile:boolean=true
+
+  @Output() loginAdmin= new EventEmitter<boolean>()
+
+  activateAdminLogin(){
+    this.loginAdmin.emit(true)
+  }
+
+  deactiveAdminLogin(){
+    this.loginAdmin.emit(false)
+  }
 
   toggleNotifiche(){
     this.isNotificationPanelOpen=!this.isNotificationPanelOpen

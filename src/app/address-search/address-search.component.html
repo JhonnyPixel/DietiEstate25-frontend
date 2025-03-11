@@ -1,0 +1,85 @@
+<!-- <div class="search-container">
+    <input type="text" 
+           [formControl]="searchControl" 
+           placeholder="Cerca indirizzo..." 
+           class="search-input" />
+    @if(suggestions.length){
+    <div class="suggestions">
+        @for(suggestion of suggestions; track suggestion.place_id){ 
+            <div
+                class="suggestion-item"
+                (click)="selectAddress(suggestion)">
+                {{ suggestion.display_name }}
+            </div>
+        }
+      
+    </div>
+    }
+  </div> -->
+
+  <div class="relative w-full mx-auto">
+    <!-- Input con icona -->
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </div>
+      <input
+        type="text"
+        [formControl]="searchControl"
+        placeholder="Cerca indirizzo..."
+        class="w-full p-4 pl-10 text-sm text-gray-900 bg-white rounded-lg border border-gray-200 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200"
+      />
+      <!-- Indicatore di caricamento -->
+       @if(isLoading){
+      <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+        <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    }
+    </div>
+
+    <!-- Lista suggerimenti -->
+    @if(suggestions.length){
+    <div class="absolute w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-9999">
+        
+      @for(search of recentSearches;track search.id){
+        <div  
+        (click)="selectRecent(search)"
+        class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150">
+            <div class="flex items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                </svg>
+            <span class="text-sm text-gray-700 truncate">Ricerca Recente</span>
+            </div>
+        </div>
+      }
+      
+      
+      
+      
+      
+      @for(suggestion of suggestions; track suggestion.place_id){
+        <div  
+           (click)="selectAddress(suggestion)"
+           class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150">
+        <div class="flex items-start">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          </svg>
+          <span class="text-sm text-gray-700 truncate">{{ suggestion.display_name }}</span>
+        </div>
+      </div>
+        }
+
+    </div>
+    }
+  </div>
+
+  
+
