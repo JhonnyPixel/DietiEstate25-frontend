@@ -76,6 +76,8 @@ export class DataService {
 
   getEvents(from: DayPilot.Date, to: DayPilot.Date): Observable<any[]> {
 
+    console.log(from,to);
+
     // simulating an HTTP request
     return new Observable(observer => {
       setTimeout(() => {
@@ -84,7 +86,7 @@ export class DataService {
         }, 200);
     });
 
-    // return this.http.get("/api/events?from=" + from.toString() + "&to=" + to.toString());
+    //return this.http.get("http://localhost:8080/api/visits?start=" + from.toString() + "&end=" + to.toString());
   }
 
   getResources(): Observable<any[]> {
@@ -98,6 +100,7 @@ export class DataService {
     });
 
     // return this.http.get("/api/resources");
+    // return this.http.get("http://localhost:4200/api/visit"); //faccio la richiesta per avere gli eventi dal backend
   }
 
 

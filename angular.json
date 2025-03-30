@@ -35,7 +35,11 @@
               "src/styles.scss",
               "node_modules/leaflet/dist/leaflet.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "sockjs-client",
+              "@stomp/stompjs"
+            ]
           },
           "configurations": {
             "production": {

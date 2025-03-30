@@ -1,4 +1,4 @@
-<div class="absolute flex overflow-y-scroll flex-col w-[50%] h-[50%] p-10 bg-white top-[50%] left-[50%] translate-[-50%] rounded-xl shadow-2xl border-1 border-gray-100">
+<!-- <div class="absolute flex overflow-y-scroll flex-col w-[50%] h-[50%] p-10 bg-white top-[50%] left-[50%] translate-[-50%] rounded-xl shadow-2xl border-1 border-gray-100">
     <div class="flex-1 flex flex-col space-y-5">
         <p class="text-3xl">Seleziona le tue disponibilità</p>
         
@@ -27,6 +27,57 @@
                     </label>
                 }
             </div>
+            
+            <div class="flex justify-between mt-5">
+                <button type="button" (click)="closeModal()" class="bg-red-500 rounded-lg text-white px-10 py-3">Annulla</button>
+                <button type="submit" class="bg-blue-500 rounded-lg text-white px-10 py-3">Avanti</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<div class="absolute flex overflow-y-scroll flex-col w-[50%] h-[50%] p-10 bg-white top-[50%] left-[50%] translate-[-50%] rounded-xl shadow-2xl border-1 border-gray-100">
+    <div class="flex-1 flex flex-col space-y-5">
+        <p class="text-3xl">Seleziona le tue disponibilità</p>
+        
+        <form [formGroup]="appointmentForm!" (ngSubmit)="onSubmit()">
+            <div class="relative flex overflow-x-scroll space-x-5">
+                @for(date of availableDate; track date.getTime(); let i = $index) {
+                    <div class="option-box relative" 
+                         [class.selected]="isDateSelected(date)"
+                         [class.has-hours]="hasSelectedHours(date)"
+                         (click)="onDateClick(date, i)">
+                        <fa-icon class="absolute top-3 right-3 text-xl" 
+                                [icon]="getWeatherIcon(forecast[i].condition)" 
+                                [style.color]="getIconColor(forecast[i].condition)"></fa-icon>
+                        <span class="checkbox-label">{{ date | date: 'd MMM' }}</span>
+                        @if(hasSelectedHours(date)) {
+                            <span class="selected-indicator">✓</span>
+                        }
+                        @if(isDateSelected(date)) {
+                            <button type="button" class="remove-btn" (click)="removeDate(date); $event.stopPropagation()">×</button>
+                        }
+                    </div>
+                }
+            </div>
+            
+            @if(selectedDateIndex !== null) {
+                <p class="text-2xl mt-8 mb-5">
+                    Fasce orarie per {{ availableDate[selectedDateIndex] | date: 'd MMMM' }}
+                </p>
+                
+                <div class="relative flex overflow-x-scroll space-x-3">
+                    @for(hour of availableHours; track hour) {
+                        <label class="h-option-box"
+                               [class.selected]="isHourSelectedForCurrentDate(hour)">
+                            <input type="checkbox"
+                                   [checked]="isHourSelectedForCurrentDate(hour)"
+                                   (change)="onHourChange($event, hour)">
+                            <span class="h-checkbox-label">{{ hour }}</span>
+                        </label>
+                    }
+                </div>
+            }
             
             <div class="flex justify-between mt-5">
                 <button type="button" (click)="closeModal()" class="bg-red-500 rounded-lg text-white px-10 py-3">Annulla</button>

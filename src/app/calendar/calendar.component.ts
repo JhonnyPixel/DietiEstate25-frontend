@@ -4,6 +4,9 @@ import {DataService} from "./data.service";
 import {forkJoin} from "rxjs";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { RestBackendService } from "../rest-backend.service";
+import { VisitBackendService } from "../visit-backend.service";
+import EventData = DayPilot.EventData;
 
 @Component({
   selector: 'calendar-component',
@@ -224,7 +227,7 @@ export class CalendarComponent implements AfterViewInit {
     /* onEventClick: this.onEventClick.bind(this), */
   };
 
-  constructor(private ds: DataService) {
+  constructor(private ds: DataService,private visitBackend:VisitBackendService) {
     this.viewWeek();
   }
 
@@ -235,10 +238,56 @@ export class CalendarComponent implements AfterViewInit {
   loadEvents(): void {
     const from = this.nav.control.visibleStart();
     const to = this.nav.control.visibleEnd();
-    this.ds.getEvents(from, to).subscribe(result => {
+   /*  this.ds.getEvents(from, to).subscribe(result => {
       this.events = result;
+    }); */
+
+    this.visitBackend.getVisits(from.toString(), to.toString()).subscribe((data:any) => {
+      console.log(data);
+  
+      // Creiamo un array di eventi per DayPilot
+      let events: EventData[] = [];
+      
+      // Iteriamo su ogni elemento nell'array restituito dal backend
+      data.forEach((item:any, index:any) => {
+        // Creiamo un oggetto Date dal dateTime ricevuto
+        const startDate = new Date(item.dateTime);
+        
+        // Creiamo la data di fine aggiungendo 2 ore
+        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
+        
+        // Formattiamo le date nel formato richiesto da DayPilot "YYYY-MM-DDTHH:MM:SS"
+        const startDateTime = startDate.toISOString().substring(0, 19);
+        const endDateTime = endDate.toISOString().substring(0, 19);
+        
+        // Creiamo l'evento DayPilot
+        const event: EventData = {
+          id: index + 1, // Oppure potresti usare item.id se è un numero
+          start: startDateTime,
+          end: endDateTime,
+          text: `Prenotazione ${item.listingId}`,
+          /* resource: `R${(index % 4) + 1}`, // Assegna ciclicamente R1, R2, R3, R4
+          barColor: this.getRandomColor() // Funzione per generare un colore casuale */
+        };
+        
+        events.push(event);
+      });
+      
+      // Ora events contiene tutti gli eventi nel formato richiesto da DayPilot
+      console.log(events);
+      
+      // Qui puoi aggiungere il codice per aggiornare il calendario con gli eventi
+      // Ad esempio: this.calendar.update({events: events});
+      this.events=events;
     });
+   
   }
+
+  // Funzione per generare un colore casuale
+getRandomColor(): string {
+  const colors = ["#f1c232", "#6fa8dc", "#6aa84f", "#cc0000", "#9fc5e8", "#d5a6bd"];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
 
   viewDay():void {
     this.configNavigator.selectMode = "Day";

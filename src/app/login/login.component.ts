@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FormGroup,FormControl,Validators,ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-login',
@@ -11,20 +12,16 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent {
 
-  constructor(private authService:AuthService){}
+  constructor(private authService:AuthService,private notification:NotificationService){}
 
-  adminLogin:boolean=false
 
   loginForm = new FormGroup({
           email: new FormControl('', Validators.required),
           password: new FormControl('', Validators.required),
       })
 
-  activateAdminLogin(value:boolean){
-    this.adminLogin=value
-  }
 
-  loginAdmin(){
+  login(){
     if(this.loginForm.valid) {
       const formValues = this.loginForm.value;
       const data = {
@@ -32,17 +29,25 @@ export class LoginComponent {
         password: formValues.password!
       };
 
-      this.authService.loginAdmin(data).subscribe(data=>{
+      this.authService.login(data).subscribe(data=>{
         console.log(data)
         localStorage.setItem("token",data.token)
         localStorage.setItem("id",data.id)
         localStorage.setItem("email",data.email)
+        localStorage.setItem("role",data.role)
 
-        this.authService.getAgency(data.id).subscribe(agencyData=>{
-          console.log("dati sull agenzia: ",agencyData);
-          localStorage.setItem("agencyId",agencyData.id);
-        })
-      })
+        this.notification.initialize(); //recupera la notifiche all' accesso
+
+        if(this.authService.getRole()!=="CUSTOMER"){
+
+          this.authService.getAgency(data.id).subscribe(agencyData=>{
+            console.log("dati sull agenzia: ",agencyData);
+            localStorage.setItem("agencyId",agencyData.id);
+          })
+        }
+      
+    })
+      
 
       
 

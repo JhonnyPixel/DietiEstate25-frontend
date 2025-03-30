@@ -159,7 +159,7 @@
         </div>
 
     }@else{
-        <app-appointment-modal  [forecast]="forecasts" (close)="closeModal()"></app-appointment-modal>
+        <app-appointment-modal [listingId]="listing.id" [forecast]="forecasts" (close)="closeModal()"></app-appointment-modal>
     }
 
 

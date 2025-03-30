@@ -37,7 +37,32 @@ export class AuthService {
 
   }
 
-  loginAdmin(data:{
+  registerUser(data:{
+    firstName:string,
+    lastName:string,
+    dateOfBirth:string,
+    email:string,
+    password:string
+  }){
+    let url="http://localhost:8080/api/customers"
+
+    //let url="https://dietiestates25-875570932601.europe-west8.run.app/api/agencies"
+
+    console.log("register: ",data)
+
+    this.httpClient.post<{}>(url,{
+      firstName : data.firstName,
+      lastName : data.lastName,
+      email : data.email,
+      dob : data.dateOfBirth,
+      password : data.password
+    }).subscribe(data=>{
+      console.log(data)
+    })
+
+  }
+
+  login(data:{
     email:string,
     password:string
   }){
@@ -48,7 +73,8 @@ export class AuthService {
    return this.httpClient.post<{
     token:string,
     email:string,
-    id:string
+    id:string,
+    role:string
    }>(url,{
       email : data.email,
       password : data.password,
@@ -67,6 +93,22 @@ export class AuthService {
 
   getAgencyId():string|null{
     return localStorage.getItem("agencyId")
+  }
+
+  getEmail():string|null{
+    return localStorage.getItem("email")
+  }
+
+  getRole():string|null{
+    return localStorage.getItem("role")
+  }
+
+  logout(){
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("agencyId");
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
   }
 
   getAgency(userId:string){

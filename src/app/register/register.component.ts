@@ -16,7 +16,7 @@ export class RegisterComponent {
   adminRegister:boolean=false
 
   registerForm = new FormGroup({
-        firstName: new FormControl('a', Validators.required),
+        firstName: new FormControl('', Validators.required),
         lastName: new FormControl('', Validators.required),
         dateOfBirth: new FormControl('', Validators.required),
         email: new FormControl('', Validators.required),
@@ -30,6 +30,7 @@ export class RegisterComponent {
   }
 
   register(){
+    if(this.adminRegister){
     if(this.registerForm.valid) {
       const formValues = this.registerForm.value;
       const data = {
@@ -46,5 +47,17 @@ export class RegisterComponent {
       console.error('Il modulo di registrazione non è valido');
     }
   }
+  else{
+    const formValues = this.registerForm.value;
+    const data = {
+      firstName: formValues.firstName!,
+      lastName: formValues.lastName!,
+      dateOfBirth: formValues.dateOfBirth!,
+      email: formValues.email!,
+      password: formValues.password!,
+    };
+    this.authService.registerUser(data);
+  }
+}
 
 }

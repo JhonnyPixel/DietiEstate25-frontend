@@ -96,6 +96,21 @@ export class RestBackendService {
   }
 
   
+  createManager(data:any){
+    let agencyId=this.authService.getAgencyId();
+    let url=`http://localhost:8080/api/agencies/${agencyId}/managers`
+
+    //let url=`https://dietiestates25-875570932601.europe-west8.run.app/api/agencies/${agencyId}/agents`
+
+    console.log("sono createAgent e mi è arrivato questo: ",data)
+    return this.httpClient.post<{}>(url,data)
+  }
+
+  getAppointments(){
+    return 
+  }
+
+  
 
 
 

@@ -9,8 +9,8 @@
       <nav class="hidden md:flex space-x-3 items-center">
         @if(!authService.isUserLoggedIn()){ <!--if is not logged in-->
         <p (click)="activateAdminLogin()" class="text-black text-center underline text-gray-400 hover:text-gray-700 transition"> Sei un agenzia o ne fai parte? <br> Continua Qui </p>
-        <a (click)="deactiveAdminLogin()" class="text-black px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #2EC4B6 ;">Login</a>
-        <a  class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
+        <a routerLink="/login" (click)="deactiveAdminLogin()" class="text-black px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #2EC4B6 ;">Login</a>
+        <a routerLink="/register" class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
         }
         @else{
           <button class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Annunci</button>
@@ -23,6 +23,8 @@
             <button class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Calendario</button>
           }
           <button class=" border-1 border-gray-300 px-5 py-1.5 text-black">My Profile</button>
+
+          <button (click)="authService.logout()" class=" border-1 border-gray-300 px-5 py-1.5 text-black">Logout</button>
           
         }
       </nav>
