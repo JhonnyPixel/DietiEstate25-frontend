@@ -9,6 +9,7 @@ import { RegisterComponent } from './register/register.component';
 import { CalendarViewComponent } from './calendar-view/calendar-view.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { AddressSearchComponent } from './address-search/address-search.component';
+import { MylistingsComponent } from './mylistings/mylistings.component';
 
 export const routes: Routes = [
     {
@@ -59,5 +60,10 @@ export const routes: Routes = [
         path:"address",
         title:"Address",
         component:AddressSearchComponent
+    },
+    {
+        path:"mylistings",
+        title:"mylistings",
+        component:MylistingsComponent
     }
 ];

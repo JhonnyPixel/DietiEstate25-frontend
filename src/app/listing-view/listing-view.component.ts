@@ -7,15 +7,21 @@ import { RestBackendService } from '../rest-backend.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faElevator,faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
+import { StarRatingModule } from 'angular-star-rating';
+
+import { FormsModule } from '@angular/forms';
+
+import { RatingService } from '../rating.service';
+
 @Component({
   selector: 'app-listing-view',
-  imports: [NgImageSliderModule,AppointmentModalComponent,FontAwesomeModule],
+  imports: [NgImageSliderModule,AppointmentModalComponent,FontAwesomeModule,StarRatingModule,FormsModule],
   templateUrl: './listing-view.component.html',
   styleUrl: './listing-view.component.scss'
 })
 export class ListingViewComponent {
 
-   constructor(private weather:WeatherService,private route: ActivatedRoute,private rest:RestBackendService){
+   constructor(private weather:WeatherService,private rating:RatingService,private route: ActivatedRoute,private rest:RestBackendService){
 
     //cerca prima di prendere da state per ottimizzazione
       const state = window.history.state;
@@ -37,6 +43,10 @@ export class ListingViewComponent {
 
    faElevator=faElevator
    faLightbulb=faLightbulb
+
+  userRating: number = 0; // Memorizza il voto dell'utente
+  userComment: string = ''; // Memorizza il commento
+  showReviewForm: boolean = false; // Controlla la visibilità del dropdown
 
   ngOnInit(): void {
 
@@ -133,5 +143,44 @@ loadListingDetails(id: string): void {
       return 'help';
   }
 } */
+
+  
+
+  toggleReviewForm() {
+    this.showReviewForm = !this.showReviewForm; // Alterna la visibilità
+  }
+
+  onRatingChange(newRating: any) {
+    console.log(newRating)
+    this.userRating = newRating.rating; // Aggiorna il rating selezionato
+  }
+
+  submitReview() {
+    if (!this.userComment.trim()) {
+      alert('Per favore, inserisci un commento.');
+      return;
+    }
+
+    // Qui puoi inviare il rating e il commento al backend
+    console.log('Recensione inviata:', {
+      rating: this.userRating,
+      comment: this.userComment
+    });
+
+    this.rating.createAgentRating(this.listing.agent.id,this.userRating,this.userComment)
+      .subscribe(data=>{
+        console.log("dati recensioni",data);
+      },
+    err=>{
+      console.error(err);
+    })
+
+    alert('Recensione inviata con successo!');
+
+    // Resetta il form dopo l'invio
+    this.userRating = 0;
+    this.userComment = '';
+    this.showReviewForm = false; // Chiude il dropdown dopo l'invio
+  }
 
 }

@@ -61,31 +61,6 @@
                     <p>{{listing.energyClass}} Energy Class</p>
                 </div>
             }
-            <!-- <div class="p-5 relative flex space-x-2">
-                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
-                <img src="icon">
-                <p>Item 1</p>
-            </div>
-            <div class="p-5 relative flex space-x-2">
-                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
-                <img src="icon">
-                <p>Item 2</p>
-            </div>
-            <div class="p-5 relative flex space-x-2">
-                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
-                <img src="icon">
-                <p>Item 3</p>
-            </div>
-            <div class="p-5 relative flex space-x-2">
-                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
-                <img src="icon">
-                <p>Item 4</p>
-            </div>
-            <div class="p-5 relative flex space-x-2">
-                <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
-                <img src="icon">
-                <p>Item 5</p>
-            </div> -->
 
         </div>
 
@@ -95,7 +70,7 @@
     </div>
 
     <!--image name reviews...-->
-    <div class="flex flex-col h-80 w-100 border-1 border-gray-300 rounded-lg items-center p-5">
+    <div class="flex flex-col w-100 border-1 border-gray-300 rounded-lg items-center p-5">
 
         <!--image and name-->
         <div class="flex flex-col items-center">
@@ -109,6 +84,43 @@
 
             <h3 class="text-xl">{{listing.agent.firstName+' '+listing.agent.lastName }}</h3>
             <p class="text-gray-500">{{listing.agent.agency.ragioneSociale ?? 'Immobiliari S.p.a.'}}</p>
+          
+
+              <div class="relative flex flex-col items-center w-full m-4">
+                <p class="text-lg font-semibold">Punteggio Agente</p>
+                
+                <!-- Punteggio medio -->
+                <star-rating [disabled]="true" [labelText]="'2.63'" [labelPosition]="'right'" [starType]="'svg'" [rating]="2.63"></star-rating>
+            
+                <!-- Bottone per aprire il dropdown -->
+                <button (click)="toggleReviewForm()"
+                        class="mt-2 p-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                    {{ showReviewForm ? 'Nascondi Recensione' : 'Lascia una Recensione' }}
+                </button>
+            
+                <!-- Dropdown -->
+                 @if(showReviewForm){
+                    <div
+                    class="absolute top-full mt-2 w-64 p-3 border border-gray-300 rounded-md shadow-lg bg-white z-50">
+                   <p class="text-sm font-semibold text-gray-700">Dai una valutazione</p>
+           
+                   <!-- Rating -->
+                   <star-rating [starType]="'svg'" [rating]="userRating" (ratingChange)="onRatingChange($event)"></star-rating>
+           
+                   <!-- Commento -->
+                   <textarea [(ngModel)]="userComment"
+                             placeholder="Scrivi il tuo commento..."
+                             class="w-full p-2 border border-gray-300 rounded-md mt-2">
+                   </textarea>
+           
+                   <button (click)="submitReview()"
+                           class="w-full mt-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                       Invia Recensione
+                   </button>
+               </div>
+                 }
+                
+            </div>
 
 
         </div>

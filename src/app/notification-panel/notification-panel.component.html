@@ -24,8 +24,8 @@
         <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APPOINTMENT]</p>
         <p>Richiesta appuntamento annuncio a corso del capo</p>
         <div class="mt-5 flex justify-between">
-          <button class="bg-red-500 rounded-lg text-white px-10 py-3">Rifiuta</button>
-          <button class="bg-blue-500 rounded-lg text-white px-10 py-3">Vedi disponibilità</button>
+          <button class="bg-red-500 rounded-lg text-white px-10 py-3" (click)="openDenyAppointment()">Rifiuta</button>
+          <button class="bg-blue-500 rounded-lg text-white px-10 py-3" (click)="openAppointmentModal()">Vedi disponibilità</button>
         </div>
       </div>
 
@@ -67,6 +67,7 @@
 
       </div>
 
+      
       
 
     </div>

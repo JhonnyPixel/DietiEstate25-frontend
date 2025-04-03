@@ -5,9 +5,12 @@ import { RestBackendService } from '../rest-backend.service';
 import { FilterBarComponent } from '../filter-bar/filter-bar.component';
 import { AddressSearchComponent } from '../address-search/address-search.component';
 import { Router, RouterLink } from '@angular/router';
+
+import { ResultItemComponent } from '../result-item/result-item.component';
+
 @Component({
   selector: 'app-search-results',
-  imports: [LeafletMapComponent,FormsModule,FilterBarComponent,AddressSearchComponent,RouterLink],
+  imports: [LeafletMapComponent,FormsModule,FilterBarComponent,AddressSearchComponent,RouterLink,ResultItemComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })

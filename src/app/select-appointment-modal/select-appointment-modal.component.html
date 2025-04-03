@@ -1,0 +1,65 @@
+<div class="absolute flex flex-col w-1/2 h-1/2 p-10 bg-white top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl shadow-2xl border border-gray-100 overflow-y-auto z-9999">
+    <div class="flex-1 flex flex-col space-y-5">
+        <p class="text-3xl font-semibold">Seleziona un appuntamento disponibile</p>
+        
+        <form [formGroup]="agentAppointmentForm!" (ngSubmit)="onConfirmAppointment()">
+            <div class="relative flex space-x-5 overflow-x-auto pb-2">
+                @for(date of userSelectedDates; track date.getTime(); let i = $index) {
+                    <div class="min-w-[110px] h-[100px] flex flex-col justify-center items-center p-3 rounded-lg cursor-pointer transition-all duration-200 relative"
+                         [ngClass]="{
+                            'bg-blue-50 border-2 border-blue-500': isDateSelected(date),
+                            'bg-gray-100 border border-dashed border-blue-400': hasHoursForDate(date) && !isDateSelected(date),
+                            'bg-gray-100': !hasHoursForDate(date) && !isDateSelected(date)
+                         }"
+                         (click)="onDateClick(date, i)">
+                        <span class="text-lg font-semibold mb-1">{{ date | date: 'd MMM' }}</span>
+                        <span class="text-xs text-gray-500">{{ getHoursCountText(date) }}</span>
+                        @if(isDateSelected(date)) {
+                            <span class="absolute bottom-1 right-2 text-blue-500 font-bold">✓</span>
+                        }
+                    </div>
+                }
+            </div>
+            
+            @if(selectedDateIndex !== null) {
+                <p class="text-2xl font-medium mt-8 mb-5">
+                    Fasce orarie per {{ userSelectedDates[selectedDateIndex] | date: 'd MMMM' }}
+                </p>
+                
+                <div class="relative flex space-x-3 overflow-x-auto pb-2">
+                    @for(hour of getHoursForDate(userSelectedDates[selectedDateIndex]); track hour) {
+                        <label class="min-w-[90px] h-[60px] flex flex-col justify-center items-center p-2 rounded-lg cursor-pointer transition-all duration-200 relative"
+                               [ngClass]="{'bg-blue-50 border-2 border-blue-500': isHourSelected(hour), 'bg-gray-100': !isHourSelected(hour)}">
+                            <input type="radio"
+                                   class="absolute opacity-0 w-0 h-0"
+                                   name="selectedTimeSlot"
+                                   [value]="hour"
+                                   [checked]="isHourSelected(hour)"
+                                   (change)="onHourSelect(hour)">
+                            <span class="text-base">{{ hour }}</span>
+                        </label>
+                    }
+                </div>
+            }
+            
+            <div class="mt-8">
+                @if(selectedDate && selectedHour){
+                    <div class="p-4 bg-gray-100 rounded-lg mb-5" >
+                        <p class="font-bold">Appuntamento selezionato:</p>
+                        <p>{{ selectedDate | date: 'd MMMM yyyy' }} alle ore {{ selectedHour }}</p>
+                    </div>
+                }
+                
+            </div>
+            
+            <div class="flex justify-between mt-5">
+                <button type="button" (click)="closeModal()" class="bg-red-500 rounded-lg text-white px-10 py-3 hover:bg-red-600 transition-colors">Annulla</button>
+                <button type="submit" [disabled]="!selectedHour" 
+                        class="bg-blue-500 rounded-lg text-white px-10 py-3 transition-colors hover:bg-blue-600"
+                        [ngClass]="{'opacity-50 cursor-not-allowed': !selectedHour}">
+                    Conferma Appuntamento
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

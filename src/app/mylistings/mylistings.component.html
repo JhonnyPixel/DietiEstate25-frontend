@@ -1,0 +1,206 @@
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">I Tuoi Annunci</h1>
+    
+    @if(isLoading){
+        <div class="flex justify-center items-center h-64">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Caricamento...</span>
+            </div>
+        </div>
+    }
+  
+    
+    @if(errorMessage){
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{ errorMessage }}
+        </div>
+    }
+   
+    
+    @if(!isLoading && !errorMessage){
+        <div>
+        
+            @if(getListingsCount() === 0){
+              <div class="text-center py-12">
+                  <p class="text-xl text-gray-600">Non hai ancora pubblicato annunci.</p>
+                  <button class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg">
+                    Crea il tuo primo annuncio
+                  </button>
+              </div>
+            }
+            
+            
+            @if(getListingsCount()>0){
+      
+              <div>
+                  <!-- Tabs -->
+                  <div class="border-b border-gray-200 mb-6">
+                    <nav class="flex -mb-px">
+                      <button 
+                        (click)="setActiveTab('houses')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
+                        [ngClass]="activeTab === 'houses' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Case ({{ houses.length }})
+                      </button>
+                      <button 
+                        (click)="setActiveTab('buildings')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
+                        [ngClass]="activeTab === 'buildings' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Edifici ({{ buildings.length }})
+                      </button>
+                      <button 
+                        (click)="setActiveTab('lands')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
+                        [ngClass]="activeTab === 'lands' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Terreni ({{ lands.length }})
+                      </button>
+                      <button 
+                        (click)="setActiveTab('garages')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors"
+                        [ngClass]="activeTab === 'garages' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Garage ({{ garages.length }})
+                      </button>
+                    </nav>
+                  </div>
+                  
+                  <!-- Houses -->
+                  @if(activeTab === 'houses'){
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          @for(house of houses;track house.id){
+
+                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="house.imageUrl || '/assets/placeholder-house.jpg'" alt="{{ house.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ house.status }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ house.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ house.location }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ house.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-bed mr-1"></i> {{ house.rooms }} stanze</span>
+                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ house.area }} m²</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(house)" class="text-blue-500 hover:underline">Modifica</button>
+                                    <button (click)="deleteListing('houses', house.id)" class="text-red-500 hover:underline">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+
+                          }
+                          
+                        </div>
+                  }
+                  
+                  
+                  <!-- Buildings -->
+                  @else if(activeTab === 'buildings'){
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          @for(building of buildings;track building.id){
+                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="building.imageUrl || '/assets/placeholder-building.jpg'" alt="{{ building.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ building.status }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ building.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ building.location }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ building.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-building mr-1"></i> {{ building.floors }} piani</span>
+                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ building.totalArea }} m²</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(building)" class="text-blue-500 hover:underline">Modifica</button>
+                                    <button (click)="deleteListing('buildings', building.id)" class="text-red-500 hover:underline">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+                          }
+                          
+                        </div>
+                  }
+                  
+                  
+                  <!-- Lands -->
+                  @else if(activeTab === 'lands'){
+          
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                        @for(land of lands;track land.id){
+                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="land.imageUrl || '/assets/placeholder-land.jpg'" alt="{{ land.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ land.status }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ land.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ land.location }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ land.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-map-marker-alt mr-1"></i> {{ land.area }} m²</span>
+                                    <span><i class="fas fa-tag mr-1"></i> {{ land.zoning }}</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(land)" class="text-blue-500 hover:underline">Modifica</button>
+                                    <button (click)="deleteListing('lands', land.id)" class="text-red-500 hover:underline">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+                        }
+                          
+                        </div>
+          
+                  }
+                  
+                  
+                  <!-- Garages -->
+                  @else if(activeTab === 'garages'){
+          
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @for(garage of garages;track garage.id){
+                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="garage.imageUrl || '/assets/placeholder-garage.jpg'" alt="{{ garage.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ garage.status }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ garage.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ garage.location }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ garage.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-car mr-1"></i> {{ garage.size }} m²</span>
+                                    <span><i class="fas fa-shield-alt mr-1"></i> {{ garage.securitySystem ? 'Sistema di sicurezza' : 'No sicurezza' }}</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(garage)" class="text-blue-500 hover:underline">Modifica</button>
+                                    <button (click)="deleteListing('garages', garage.id)" class="text-red-500 hover:underline">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+                        }
+                        
+                        </div>
+          
+                  }
+                  
+                </div>
+            }
+            
+          </div>
+    }
+   
+  </div>
