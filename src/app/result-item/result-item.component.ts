@@ -1,4 +1,4 @@
-import { Component ,Input} from '@angular/core';
+import { Component ,Input,EventEmitter,Output} from '@angular/core';
 
 @Component({
   selector: 'app-result-item',
@@ -8,7 +8,14 @@ import { Component ,Input} from '@angular/core';
 })
 export class ResultItemComponent {
 
+
   @Input() listing:any
+  @Input() isActive:boolean=false
+  @Output() onItemHover = new EventEmitter<string>();
+
+  setActive() {
+    this.onItemHover.emit(this.listing.id);
+  }
 
 
 }

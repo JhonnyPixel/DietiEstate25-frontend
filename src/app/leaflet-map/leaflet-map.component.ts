@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as leaflet from 'leaflet'
+import { EventEmitter,Output } from '@angular/core';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -15,6 +16,11 @@ export class LeafletMapComponent implements OnInit{
   private radius: number = 500; // Raggio iniziale in metri
   private isSelecting: boolean = false; // Controlla se l'utente sta selezionando un punto
   private resizeMarker!: L.Marker;
+
+  private resultsMarkers:L.Marker[]=[];
+  private markerPopups: { [id: string]: L.Marker } = {}; // Un oggetto per mappare gli ID dei marker ai marker
+
+  @Output() resultMarkerClicked = new EventEmitter<string>();
 
 
   
@@ -194,5 +200,74 @@ export class LeafletMapComponent implements OnInit{
     // Fai zoom alla nuova posizione
     this.map.setView(newLatLng, this.defaultZoom);
   }
+
+    // Metodo per aggiungere i marker alla mappa
+    addListingsToMap(listings: any[]): void {
+      if (!this.map) {
+        console.error("La mappa non è ancora stata inizializzata.");
+        return;
+      }
+  
+      this.deletePreviousResultsMarkers();
+  
+      const bounds = leaflet.latLngBounds([]);
+  
+      listings.forEach((listing) => {
+        const lat = listing.location.latitude;
+        const lng = listing.location.longitude;
+  
+        if (lat && lng) {
+          const marker = leaflet.marker([lat, lng]);
+  
+          // Crea un popup con le informazioni del listing
+          marker.bindPopup(`
+            <b>${listing.title}</b><br>
+            ${listing.location.address}, ${listing.location.city}<br>
+            Prezzo: ${listing.price}€
+          `);
+  
+          // Aggiungi un ascoltatore di eventi per quando il marker viene cliccato
+          marker.on('click', () => {
+            this.resultMarkerClicked.emit(listing.id);
+          });
+  
+          // Aggiungi il marker alla mappa e al nostro array di risultati
+          marker.addTo(this.map);
+          this.resultsMarkers.push(marker);
+          this.markerPopups[listing.id] = marker;  // Mappa l'ID del listing al marker
+  
+          // Aggiunge il marker ai bounds per adattare la mappa
+          bounds.extend([lat, lng]);
+        } else {
+          console.warn(`Coordinate mancanti per il listing: ${listing.id}`);
+        }
+      });
+  
+      // Se ci sono marker, adatta la mappa
+      if (listings.length > 0) {
+        this.map.fitBounds(bounds, { padding: [50, 50] });
+      }
+    }
+  
+    // Metodo per rimuovere i marker precedenti dalla mappa
+    deletePreviousResultsMarkers() {
+      this.resultsMarkers.forEach(marker => {
+        this.map.removeLayer(marker);
+      });
+      this.resultsMarkers = [];
+      this.markerPopups = {};  // Resetta anche la mappa degli ID
+    }
+  
+    // Metodo per aprire il popup di un marker dato un ID
+    openPopupById(listingId: string): void {
+      const marker = this.markerPopups[listingId];
+      if (marker) {
+        marker.openPopup();  // Apre il popup del marker corrispondente
+        this.map.setView(marker.getLatLng(), 15);  // Fai zoom sulla posizione del marker
+      } else {
+        console.error(`Marker con ID ${listingId} non trovato.`);
+      }
+    }
+  
 
 }

@@ -1,4 +1,4 @@
-<div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed cursor-pointer">
+<!-- <div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed cursor-pointer">
     <div class="w-45 h-45 bg-gray-400">
         <img [src]="listing.photos?.[0] ?? 'img/logo.png'" class="">
     </div>
@@ -12,4 +12,28 @@
             {{listing.price}}
         </p>
     </div>
+</div> -->
+
+<!-- HTML -->
+<div 
+  class="listing-container flex p-5 border-1 border-gray-400 rounded-xl h-min cursor-pointer transition-all duration-300 ease-in-out" 
+  [class.bg-gray-100]="isActive"
+  [class.shadow-lg]="isActive"
+  [class.scale-105]="isActive"
+  (mouseenter)="setActive()" >
+
+  <div class="image-container w-45 h-45 bg-gray-400 rounded-xl overflow-hidden">
+      <img [src]="listing.photos?.[0] ?? 'img/logo.png'" class="w-full h-full object-cover">
+  </div>
+
+  <div class="flex-1 ml-5 flex flex-col space-y-2">
+      <h3 class="text-2xl font-semibold text-gray-900">{{listing.title}}</h3>
+      <p class="text-md text-gray-400 overflow-hidden break-words">
+        {{listing.description}} 
+      </p>
+      <p class="font-light text-2xl text-gray-700">
+          {{listing.price}}$
+      </p>
+  </div>
 </div>
+

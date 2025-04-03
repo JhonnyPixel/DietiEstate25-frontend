@@ -124,7 +124,7 @@
 
     <!--Mappa-->
     <div class="relative flex-1 bg-gray-400">
-        <app-leaflet-map class="h-full w-full"></app-leaflet-map>
+        <app-leaflet-map (resultMarkerClicked)="resultMarkedClicked($event)" class="h-full w-full"></app-leaflet-map>
 
         @if(isSelecting){
 
@@ -156,7 +156,7 @@
         
         <div (click)="openListingDetails(listing)">
 
-          <app-result-item [listing]="listing"></app-result-item>
+          <app-result-item [isActive]="listing.id===focusedListingId" [listing]="listing" (onItemHover)="this.leafletMap.openPopupById($event)"></app-result-item>
 
         </div>
         

@@ -16,6 +16,7 @@ import { ResultItemComponent } from '../result-item/result-item.component';
 })
 export class SearchResultsComponent {
 
+
   constructor(private restBackend:RestBackendService,private router:Router){}
 
   @ViewChild(LeafletMapComponent) leafletMap!: LeafletMapComponent;
@@ -25,13 +26,8 @@ export class SearchResultsComponent {
 
   isSelecting:Boolean = false
 
+  focusedListingId:string=''
 
-  /* tipologia: string = '';
-  prezzoMin: number | null = null;
-  prezzoMax: number | null = null;
-  stanze: number | null = null;
-  classeEnergetica: string = '';
-  posizione: string = ''; */
 
   filters: any = {
     listingType: 'BUY',
@@ -84,6 +80,7 @@ export class SearchResultsComponent {
       console.log(data);
       this.listings=(data as []);
       console.log("dati arrivati: ",this.listings);
+      this.leafletMap.addListingsToMap(this.listings)
     })
     
     console.log("Filtri applicati:", this.filters);
@@ -131,6 +128,7 @@ export class SearchResultsComponent {
       this.listings=(data as []);
       console.log("dati arrivati: ",this.listings);
       this.toggleSelection(); //reimposto la mappa
+      this.leafletMap.addListingsToMap(this.listings)
     })
 
 
@@ -141,6 +139,10 @@ export class SearchResultsComponent {
     this.router.navigate(['/listing', listing.id],{
       state:{listingData:listing}
     });
+  }
+
+  resultMarkedClicked(id:string) {
+    this.focusedListingId=id;
   }
 
 }
