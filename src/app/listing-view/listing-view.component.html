@@ -87,10 +87,10 @@
           
 
               <div class="relative flex flex-col items-center w-full m-4">
-                <p class="text-lg font-semibold">Punteggio Agente</p>
+                <p class="text-lg font-semibold">{{listing.agent.numOfReviews}} Recension{{listing.agent.numOfReviews===1 ? 'e':'i'}}</p>
                 
                 <!-- Punteggio medio -->
-                <star-rating [disabled]="true" [labelText]="'2.63'" [labelPosition]="'right'" [starType]="'svg'" [rating]="2.63"></star-rating>
+                <star-rating [disabled]="true" [labelText]="listing?.agent?.averageReview ? listing.agent.averageReview.toFixed(2) : 'N/A'" [labelPosition]="'right'" [starType]="'svg'" [rating]="listing.agent.averageReview"></star-rating>
             
                 <!-- Bottone per aprire il dropdown -->
                 <button (click)="toggleReviewForm()"

@@ -24,6 +24,8 @@ import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 export class NotificationService {
   private notificationsSubject = new BehaviorSubject<any[]>([]);
   public notifications$ = this.notificationsSubject.asObservable();
+
+  private notifications:any=[]
   
   private stompClient: any = null;
   private connected = false;
@@ -54,6 +56,9 @@ export class NotificationService {
     this.http.get<any[]>(`http://localhost:8080/api/notifications?userId=${this.authService.getUserId()}`).subscribe(
       (notifications) => {
         this.notificationsSubject.next(notifications);
+
+        this.notifications=notifications
+        
         console.log('Notifiche offline recuperate:', notifications);
       },
       (error) => {
@@ -69,6 +74,10 @@ export class NotificationService {
 
   getMessages(): Observable<any> {
     return this.socket$.asObservable();
+  }
+
+  getNotifications(){
+    return this.notifications;
   }
 
   closeConnection() {

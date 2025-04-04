@@ -103,12 +103,37 @@ export class AuthService {
     return localStorage.getItem("role")
   }
 
+  isCustomer():boolean{
+    const role=this.getRole()
+    return role === "CUSTOMER"
+  }
+
+  isAgent():boolean{
+    const role=this.getRole()
+    return role === "AGENT"
+  }
+
+  isAdmin():boolean{
+    const role=this.getRole()
+    return role === "ADMIN"
+  }
+
+  isManager():boolean{
+    const role=this.getRole()
+    return role === "MANAGER"
+  }
+
+  getUserData():string|null{
+    return localStorage.getItem("userData")
+  }
+
   logout(){
     localStorage.removeItem("token");
     localStorage.removeItem("id");
     localStorage.removeItem("agencyId");
     localStorage.removeItem("email");
     localStorage.removeItem("role");
+    localStorage.removeItem("userData");
   }
 
   getAgency(userId:string){

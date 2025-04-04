@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NgImageSliderModule } from 'ng-image-slider'
 import { AppointmentModalComponent } from '../appointment-modal/appointment-modal.component';
 import { WeatherService,WeatherForecast, WeatherCondition} from '../weather.service';
@@ -21,7 +21,7 @@ import { RatingService } from '../rating.service';
 })
 export class ListingViewComponent {
 
-   constructor(private weather:WeatherService,private rating:RatingService,private route: ActivatedRoute,private rest:RestBackendService){
+   constructor(private cdr: ChangeDetectorRef,private weather:WeatherService,private rating:RatingService,private route: ActivatedRoute,private rest:RestBackendService){
 
     //cerca prima di prendere da state per ottimizzazione
       const state = window.history.state;
@@ -170,6 +170,13 @@ loadListingDetails(id: string): void {
     this.rating.createAgentRating(this.listing.agent.id,this.userRating,this.userComment)
       .subscribe(data=>{
         console.log("dati recensioni",data);
+        this.listing.agent.numOfReviews = this.listing.agent.numOfReviews + 1;
+        this.listing.agent.averageReview = this.listing.agent.averageReview + (this.userRating/this.listing.agent.numOfReviews)
+
+        console.log("nuovo agent",this.listing.agent)
+
+        this.userRating = 0;  // Resetta il form dopo l'invio
+
       },
     err=>{
       console.error(err);
@@ -178,7 +185,6 @@ loadListingDetails(id: string): void {
     alert('Recensione inviata con successo!');
 
     // Resetta il form dopo l'invio
-    this.userRating = 0;
     this.userComment = '';
     this.showReviewForm = false; // Chiude il dropdown dopo l'invio
   }

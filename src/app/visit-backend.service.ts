@@ -28,23 +28,25 @@ export class VisitBackendService {
   getVisits(from:string,to:string){
 
     // simulating an HTTP request
-        return new Observable((observer:any) => {
+       /*  return new Observable((observer:any) => {
           setTimeout(() => {
             observer.next(this.events);
             observer.complete();
             }, 200);
-        });
+        }); */
  
-    /* let url=`http://localhost:8080/api/visits`
+    let url=`http://localhost:8080/api/visits`
 
     const id=this.authService.getUserId();
+
+    console.log("ciaoo",id);
 
     let params = new HttpParams().set('agentId', id!);
     params=params.set('start', from.toString());
     params=params.set('end', to.toString());
 
 
-    return this.httpClient.get(url); */
+    return this.httpClient.get(url,{params});
   }
 
   createRequest(data:any){

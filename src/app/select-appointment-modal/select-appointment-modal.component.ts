@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { DatePipe,NgClass } from '@angular/common';
 
 interface AppointmentSlot {
-  date: Date;
-  hours: string[];
+  day: Date;
+  timeSlots: string[];
 }
 
 @Component({
@@ -32,7 +32,7 @@ export class SelectAppointmentModalComponent {
     });
 
     // Estrai le date uniche dagli appuntamenti dell'utente
-    this.userSelectedDates = this.userAppointments.map(slot => slot.date);
+    this.userSelectedDates = this.userAppointments.map(slot => slot.day);
   }
 
   onDateClick(date: Date, index: number): void {
@@ -65,12 +65,12 @@ export class SelectAppointmentModalComponent {
 
   getHoursForDate(date: Date): string[] {
     const appointment = this.userAppointments.find(slot => 
-      slot.date.getDate() === date.getDate() && 
-      slot.date.getMonth() === date.getMonth() && 
-      slot.date.getFullYear() === date.getFullYear()
+      slot.day.getDate() === date.getDate() && 
+      slot.day.getMonth() === date.getMonth() && 
+      slot.day.getFullYear() === date.getFullYear()
     );
     
-    return appointment ? appointment.hours : [];
+    return appointment ? appointment.timeSlots : [];
   }
 
   onHourSelect(hour: string): void {

@@ -36,6 +36,8 @@ export class LoginComponent {
         localStorage.setItem("email",data.email)
         localStorage.setItem("role",data.role)
 
+        localStorage.setItem("userData",JSON.stringify(data));
+
         this.notification.initialize(); //recupera la notifiche all' accesso
 
         if(this.authService.getRole()!=="CUSTOMER"){

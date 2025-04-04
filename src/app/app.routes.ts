@@ -10,6 +10,7 @@ import { CalendarViewComponent } from './calendar-view/calendar-view.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { AddressSearchComponent } from './address-search/address-search.component';
 import { MylistingsComponent } from './mylistings/mylistings.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
     {
@@ -65,5 +66,10 @@ export const routes: Routes = [
         path:"mylistings",
         title:"mylistings",
         component:MylistingsComponent
+    },
+    {
+        path:"myprofile",
+        title:"myprofile",
+        component:ProfileComponent
     }
 ];

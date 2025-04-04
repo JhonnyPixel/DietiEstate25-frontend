@@ -8,61 +8,37 @@
       style="height: calc(100vh - 60px);"
       >
 
-        <!--Item-->
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
+      @for(n of notifications;track n.id){
+        @if(n.type==='VISIT_REQUEST'){
 
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
+          <div class="border-1 border-gray-300 p-5 rounded-lg">
+            <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [Appuntamento]</p>
+            <p>{{n.message}}</p>
+            <div class="mt-5 flex justify-between">
+              <button class="bg-red-500 rounded-lg text-white px-10 py-3" (click)="openDenyAppointment()">Rifiuta</button>
+              <button class="bg-blue-500 rounded-lg text-white px-10 py-3" (click)="openAppointmentModal(n.visitRequest)">Vedi disponibilità</button>
+            </div>
+          </div>
 
+        }@else if(n.type==='VISIT_RESPONSE'){
 
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APPOINTMENT]</p>
-        <p>Richiesta appuntamento annuncio a corso del capo</p>
-        <div class="mt-5 flex justify-between">
-          <button class="bg-red-500 rounded-lg text-white px-10 py-3" (click)="openDenyAppointment()">Rifiuta</button>
-          <button class="bg-blue-500 rounded-lg text-white px-10 py-3" (click)="openAppointmentModal()">Vedi disponibilità</button>
-        </div>
-      </div>
+          <div class="border-1 border-gray-300 p-5 rounded-lg">
+            <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [Conferma]</p>
+            <p>Visita Per appartamento Y confermata il giorno dd dalle xx alle yy</p>
+          </div>
 
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
-      
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
+        }@else if(n.type==='LISTING'){
 
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
+          <div (click)="clickApartmentNotification(n.listing)" class="border-1 border-gray-300 p-5 rounded-lg">
+            <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [Appartamento]</p>
+            <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
+          </div>
 
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
+        }
+      }@empty {
+        <p>Non ci sono nuove notifiche</p>
+      }
 
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
-
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
-
-      <div class="border-1 border-gray-300 p-5 rounded-lg">
-        <p class="align-middle text-lg"><span class="inline-block w-3 h-3 rounded-full bg-[#FF9F1C] "></span> [APARTMENT]</p>
-        <p>Appartamento 300m.q. sul corso amedeo di savoia</p>
-      </div>
 
 
       </div>

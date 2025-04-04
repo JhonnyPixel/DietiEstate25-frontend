@@ -39,9 +39,9 @@
   </header>
 
   @if(isNotificationPanelOpen){
-    <app-notification-panel (close)="toggleNotifiche()" (openAppointmentSelect)="openAppointmentModal()" (openDenyAppointmentModal)="openDenyAppointmentModal()"></app-notification-panel> 
+    <app-notification-panel (close)="toggleNotifiche()" (openAppointmentSelect)="openAppointmentModal($event)" (openDenyAppointmentModal)="openDenyAppointmentModal()"></app-notification-panel> 
     @if(appModal){
-      <app-select-appointment-modal (modalClosed)="closeAppointmentModal()" [userAppointments]="mockData"></app-select-appointment-modal>
+      <app-select-appointment-modal (modalClosed)="closeAppointmentModal()" (appointmentSelected)="confirmAppointment($event)" [userAppointments]="visitRequest.availabilites"></app-select-appointment-modal>
     }
     @else if(denyAppModal){
       <app-deny-appointment-modal (onModalClose)="closeDenyAppointmentModal()"></app-deny-appointment-modal>
