@@ -13,18 +13,21 @@
         <a routerLink="/register" class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
         }
         @else{
-          <button class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Annunci</button>
+         
           <button (click)="toggleNotifiche()" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black relative hover:bg-gray-100 hover:border-gray-100 transition">
             <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5"></span>
             <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5 animate-ping"></span>
             Notifiche
           </button>
-          @if(isAgentProfile){
-            <button class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Calendario</button>
+          @if(this.authService.isAgent()){
+            <button routerLink="/mylistings" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Annunci</button>
+            <button routerLink="/calendar" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Calendario</button>
+          }@else if(this.authService.isManager()){
+            <button routerLink="/accounts" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Gestisci Accounts</button>
           }
-          <button class=" border-1 border-gray-300 px-5 py-1.5 text-black">My Profile</button>
+          <button routerLink="/myprofile" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">My Profile</button>
 
-          <button (click)="authService.logout()" class=" border-1 border-gray-300 px-5 py-1.5 text-black">Logout</button>
+          <button (click)="authService.logout()" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Logout</button>
           
         }
       </nav>
@@ -39,12 +42,12 @@
   </header>
 
   @if(isNotificationPanelOpen){
-    <app-notification-panel (close)="toggleNotifiche()" (openAppointmentSelect)="openAppointmentModal($event)" (openDenyAppointmentModal)="openDenyAppointmentModal()"></app-notification-panel> 
+    <app-notification-panel (close)="toggleNotifiche()" (openAppointmentSelect)="openAppointmentModal($event)" (openDenyAppointmentModal)="openDenyAppointmentModal($event)"></app-notification-panel> 
     @if(appModal){
       <app-select-appointment-modal (modalClosed)="closeAppointmentModal()" (appointmentSelected)="confirmAppointment($event)" [userAppointments]="visitRequest.availabilites"></app-select-appointment-modal>
     }
     @else if(denyAppModal){
-      <app-deny-appointment-modal (onModalClose)="closeDenyAppointmentModal()"></app-deny-appointment-modal>
+      <app-deny-appointment-modal (onModalClose)="closeDenyAppointmentModal()" (onSubmitDeny)="DenyAppointment($event)"></app-deny-appointment-modal>
     }
   }
 

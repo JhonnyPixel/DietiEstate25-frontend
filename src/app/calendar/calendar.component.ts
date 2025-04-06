@@ -206,6 +206,8 @@ export class CalendarComponent implements AfterViewInit {
   configDay: DayPilot.CalendarConfig = {
     durationBarVisible: false,
     contextMenu: this.contextMenu,
+    eventMoveHandling:"Disabled",
+    eventResizeHandling:"Disabled",
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
     onBeforeEventRender: this.onBeforeEventRender.bind(this),
     /* onEventClick: this.onEventClick.bind(this), */
@@ -215,6 +217,8 @@ export class CalendarComponent implements AfterViewInit {
     viewType: "Week",
     durationBarVisible: false,
     contextMenu: this.contextMenu,
+    eventMoveHandling:"Disabled",
+    eventResizeHandling:"Disabled",
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
     onBeforeEventRender: this.onBeforeEventRender.bind(this),
     /* onEventClick: this.onEventClick.bind(this), */
@@ -223,6 +227,8 @@ export class CalendarComponent implements AfterViewInit {
   configMonth: DayPilot.MonthConfig = {
     contextMenu: this.contextMenu,
     eventBarVisible: false,
+    eventMoveHandling:"Disabled",
+    eventResizeHandling:"Disabled",
     onTimeRangeSelected: this.onTimeRangeSelected.bind(this),
     /* onEventClick: this.onEventClick.bind(this), */
   };
@@ -250,7 +256,7 @@ export class CalendarComponent implements AfterViewInit {
       
       // Iteriamo su ogni elemento nell'array restituito dal backend
       data.forEach((item:any, index:any) => {
-        // Creiamo un oggetto Date dal dateTime ricevuto
+        /* // Creiamo un oggetto Date dal dateTime ricevuto
         const startDate = new Date(item.dateTime);
         
         // Creiamo la data di fine aggiungendo 2 ore
@@ -266,11 +272,48 @@ export class CalendarComponent implements AfterViewInit {
           start: startDateTime,
           end: endDateTime,
           text: `Prenotazione ${item.listingId}`,
-          /* resource: `R${(index % 4) + 1}`, // Assegna ciclicamente R1, R2, R3, R4
-          barColor: this.getRandomColor() // Funzione per generare un colore casuale */
         };
         
-        events.push(event);
+        events.push(event); */
+
+      // Otteniamo la stringa datetime direttamente (senza conversione)
+    const startDateTime = item.dateTime;
+    
+    // Per calcolare l'end time, analizziamo la stringa e aggiungiamo 2 ore
+    // senza passare per oggetti Date che potrebbero causare problemi di timezone
+    const startParts = startDateTime.split('T');
+    const datePart = startParts[0]; // es. "2025-04-06"
+    const timePart = startParts[1]; // es. "16:00:00"
+    
+    // Estrai ore, minuti, secondi
+    const timeComponents = timePart.split(':');
+    let hours = parseInt(timeComponents[0]);
+    const minutes = timeComponents[1];
+    const seconds = timeComponents[2];
+    
+    // Aggiungi 2 ore
+    hours = (hours + 2) % 24;
+    
+    // Costruisci la nuova stringa di fine
+    // Assicuriamoci che l'ora abbia sempre due cifre
+    const formattedHours = hours.toString().padStart(2, '0');
+    const endDateTime = `${datePart}T${formattedHours}:${minutes}:${seconds}`;
+    
+    // Creiamo l'evento DayPilot
+    const event: EventData = {
+      id: index + 1, // Oppure potresti usare item.id se è un numero
+      start: startDateTime,
+      end: endDateTime,
+      text: `Visita per ${item.listing.title}`,
+      // Eventuali altre proprietà dell'evento...
+      tags: {
+        listingImageUrl: item.listing.photos && item.listing.photos.length > 0 
+                        ? item.listing.photos[0].url 
+                        : '/img/house-placeholder.svg' // Immagine predefinita
+      }
+    };
+    
+    events.push(event);
       });
       
       // Ora events contiene tutti gli eventi nel formato richiesto da DayPilot
@@ -338,13 +381,15 @@ getRandomColor(): string {
         }
       ];
 
+      const imageUrl = args.data.tags?.listingImageUrl || `https://picsum.photos/36/36?random=${args.data.id}`;
+
       args.data.areas.push({
         bottom: 5,
         left: 5,
         width: 36,
         height: 36,
         action: "None",
-        image: `https://picsum.photos/36/36?random=${args.data.id}`,
+        image: imageUrl,
         style: "border-radius: 50%; border: 2px solid #fff; overflow: hidden;",
       });
   }

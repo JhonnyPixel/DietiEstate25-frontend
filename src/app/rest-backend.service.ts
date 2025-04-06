@@ -199,6 +199,31 @@ export class RestBackendService {
 
   }
 
+  uploadListingImages(listingId:string,images:any[]){
+    /* let url=`http://localhost:8080/api/images/listings/${listingId}`
+
+    return this.httpClient.post(url,{
+      images:images
+    }) */
+      const url = `http://localhost:8080/api/images/listings/${listingId}`;
+
+      const formData = new FormData();
+      images.forEach((file) => {
+        formData.append('images', file); // "images" è il nome del campo accettato dal backend
+      });
+    
+      return this.httpClient.post(url, formData); // Angular imposta automaticamente il Content-Type giusto
+  }
+
+  deleteListingImages(listingId:string,images:any[]){
+
+    let url=`http://localhost:8080/api/images/listings/${listingId}`
+
+    return this.httpClient.delete(url,{
+      body:images
+    })
+  }
+
 
   createAgent(data:any){
     let agencyId=this.authService.getAgencyId();

@@ -21,19 +21,24 @@ export class AppointmentService {
     
   }
 
+  denyAppointment(motivation:any,id:string){
+
+    let url=`http://localhost:8080/api/visit-requests/${id}/reject`
+
+
+    return this.http.post(url,motivation)
+
+    
+  }
+
   createISODateTime(date: Date, hourRange: string): string {
 
-    console.log("creo ISOTIME ",date,hourRange)
-    // Estraggo la prima ora dalla fascia oraria (es: "08-10" → "08")
-    const hour = hourRange.split('-')[0];
-  
-    // Creo un nuovo oggetto Date basato sulla data dell'utente
+    console.log("creo ISOTIME ", date, hourRange);
+
+    const hour = parseInt(hourRange.split('-')[0]);
     const dateTime = new Date(date);
-    
-    // Imposto l'ora e i minuti a 00
-    dateTime.setHours(parseInt(hour, 10), 0, 0, 0);
-  
-    // Converto in stringa ISO 8601 (UTC)
+    dateTime.setUTCHours(hour, 0, 0, 0);
+
     return dateTime.toISOString();
   }
 }

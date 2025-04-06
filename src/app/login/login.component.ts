@@ -4,6 +4,10 @@ import { FormGroup,FormControl,Validators,ReactiveFormsModule } from '@angular/f
 import { AuthService } from '../auth.service';
 import { NotificationService } from '../notification.service';
 
+import { ToastrService } from 'ngx-toastr';
+import { error } from 'node:console';
+import { AnyARecord } from 'node:dns';
+
 @Component({
   selector: 'app-login',
   imports: [NavbarComponent,ReactiveFormsModule],
@@ -12,7 +16,7 @@ import { NotificationService } from '../notification.service';
 })
 export class LoginComponent {
 
-  constructor(private authService:AuthService,private notification:NotificationService){}
+  constructor(private authService:AuthService,private toaster:ToastrService,private notification:NotificationService){}
 
 
   loginForm = new FormGroup({
@@ -29,14 +33,14 @@ export class LoginComponent {
         password: formValues.password!
       };
 
-      this.authService.login(data).subscribe(data=>{
+      this.authService.login(data).subscribe((data:any)=>{
         console.log(data)
         localStorage.setItem("token",data.token)
         localStorage.setItem("id",data.id)
         localStorage.setItem("email",data.email)
         localStorage.setItem("role",data.role)
 
-        localStorage.setItem("userData",JSON.stringify(data));
+        this.toaster.success(`Login riuscito benvenuto ${data.email}`)
 
         this.notification.initialize(); //recupera la notifiche all' accesso
 
@@ -48,6 +52,14 @@ export class LoginComponent {
           })
         }
       
+    },
+    error=>{
+      console.log(error)
+      if(error.status===401){
+        this.toaster.error("Credenziali non valide",'Riprova')
+      }else{
+        this.toaster.error("Impossibile accedere al momento")
+      }
     })
       
 

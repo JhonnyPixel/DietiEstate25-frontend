@@ -123,9 +123,15 @@ export class AuthService {
     return role === "MANAGER"
   }
 
-  getUserData():string|null{
-    return localStorage.getItem("userData")
+  setProfile(fields:any){
+    Object.keys(fields).forEach(key => {
+      localStorage.setItem(key,fields[key])
+    });
   }
+
+ /*  getUserData():string|null{
+    return localStorage.getItem("userData")
+  } */
 
   logout(){
     localStorage.removeItem("token");

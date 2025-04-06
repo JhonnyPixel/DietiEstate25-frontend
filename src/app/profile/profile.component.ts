@@ -7,15 +7,17 @@ import { ProfileService } from '../profile.service';
 
 import { TitleCasePipe,NgClass,DatePipe } from '@angular/common';
 import { AuthService } from '../auth.service';
+import { AccountsBackendService } from '../accounts-backend.service';
+import { Router } from '@angular/router';
 
 interface UserProfile {
+  id?: string | number;
   firstName: string;
   lastName: string;
   email: string;
   dob: string;
   password?: string;
   profilePicUrl?: string;
-  tempPassword?: string;
   ragioneSociale?: string;
   partitaIva?: string;
   role: 'CUSTOMER' | 'AGENT' | 'ADMIN' | 'MANAGER';
@@ -31,21 +33,23 @@ export class ProfileComponent implements OnInit {
   userProfile: UserProfile | null = null;
   profileForm: FormGroup;
   isEditing = false;
+
+  newProfilePic:File|null=null
   
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
-
-    private auth:AuthService
+    private router:Router,
+    public auth:AuthService,
+    private accountsService:AccountsBackendService
   ) {
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required /*, Validators.email */]],
       dob: ['', Validators.required],
       password: [''],
       profilePicUrl: [''],
-      tempPassword: [''],
       ragioneSociale: [''],
       partitaIva: ['']
     });
@@ -56,6 +60,8 @@ export class ProfileComponent implements OnInit {
 
      this.profileService.getUserProfile().subscribe(
       (profile: UserProfile) => {
+
+        profile.role=(this.auth.getRole() as UserProfile["role"])
 
         console.log("arrivati i dati profilo",profile)
         this.userProfile = profile;
@@ -96,7 +102,6 @@ export class ProfileComponent implements OnInit {
       formData.password = profile.password || '';
       formData.profilePicUrl = profile.profilePicUrl || '';
     } else if (profile.role === 'ADMIN') {
-      formData.tempPassword = profile.tempPassword || '';
       formData.ragioneSociale = profile.ragioneSociale || '';
       formData.partitaIva = profile.partitaIva || '';
     }
@@ -115,7 +120,31 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  saveProfile(): void {
+
+  deleteProfilePic(){
+    if(this.userProfile?.profilePicUrl){
+    this.profileService.deleteProfilePic().subscribe(
+      data=>{
+        console.log("foto profilo eliminata:",data)
+
+        this.userProfile!.profilePicUrl=''
+        this.cancelEditing()
+      }
+    )
+  }
+  }
+
+
+  onPhotoUpload(event: any) {
+    const files = event.target.files;
+    if (files) {
+      console.log("files: ",files)
+      this.newProfilePic=files[0];
+
+    }
+  }
+
+ /*  saveProfile(): void {
     if (this.profileForm.valid && this.userProfile) {
       const updatedProfile = {
         ...this.userProfile,
@@ -134,17 +163,136 @@ export class ProfileComponent implements OnInit {
         delete updatedProfile.partitaIva;
       }
 
-      this.profileService.updateUserProfile(updatedProfile).subscribe(
-        (response) => {
-          this.userProfile = updatedProfile;
-          this.isEditing = false;
-          // Mostra notifica di successo
-        },
-        error => {
-          console.error('Errore durante l\'aggiornamento del profilo', error);
-          // Mostra notifica di errore
-        }
-      );
+   
+
+     this.accountsService.updateUser(updatedProfile).subscribe(
+      (response) => {
+        this.userProfile = updatedProfile;
+        this.isEditing = false;
+        // Mostra notifica di successo
+      },
+      error => {
+        console.error('Errore durante l\'aggiornamento del profilo', error);
+        // Mostra notifica di errore
+      }
+     )
+      
     }
-  }
+  } */
+
+    saveProfile(): void {
+
+      //foto profilo
+
+      if(this.newProfilePic!==null){
+
+       /*  if(this.userProfile?.profilePicUrl){
+
+          this.profileService.deleteProfilePic().subscribe(
+            data=>{
+              console.log("foto profilo eliminata:",data)
+
+              this.profileService.uploadProfilePic(this.newProfilePic).subscribe(
+                data=>{
+                  console.log("foto profilo aggiunta: ",data)
+                }
+              )
+
+            }
+          )
+
+        }else{
+
+          this.profileService.uploadProfilePic(this.newProfilePic).subscribe(
+            data=>{
+              console.log("foto profilo aggiunta: ",data)
+            }
+          )
+
+        } */
+
+          this.profileService.uploadProfilePic(this.newProfilePic).subscribe(
+            data=>{
+              console.log("foto profilo aggiunta: ",data)
+
+
+              this.userProfile!.profilePicUrl=data
+            }
+
+            
+
+          )
+
+        this.newProfilePic=null //reset
+        
+      }
+
+
+      //altri dati
+
+      if (this.profileForm.valid && this.userProfile) {
+        // Ottieni solo i campi che sono stati modificati e non sono vuoti
+        const formValue = this.profileForm.value;
+        const changedFields: Record<string, any> = {};
+        
+        // Controlla ogni campo nel form
+        Object.keys(formValue).forEach(key => {
+          const formField = formValue[key];
+          const originalValue = this.userProfile?.[key as keyof UserProfile];
+          
+          // Includi solo se il valore è cambiato e non è vuoto
+          if (formField !== originalValue && formField !== null && formField !== '') {
+            changedFields[key] = formField;
+          }
+        });
+        
+        // Se non ci sono campi modificati, esci
+        if (Object.keys(changedFields).length === 0) {
+          this.isEditing = false;
+          return;
+        }
+        
+        // Aggiungi l'ID utente se necessario per l'aggiornamento
+        /* if (this.userProfile.id) {
+          changedFields['id'] = this.userProfile.id;
+        } */
+        
+        // Escludi campi specifici che non devono essere inviati al backend
+        const fieldsToExclude = ['id','role','profilePicUrl'];
+        fieldsToExclude.forEach(field => {
+          if (field in changedFields) {
+            delete changedFields[field];
+          }
+        });
+        
+        // Invia solo i campi modificati al backend
+        this.accountsService.updateUser(changedFields).subscribe(
+          (response) => {
+
+            console.log("Dati cambiati con successo:",response)
+            // Aggiorna il profilo locale con i nuovi valori mantenendo il tipo originale
+
+            if(changedFields['email'] || changedFields['password']){
+              this.auth.logout();
+              this.router.navigate(["/login"])
+            }
+            else if (this.userProfile) {
+              // Aggiorna solo i campi specifici che sono stati modificati
+              Object.keys(changedFields).forEach(key => {
+                // Usa l'operatore di accesso indexato per aggirare il controllo di tipo
+                this.auth.setProfile(changedFields);
+                (this.userProfile as any)[key] = changedFields[key];
+              });
+            }
+            
+            this.isEditing = false;
+            // Mostra notifica di successo
+          },
+          error => {
+            console.error('Errore durante l\'aggiornamento del profilo', error);
+            // Mostra notifica di errore
+          }
+        );
+      }
+    }
 } 

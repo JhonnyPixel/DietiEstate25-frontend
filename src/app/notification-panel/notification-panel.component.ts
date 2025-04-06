@@ -3,10 +3,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NotificationService } from '../notification.service';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-notification-panel',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule,DatePipe],
   templateUrl: './notification-panel.component.html',
   styleUrl: './notification-panel.component.scss'
 })
@@ -35,8 +36,8 @@ export class NotificationPanelComponent implements OnInit{
     this.openAppointmentSelect.emit(visitRequest)
   }
 
-  openDenyAppointment() {
-    this.openDenyAppointmentModal.emit()
+  openDenyAppointment(visitRequest:any) {
+    this.openDenyAppointmentModal.emit(visitRequest)
     console.log("openDeny")
   }
 

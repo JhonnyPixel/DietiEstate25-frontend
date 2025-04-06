@@ -12,6 +12,8 @@ import { StarRatingModule } from 'angular-star-rating';
 import { FormsModule } from '@angular/forms';
 
 import { RatingService } from '../rating.service';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-listing-view',
@@ -21,7 +23,7 @@ import { RatingService } from '../rating.service';
 })
 export class ListingViewComponent {
 
-   constructor(private cdr: ChangeDetectorRef,private weather:WeatherService,private rating:RatingService,private route: ActivatedRoute,private rest:RestBackendService){
+   constructor(private cdr: ChangeDetectorRef,private toaster:ToastrService ,private weather:WeatherService,private rating:RatingService,private route: ActivatedRoute,private auth:AuthService,private rest:RestBackendService){
 
     //cerca prima di prendere da state per ottimizzazione
       const state = window.history.state;
@@ -40,6 +42,8 @@ export class ListingViewComponent {
    loading=false;
 
    forecasts: WeatherForecast[] = [];
+
+   imageObject: Array<object> = [];
 
    faElevator=faElevator
    faLightbulb=faLightbulb
@@ -76,11 +80,31 @@ export class ListingViewComponent {
           this.loading = false;
         }
       });
+
+
+      //setto le immagini per lo slider
+      if(this.listing.photos.length>0){
+        for(let photo of this.listing.photos){
+          this.imageObject=this.imageObject.concat({
+            image: photo,
+            thumbImage: photo,
+            /* alt: 'alt of image' */
+          });
+        }
+      }
+      else{
+        this.imageObject=this.imageObject.concat(
+          {
+          image: 'img/apartment1.jpeg',
+          thumbImage: 'img/apartment1.jpeg',
+          alt: 'alt of image'
+        });
+      }
   }
 
 imageOption:Object={width: '100%', height: '300px', space: 4}
 
-imageObject: Array<object> = [{
+/* imageObject: Array<object> = [{
     image: 'img/apartment1.jpeg',
     thumbImage: 'img/apartment1.jpeg',
     alt: 'alt of image'
@@ -102,11 +126,15 @@ imageObject: Array<object> = [{
   image: 'img/apartment2.webp', // Support base64 image
   thumbImage: 'img/apartment2.webp', // Support base64 image
   alt: 'Image alt', //Optional: You can use this key if want to show image with alt
-}];
+}]; */
 
 
-isModalOpen:boolean = true;
+isModalOpen:boolean = false;
 openModal() {
+  if(!this.auth.isUserLoggedIn()){
+    this.toaster.info('Devi essere loggato per usufruire di questa funzionalità','Info')
+    return
+  }
   this.isModalOpen = true;
 }
 
@@ -156,8 +184,14 @@ loadListingDetails(id: string): void {
   }
 
   submitReview() {
+
+    if (!this.auth.isUserLoggedIn()){
+      this.toaster.info('Devi essere loggato per usufruire di questa funzionalità','Info')
+      return;
+    }
+
     if (!this.userComment.trim()) {
-      alert('Per favore, inserisci un commento.');
+      this.toaster.error('Per favore, inserisci un commento.','Recensione vuota')
       return;
     }
 
@@ -170,19 +204,27 @@ loadListingDetails(id: string): void {
     this.rating.createAgentRating(this.listing.agent.id,this.userRating,this.userComment)
       .subscribe(data=>{
         console.log("dati recensioni",data);
+        
         this.listing.agent.numOfReviews = this.listing.agent.numOfReviews + 1;
         this.listing.agent.averageReview = this.listing.agent.averageReview + (this.userRating/this.listing.agent.numOfReviews)
 
         console.log("nuovo agent",this.listing.agent)
+
+        this.toaster.success('Grazie per il feedback.','Recensione inviata')
 
         this.userRating = 0;  // Resetta il form dopo l'invio
 
       },
     err=>{
       console.error(err);
+      if(err.status===403){
+        this.toaster.error('Solo gli utenti possono recensire gli agenti.','Account limitato')
+      }else{
+        this.toaster.error('Impossibile inviare la recensione al momento.','Errore nell invio')
+      }
+      
     })
 
-    alert('Recensione inviata con successo!');
 
     // Resetta il form dopo l'invio
     this.userComment = '';

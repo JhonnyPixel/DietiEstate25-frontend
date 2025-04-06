@@ -22,7 +22,7 @@ export class NavbarComponent {
   }
 
   isNotificationPanelOpen:boolean=false
-  isAgentProfile:boolean=true
+  
 
   appModal:boolean=false
 
@@ -57,7 +57,9 @@ export class NavbarComponent {
     this.appModal=true;
   }
 
-  openDenyAppointmentModal() {
+  openDenyAppointmentModal(visitRequest:any) {
+
+    this.visitRequest=visitRequest;
     this.denyAppModal=true;
     console.log(this.denyAppModal)
   }
@@ -75,6 +77,15 @@ export class NavbarComponent {
     this.appointmentService.confirmAppointment(appointment,this.visitRequest.id).subscribe(
       data=>{
         console.log("Appuntamento creato con successo nel backend: ",data)
+      }
+    )
+  }
+
+  DenyAppointment(motivation:any){
+    console.log("appuntamento rifiutato:",motivation)
+    this.appointmentService.denyAppointment(motivation,this.visitRequest.id).subscribe(
+      data=>{
+        console.log("Appuntamento rifiutato con successo nel backend: ",data)
       }
     )
   }

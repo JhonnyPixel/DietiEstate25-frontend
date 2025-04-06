@@ -13,6 +13,7 @@ import { NgClass } from '@angular/common';
 export class DenyAppointmentModalComponent {
 
   @Output() onModalClose = new EventEmitter<void>();
+  @Output() onSubmitDeny = new EventEmitter<string>();
   
 
   denyDescription:string=''
@@ -23,6 +24,7 @@ export class DenyAppointmentModalComponent {
 
   submitDeny(){
     console.log("denied",this.denyDescription)
+    this.onSubmitDeny.emit(this.denyDescription)
     this.closeModal()
   }
 

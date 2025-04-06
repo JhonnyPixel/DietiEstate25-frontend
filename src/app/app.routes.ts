@@ -11,8 +11,16 @@ import { AccountListComponent } from './account-list/account-list.component';
 import { AddressSearchComponent } from './address-search/address-search.component';
 import { MylistingsComponent } from './mylistings/mylistings.component';
 import { ProfileComponent } from './profile/profile.component';
+import { authorizationGuard } from './authorization.guard';
+import { agentRoleGuard } from './agent-role.guard';
+import { managerRoleGuard } from './manager-role.guard';
 
 export const routes: Routes = [
+    {   
+        path: '',
+        redirectTo: 'search',
+        pathMatch: 'full' 
+    },
     {
         path:"login",
         title:"Login",
@@ -39,37 +47,37 @@ export const routes: Routes = [
         component:ListingViewComponent
     },
     {
-        path:"map",
-        component:LeafletMapComponent
-    },
-    {
         path:"calendar",
         title:"Calendario",
-        component:CalendarViewComponent
+        component:CalendarViewComponent,
+        canActivate:[authorizationGuard,agentRoleGuard]
     },
     {
         path:"create",
         title:"Create Listing",
-        component:CreateListingComponent
+        component:CreateListingComponent,
+        canActivate:[authorizationGuard,agentRoleGuard]
     },
     {
         path:"accounts",
         title:"Accounts",
-        component:AccountListComponent
-    },
-    {
-        path:"address",
-        title:"Address",
-        component:AddressSearchComponent
+        component:AccountListComponent,
+        canActivate:[authorizationGuard,managerRoleGuard]
     },
     {
         path:"mylistings",
         title:"mylistings",
-        component:MylistingsComponent
+        component:MylistingsComponent,
+        canActivate:[authorizationGuard,agentRoleGuard]
     },
     {
         path:"myprofile",
         title:"myprofile",
-        component:ProfileComponent
-    }
+        component:ProfileComponent,
+        canActivate:[authorizationGuard]
+    },
+    {   
+        path: '**',
+        redirectTo: 'search'
+    },
 ];

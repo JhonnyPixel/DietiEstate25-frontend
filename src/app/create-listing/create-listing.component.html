@@ -1,148 +1,3 @@
-<!-- <app-navbar></app-navbar>
-
-
-
-  <div class="flex justify-center items-center p-4 bg-gray-100">
-    <form [formGroup]="propertyForm" (ngSubmit)="submitForm()" class="p-6 max-w-4xl w-full bg-white shadow-md rounded-lg overflow-y-auto max-h-screen flex flex-col">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Categoria</label>
-          <select formControlName="category" class="w-full p-2 border border-gray-300 rounded mt-1">
-            @for(category of categories; track category) {
-              <option [value]="category">{{ category }}</option>
-            }
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Tipo di annuncio</label>
-          <select formControlName="listingType" class="w-full p-2 border border-gray-300 rounded mt-1">
-            @for(type of listingTypes; track type) {
-              <option [value]="type">{{ type }}</option>
-            }
-          </select>
-        </div>
-
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Titolo</label>
-          <input type="text" formControlName="title" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Prezzo</label>
-          <input type="number" formControlName="price" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Classe energetica</label>
-          <select formControlName="energyClass" class="w-full p-2 border border-gray-300 rounded mt-1">
-            @for(class of energyClasses; track class) {
-              <option [value]="class">{{ class }}</option>
-            }
-          </select>
-        </div>
-      </div>
-  
-      <label class="block text-sm font-medium text-gray-700 mt-4">Descrizione</label>
-      <textarea formControlName="description" class="w-full p-2 border border-gray-300 rounded mt-1"></textarea>
-  
-      <div formGroupName="locationDto" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Indirizzo</label>
-           <app-address-search (addressSelected)="onAddressSelected($event)"></app-address-search>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Regione</label>
-          <input type="text" formControlName="region" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Città</label>
-          <input type="text" formControlName="city" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        
-        <div class="h-64"><app-leaflet-map></app-leaflet-map></div>
-      </div>
-  
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Dimensioni (mq)</label>
-          <input type="number" formControlName="squareMeters" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Numero di stanze</label>
-          <input type="number" formControlName="nRooms" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Piano</label>
-          <input type="number" formControlName="floor" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-      </div>
-  
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Ascensore</label>
-          <input type="checkbox" formControlName="elevator" class="mt-1">
-        </div>
-  
-        
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Servizi</label>
-          <div class="flex gap-2">
-            <input type="text" [formControl]="serviceInput" name="serviceInput" class="w-full p-2 border border-gray-300 rounded mt-1">
-            <button type="button" (click)="addService()" class="bg-blue-500 text-white px-3 py-1 rounded mt-1">Aggiungi</button>
-          </div>
-        </div>
-      </div>
-  
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
-        @for(service of servicesList;track service){
-            <div class="relative bg-gray-200 p-2 rounded flex justify-between items-center mt-1">
-                <span>{{ service }}</span>
-                <button type="button" (click)="removeService($index)" class="bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">×</button>
-              </div>
-        }
-        
-      </div>
-  
-      <label class="block text-sm font-medium text-gray-700 mt-4">Foto</label>
-      <div class="flex">
-        <div>
-            <input type="file" (change)="onPhotoUpload($event)" multiple class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div class="px-6">
-            <button type="button" (click)="clearAllPhotos()" class="mt-2 bg-gray-500 text-white p-2 rounded">Rimuovi tutte le foto</button>
-        </div>
-      </div>
-      
-      
-
-      <div class="grid grid-cols-3 md:grid-cols-6 gap-1 mt-2 relative">
-        @for(photo of photoPreviews; track photo) {
-          <div class="relative h-30 w-30 border-2 border-gray-300 rounded">
-            <img [src]="photo" class="w-full h-full object-cover absolute top-0 left-0">
-            <button type="button" (click)="removePhoto($index)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">×</button>
-          </div>
-        }
-      </div>
-
-      
-      <div class="grid grid-cols-2 gap-10 p-15 sticky bottom-0">
-        <button class="w-full bg-red-500 text-white p-2 rounded">Annulla</button>
-        <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Salva</button>
-      </div>
-  
-      
-     
-    </form>
-  </div>
-
-  
-  
- 
-
- -->
 
 
  <app-navbar></app-navbar>
@@ -257,7 +112,7 @@
       }
     </div>
 
-    <label class="block text-sm font-medium text-gray-700 mt-4">Foto</label>
+    <!-- <label class="block text-sm font-medium text-gray-700 mt-4">Foto</label>
     <div class="flex">
       <div>
         <input type="file" (change)="onPhotoUpload($event)" multiple class="w-full p-2 border border-gray-300 rounded mt-1">
@@ -274,7 +129,30 @@
           <button type="button" (click)="removePhoto($index)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">×</button>
         </div>
       }
+    </div> -->
+
+    <!-- Sezione delle foto aggiornata -->
+<label class="block text-sm font-medium text-gray-700 mt-4">Foto</label>
+<div class="flex">
+  <div>
+    <input type="file" (change)="onPhotoUpload($event)" multiple class="w-full p-2 border border-gray-300 rounded mt-1">
+  </div>
+  <div class="px-6">
+    <button type="button" (click)="clearAllPhotos()" class="mt-2 bg-gray-500 text-white p-2 rounded">Rimuovi tutte le foto</button>
+  </div>
+</div>
+    
+<div class="grid grid-cols-3 md:grid-cols-6 gap-1 mt-2 relative">
+  @for(photo of photoPreviews; track $index) {
+    <div class="relative h-30 w-30 border-2 border-gray-300 rounded">
+      <img [src]="photo.url" class="w-full h-full object-cover absolute top-0 left-0">
+      <button type="button" (click)="removePhoto($index)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">×</button>
+      @if(photo.isNew) {
+        <span class="absolute bottom-0 right-0 bg-blue-500 text-white text-xs p-1 rounded-tl">Nuova</span>
+      }
     </div>
+  }
+</div>
 
     <div class="grid grid-cols-2 gap-10 p-15 sticky bottom-0 mt-4">
       <button type="button" (click)="cancel()" class="w-full bg-red-500 text-white p-2 rounded">Annulla</button>

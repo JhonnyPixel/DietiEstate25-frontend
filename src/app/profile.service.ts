@@ -12,6 +12,7 @@ export class ProfileService {
   updateUserProfile(data:any){
     return this.http.get("http://www.google.com")
   }
+  
 
   getUserProfile(){
 
@@ -29,6 +30,35 @@ export class ProfileService {
     }
 
     return this.http.get<any>(url)
+  }
+
+  uploadProfilePic(image:any,userId:string=''){
+    /* let url=`http://localhost:8080/api/images/listings/${listingId}`
+
+    return this.httpClient.post(url,{
+      images:images
+    }) */
+   if(userId === '' ){
+    userId=this.auth.getUserId()!
+   }
+
+      const url = `http://localhost:8080/api/images/users/${userId}`;
+
+      const formData = new FormData();
+      formData.append('file', image); 
+
+      return this.http.post(url, formData,{ responseType: 'text' }); // Angular imposta automaticamente il Content-Type giusto
+  }
+
+  deleteProfilePic(userId:string=''){
+
+    if(userId === '' ){
+      userId=this.auth.getUserId()!
+    }
+
+    const url = `http://localhost:8080/api/images/users/${userId}`;
+
+    return this.http.delete(url)
   }
 
 }

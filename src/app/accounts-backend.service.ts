@@ -33,6 +33,25 @@ export class AccountsBackendService {
 
   }
 
+  //metodo per aggioranre i dati del proprio profilo
+  updateUser(data:any){
+
+    let url=''
+
+    console.log("dati dal form:",data)
+
+    if(this.authService.isManager() || this.authService.isAdmin()){
+      url=`http://localhost:8080/api/agencies/${this.authService.getAgencyId()}/managers/${this.authService.getUserId()}`;
+    }else if(this.authService.isAgent()){
+      url=`http://localhost:8080/api/agencies/${this.authService.getAgencyId()}/agents/${this.authService.getUserId()}`;
+    }else if(this.authService.isCustomer()){
+      url=`http://localhost:8080/api/customers/${this.authService.getUserId()}`;
+    }
+
+    return this.httpClient.put(url,data);
+
+  }
+
   updateManager(id:string,data:any){
     let url=`http://localhost:8080/api/agencies/${this.authService.getAgencyId()}/managers/${id}`;
 
@@ -42,6 +61,14 @@ export class AccountsBackendService {
 
   updateAgent(id:string,data:any){
     let url=`http://localhost:8080/api/agencies/${this.authService.getAgencyId()}/agents/${id}`;
+
+    return this.httpClient.put(url,data);
+
+  }
+
+  updateCustomer(id:string,data:any){
+
+    let url=`http://localhost:8080/api/customers/${this.authService.getUserId()}`;
 
     return this.httpClient.put(url,data);
 
@@ -61,4 +88,6 @@ export class AccountsBackendService {
     return this.httpClient.delete(url);
 
   }
+
+  
 }
