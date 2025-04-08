@@ -9,6 +9,7 @@ import { TitleCasePipe,NgClass,DatePipe } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { AccountsBackendService } from '../accounts-backend.service';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 interface UserProfile {
   id?: string | number;
@@ -27,7 +28,7 @@ interface UserProfile {
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
-  imports:[TitleCasePipe,NgClass,FormsModule,ReactiveFormsModule,DatePipe]
+  imports:[TitleCasePipe,NgClass,FormsModule,ReactiveFormsModule,DatePipe,NavbarComponent]
 })
 export class ProfileComponent implements OnInit {
   userProfile: UserProfile | null = null;

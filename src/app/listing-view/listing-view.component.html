@@ -8,6 +8,14 @@
         <!--Price and stand-out info-->
         <div class="flex justify-between pr-60">
 
+            <button 
+                (click)="toggleFavorite()"
+                class=" p-5 rounded-full hover:bg-yellow-100 transition"
+                [ngClass]="{ 'text-yellow-400': isFavorite, 'text-gray-400': !isFavorite }"
+                aria-label="Aggiungi ai preferiti">
+                <fa-icon [icon]="faStar" class="text-4xl"></fa-icon>
+            </button>
+
             <!--Price and Address-->
             <div class="flex flex-col">
                 <p class="text-5xl font-semibold">{{listing.price?? '500.000'}}$</p>

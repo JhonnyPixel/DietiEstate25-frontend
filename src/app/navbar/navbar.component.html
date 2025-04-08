@@ -19,10 +19,61 @@
             <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5 animate-ping"></span>
             Notifiche
           </button>
+
+          <!-- Nuovo pulsante Impostazioni con dropdown -->
+<div class="relative inline-block">
+  <button (click)="toggleSettingsDropdown()" class="border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition flex items-center">
+    Impostazioni
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+  
+  <!-- Dropdown menu -->
+   @if(isSettingsDropdownOpen){
+  <div class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg z-50 py-3">
+    <div class="px-4 py-2 border-b border-gray-200">
+      <h3 class="text-lg font-medium text-gray-900">Impostazioni notifiche</h3>
+    </div>
+    
+    <div class="px-4 py-3">
+      <!-- Toggle per la prima categoria -->
+      <div class="flex items-center justify-between mb-4">
+        <label class="text-sm font-medium text-gray-700">Notifiche appuntamenti</label>
+        <div (click)="toggleAppointmentNotifications()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': appointmentNotifications, 'bg-gray-300': !appointmentNotifications}">
+          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': appointmentNotifications}"></div>
+        </div>
+      </div>
+      
+      <!-- Toggle per la seconda categoria -->
+      <div class="flex items-center justify-between mb-4">
+        <label class="text-sm font-medium text-gray-700">Notifiche messaggi</label>
+        <div (click)="toggleMessageNotifications()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': messageNotifications, 'bg-gray-300': !messageNotifications}">
+          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': messageNotifications}"></div>
+        </div>
+      </div>
+      
+      <!-- Toggle per la terza categoria -->
+      <div class="flex items-center justify-between mb-4">
+        <label class="text-sm font-medium text-gray-700">Notifiche sistema</label>
+        <div (click)="toggleSystemNotifications()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': systemNotifications, 'bg-gray-300': !systemNotifications}">
+          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': systemNotifications}"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="px-4 py-3 border-t border-gray-200">
+      <button (click)="applyNotificationSettings()" class="w-full py-2 px-4 bg-[#FF9F1C] text-white font-medium rounded-lg hover:bg-[#f79200] transition">
+        Applica
+      </button>
+    </div>
+  </div>
+}
+</div>
           @if(this.authService.isAgent()){
             <button routerLink="/mylistings" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Annunci</button>
             <button routerLink="/calendar" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Calendario</button>
-          }@else if(this.authService.isManager()){
+          }@else if(this.authService.isManager() || this.authService.isAdmin()){
             <button routerLink="/accounts" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Gestisci Accounts</button>
           }
           <button routerLink="/myprofile" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">My Profile</button>

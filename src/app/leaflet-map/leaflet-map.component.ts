@@ -11,6 +11,7 @@ import { EventEmitter,Output } from '@angular/core';
 export class LeafletMapComponent implements OnInit{
 
   private marker!: L.Marker;
+  private createMarker!: L.Marker;
   private defaultZoom:number = 15;
   private circle!: L.Circle;
   private radius: number = 500; // Raggio iniziale in metri
@@ -141,6 +142,12 @@ export class LeafletMapComponent implements OnInit{
     }
   }
 
+  clearMarker() {
+    if(this.marker){
+      this.map.removeLayer(this.marker)
+    }
+  }
+
   // Metodo per aggiornare o creare il marker
   updateMarkerPosition(lat: number, lng: number) {
     console.log("updateMarker: ", lat, lng);
@@ -154,7 +161,7 @@ export class LeafletMapComponent implements OnInit{
     const newLatLng = leaflet.latLng(lat, lng);
     
     // Se il marker non esiste ancora, crealo
-    if (!this.marker) {
+    if (!this.createMarker) {
       // Crea un'icona personalizzata (opzionale)
       const customIcon = leaflet.icon({
         iconUrl: 'assets/marker-icon.png', // Assicurati che questo file esista!
@@ -167,22 +174,22 @@ export class LeafletMapComponent implements OnInit{
       
       // Crea il marker e aggiungilo alla mappa
       try {
-        this.marker = leaflet.marker(newLatLng, { 
-          draggable: true,
+        this.createMarker = leaflet.marker(newLatLng, { 
+          /* draggable: true, */
           // icon: customIcon // Decommentare se usi un'icona personalizzata
         }).addTo(this.map);
         
         // Aggiungi un popup al marker
-        this.marker.bindPopup('Posizione selezionata').openPopup();
+        this.createMarker.bindPopup('Posizione selezionata').openPopup();
         
         // Ascolta l'evento di trascinamento del marker
-        this.marker.on('dragend', () => {
-          if (this.marker) {
-            const position = this.marker.getLatLng();
+        /* this.createMarker.on('dragend', () => {
+          if (this.createMarker) {
+            const position = this.createMarker.getLatLng();
             console.log("Nuova posizione dopo trascinamento:", position);
             // Qui puoi emettere un evento o aggiornare il form
           }
-        });
+        }); */
       } catch (error) {
         console.error("Errore nella creazione del marker:", error);
         return;
@@ -190,7 +197,7 @@ export class LeafletMapComponent implements OnInit{
     } else {
       // Se il marker esiste già, aggiorna solo la sua posizione
       try {
-        this.marker.setLatLng(newLatLng);
+        this.createMarker.setLatLng(newLatLng);
       } catch (error) {
         console.error("Errore nell'aggiornamento del marker:", error);
         return;

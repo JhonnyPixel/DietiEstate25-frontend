@@ -6,10 +6,11 @@ import { SelectAppointmentModalComponent } from '../select-appointment-modal/sel
 import { DenyAppointmentModalComponent } from '../deny-appointment-modal/deny-appointment-modal.component';
 import { NotificationService } from '../notification.service';
 import { AppointmentService } from '../appointment.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NotificationPanelComponent,RouterLink,SelectAppointmentModalComponent,DenyAppointmentModalComponent],
+  imports: [NotificationPanelComponent,NgClass,RouterLink,SelectAppointmentModalComponent,DenyAppointmentModalComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -93,4 +94,53 @@ export class NavbarComponent {
   toggleNotifiche(){
     this.isNotificationPanelOpen=!this.isNotificationPanelOpen
   }
+
+  // Variabile per gestire lo stato del dropdown
+isSettingsDropdownOpen = false;
+
+// Variabili per i tre tipi di notifiche
+starredListings
+ = true;
+messageNotifications = true;
+systemNotifications = true;
+
+// Funzione per aprire/chiudere il dropdown delle impostazioni
+toggleSettingsDropdown() {
+  this.isSettingsDropdownOpen = !this.isSettingsDropdownOpen;
+}
+
+// Funzioni per gestire i toggle
+toggleAppointmentNotifications() {
+  this.starredListings
+   = !this.starredListings
+  ;
+}
+
+toggleMessageNotifications() {
+  this.messageNotifications = !this.messageNotifications;
+}
+
+toggleSystemNotifications() {
+  this.systemNotifications = !this.systemNotifications;
+}
+
+// Funzione per applicare le impostazioni
+applyNotificationSettings() {
+  // Implementa qui la logica per salvare le impostazioni
+  console.log('Impostazioni notifiche salvate:', {
+    appuntamenti: this.starredListings
+    ,
+    messaggi: this.messageNotifications,
+    sistema: this.systemNotifications
+  });
+
+  this.notifyService.modifyNotificationSettings({
+    starredListings:this.starredListings,
+    visit: this.visit,
+    recommendedListings: this.recommendedListings
+  })
+  
+  // Chiudi il dropdown dopo aver applicato le impostazioni
+  this.isSettingsDropdownOpen = false;
+}
 }

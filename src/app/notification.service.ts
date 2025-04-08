@@ -67,6 +67,19 @@ export class NotificationService {
     );
   }
 
+  modifyNotificationSettings(settings:{
+    starredListings:boolean,
+    visit: boolean,
+    recommendedListings: boolean
+  }){
+
+    let url=`http://localhost:8080/api/notifications/settings?userId=${this.authService.getUserId()}`
+
+    return this.http.post(url,settings)
+
+
+  }
+
   // Connetti al WebSocket per ricevere notifiche in tempo reale
   private connectWebSocket(): void {
    

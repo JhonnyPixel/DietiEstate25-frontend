@@ -4,15 +4,18 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { RestBackendService } from '../rest-backend.service';
 import { NgClass } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router,RouterLink } from '@angular/router';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 interface Listing {
   id: string;
   title: string;
   price: number;
-  location: string;
-  imageUrl: string;
-  status: string;
+  location: any;
+  photos: string[];
+  listingType: string;
   createdAt: Date;
   // altri campi comuni
 }
@@ -43,19 +46,26 @@ interface GarageListing extends Listing {
 
 @Component({
   selector: 'app-mylistings',
-  imports: [NgClass ],
+  imports: [NgClass,RouterLink,FontAwesomeModule,NavbarComponent],
   templateUrl: './mylistings.component.html',
   styleUrl: './mylistings.component.scss'
 })
 export class MylistingsComponent implements OnInit {
-  houses: HouseListing[] = [];
+ /*  houses: HouseListing[] = [];
   buildings: BuildingListing[] = [];
   lands: LandListing[] = [];
-  garages: GarageListing[] = [];
+  garages: GarageListing[] = []; */
+
+  houses: any[] = [];
+  buildings: any[] = [];
+  lands: any[] = [];
+  garages: any[] = [];
   
   isLoading = true;
   activeTab: 'houses' | 'buildings' | 'lands' | 'garages' = 'houses';
   errorMessage: string | null = null;
+
+  faPlus=faPlus
   
   constructor(private listingsService: RestBackendService,private router:Router) {}
   

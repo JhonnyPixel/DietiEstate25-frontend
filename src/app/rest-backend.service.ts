@@ -19,7 +19,7 @@ export class RestBackendService {
      // Creiamo un oggetto HttpParams per aggiungere i filtri come query params
     let params = new HttpParams().set('listingType', filters["listingType"]);
 
-    console.log("sono getListings e mi è arrivatop:",filters["radius"] )
+    console.log("sono getListings e mi è arrivatop:",filters)
     // Iteriamo sugli altri filtri e li aggiungiamo come parametri
     Object.keys(filters).forEach(key => {
       if(filters[key]){
@@ -40,12 +40,38 @@ export class RestBackendService {
     
   }
 
-  getListing(id:string){
-    /* let url=`http://localhost:8080/api/listings/${filters["category"]}`
+  getListing(type:string,listingId:string){
+    let url=`http://localhost:8080/api/listings/${type}/${listingId}`
 
-    return this.httpClient.get<{}>(url,{params}); */
+    return this.httpClient.get<{}>(url);
     
   }
+
+
+  getStarredListings(){
+    let url=`http://localhost:8080/api/starred-listings`
+
+    let params = new HttpParams().set('userId', this.authService.getUserId()!);
+    return this.httpClient.get(url,{params});
+  }
+
+  addStarredListing(listingId:string){
+    let url=`http://localhost:8080/api/starred-listings`
+
+    let params = new HttpParams().set('userId', this.authService.getUserId()!);
+    return this.httpClient.post(url,listingId,{params});
+  }
+
+  removeStarredListing(listingId:string){
+    let url=`http://localhost:8080/api/starred-listings`
+
+    let params = new HttpParams().set('userId', this.authService.getUserId()!);
+    params = params.set('listingId', listingId);
+
+    return this.httpClient.delete(url,{params});
+  }
+
+
 
 
   getUserHouses(){

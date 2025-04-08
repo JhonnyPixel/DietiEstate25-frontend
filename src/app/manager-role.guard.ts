@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 export const managerRoleGuard: CanActivateFn = (route, state) => {
    const router = inject(Router);
     const authService = inject(AuthService);
-    if(authService.isManager()){
+    if(authService.isManager() || authService.isAdmin()){
     return true; 
     } else {
     console.log("Non puoi accedere a questa funzionalità")

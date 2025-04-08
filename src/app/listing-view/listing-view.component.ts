@@ -5,7 +5,7 @@ import { WeatherService,WeatherForecast, WeatherCondition} from '../weather.serv
 import { ActivatedRoute } from '@angular/router';
 import { RestBackendService } from '../rest-backend.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faElevator,faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faElevator,faLightbulb,faStar } from '@fortawesome/free-solid-svg-icons';
 
 import { StarRatingModule } from 'angular-star-rating';
 
@@ -14,10 +14,11 @@ import { FormsModule } from '@angular/forms';
 import { RatingService } from '../rating.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-listing-view',
-  imports: [NgImageSliderModule,AppointmentModalComponent,FontAwesomeModule,StarRatingModule,FormsModule],
+  imports: [NgImageSliderModule,NgClass,AppointmentModalComponent,FontAwesomeModule,StarRatingModule,FormsModule],
   templateUrl: './listing-view.component.html',
   styleUrl: './listing-view.component.scss'
 })
@@ -33,6 +34,7 @@ export class ListingViewComponent {
         console.log('Dati ricevuti da state:', listingData);
   
         this.listing=listingData;
+
   
       }
    }
@@ -45,8 +47,11 @@ export class ListingViewComponent {
 
    imageObject: Array<object> = [];
 
+   isFavorite:boolean=false
+
    faElevator=faElevator
    faLightbulb=faLightbulb
+   faStar=faStar
 
   userRating: number = 0; // Memorizza il voto dell'utente
   userComment: string = ''; // Memorizza il commento
@@ -56,10 +61,11 @@ export class ListingViewComponent {
 
    
     this.route.params.subscribe(params => {
+      const type= params['type']
       const listingId = params['id'];
       // Se non hai già i dati dal router state, caricali dal servizio
       if (!this.listing) {
-        this.loadListingDetails(listingId);
+        this.loadListingDetails(type,listingId);
       }
     });
   
@@ -81,25 +87,8 @@ export class ListingViewComponent {
         }
       });
 
-
-      //setto le immagini per lo slider
-      if(this.listing.photos.length>0){
-        for(let photo of this.listing.photos){
-          this.imageObject=this.imageObject.concat({
-            image: photo,
-            thumbImage: photo,
-            /* alt: 'alt of image' */
-          });
-        }
-      }
-      else{
-        this.imageObject=this.imageObject.concat(
-          {
-          image: 'img/apartment1.jpeg',
-          thumbImage: 'img/apartment1.jpeg',
-          alt: 'alt of image'
-        });
-      }
+      this.setPhotos()
+      
   }
 
 imageOption:Object={width: '100%', height: '300px', space: 4}
@@ -138,13 +127,64 @@ openModal() {
   this.isModalOpen = true;
 }
 
+setPhotos(){
+  //setto le immagini per lo slider
+  if(this.listing.photos.length>0){
+    for(let photo of this.listing.photos){
+      this.imageObject=this.imageObject.concat({
+        image: photo,
+        thumbImage: photo,
+        /* alt: 'alt of image' */
+      });
+    }
+  }
+  else{
+    this.imageObject=this.imageObject.concat(
+      {
+      image: 'img/apartment1.jpeg',
+      thumbImage: 'img/apartment1.jpeg',
+      alt: 'alt of image'
+    });
+  }
+}
+
 closeModal() {
   this.isModalOpen = false;
 }
 
-loadListingDetails(id: string): void {
+loadListingDetails(type:string,id: string): void {
 
-  //this.rest.getListing(id) //da implementare
+  this.rest.getListing(type,id).subscribe(
+    data=>{
+      console.log("data: ",data)
+      this.listing=data
+
+      this.setPhotos()
+    }
+  )
+}
+
+toggleFavorite(){
+  if(this.isFavorite){
+
+    this.rest.removeStarredListing(this.listing.id).subscribe(
+      data=>{
+        console.log("data:",data)
+        this.isFavorite=false
+      }
+    )
+
+  }else{
+
+    this.rest.addStarredListing(this.listing.id).subscribe(
+      data=>{
+        console.log("data:",data)
+        this.isFavorite=true
+      }
+    )
+
+  }
+  
 }
 
 /* weatherConditions = [

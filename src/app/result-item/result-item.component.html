@@ -16,14 +16,14 @@
 
 <!-- HTML -->
 <div 
-  class="listing-container flex p-5 border-1 border-gray-400 rounded-xl h-min cursor-pointer transition-all duration-300 ease-in-out" 
+class="listing-container flex flex-wrap p-5 border-1 border-gray-400 rounded-xl h-min cursor-pointer transition-all duration-300 ease-in-out w-full" 
   [class.bg-gray-100]="isActive"
   [class.shadow-lg]="isActive"
   [class.scale-105]="isActive"
   (mouseenter)="setActive()" >
 
-  <div class="image-container w-45 h-45 bg-gray-400 rounded-xl overflow-hidden">
-      <img [src]="listing.photos?.[0] ?? 'img/logo.png'" class="w-full h-full object-cover">
+  <div class="image-container w-24 h-24 md:w-32 md:h-32 flex-shrink-0 bg-gray-400 rounded-xl overflow-hidden">
+      <img [src]="listing.photos?.[0] ?? 'img/house-placeholder.jpg'" class="w-full h-full object-cover">
   </div>
 
   <div class="flex-1 ml-5 flex flex-col space-y-2">

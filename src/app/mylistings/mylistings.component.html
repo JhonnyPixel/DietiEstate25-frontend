@@ -1,5 +1,14 @@
+<app-navbar></app-navbar>
+
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">I Tuoi Annunci</h1>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">I Tuoi Annunci</h1>
+    @if(getListingsCount() > 0){
+    <button routerLink="/create" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg flex items-center">
+        <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+    }
+</div>
     
     @if(isLoading){
         <div class="flex justify-center items-center h-64">
@@ -23,7 +32,7 @@
             @if(getListingsCount() === 0){
               <div class="text-center py-12">
                   <p class="text-xl text-gray-600">Non hai ancora pubblicato annunci.</p>
-                  <button class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg">
+                  <button routerLink="/create" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg">
                     Crea il tuo primo annuncio
                   </button>
               </div>
@@ -72,24 +81,25 @@
                       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                           @for(house of houses;track house.id){
 
-                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="relative aspect-w-16 aspect-h-9">
-                                  <img [src]="house.imageUrl || '/assets/placeholder-house.jpg'" alt="{{ house.title }}" class="object-cover w-full h-48">
+                                  <img [src]="house.photos[0] || '/img/house-placeholder.jpg'" alt="{{ house.title }}" class="object-cover w-full h-48">
                                   <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                    {{ house.status }}
+                                    {{ house.listingType }}
                                   </div>
                                 </div>
                                 <div class="p-4">
                                   <h3 class="text-lg font-semibold mb-1 truncate">{{ house.title }}</h3>
-                                  <p class="text-gray-500 mb-2">{{ house.location }}</p>
+                                  <p class="text-gray-500 mb-2">{{ house.location.address }}</p>
                                   <p class="font-bold text-xl mb-3">€{{ house.price.toLocaleString() }}</p>
                                   <div class="flex items-center text-sm text-gray-600 mb-4">
-                                    <span class="mr-3"><i class="fas fa-bed mr-1"></i> {{ house.rooms }} stanze</span>
-                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ house.area }} m²</span>
+                                    <span class="mr-3"><i class="fas fa-bed mr-1"></i> {{ house.nRooms }} stanze</span>
+                                    
+                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ house.squareMeters }} m²</span>
                                   </div>
                                   <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(house)" class="text-blue-500 hover:underline">Modifica</button>
-                                    <button (click)="deleteListing('houses', house.id)" class="text-red-500 hover:underline">Elimina</button>
+                                    <button (click)="editListing(house)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
+                                    <button (click)="deleteListing('houses', house.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
                                   </div>
                                 </div>
                               </div>
@@ -104,24 +114,24 @@
                   @else if(activeTab === 'buildings'){
                       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                           @for(building of buildings;track building.id){
-                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="relative aspect-w-16 aspect-h-9">
-                                  <img [src]="building.imageUrl || '/assets/placeholder-building.jpg'" alt="{{ building.title }}" class="object-cover w-full h-48">
+                                  <img [src]="building.photos[0] || '/img/house-placeholder.jpg'" alt="{{ building.title }}" class="object-cover w-full h-48">
                                   <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                    {{ building.status }}
+                                    {{ building.listingType }}
                                   </div>
                                 </div>
                                 <div class="p-4">
                                   <h3 class="text-lg font-semibold mb-1 truncate">{{ building.title }}</h3>
-                                  <p class="text-gray-500 mb-2">{{ building.location }}</p>
+                                  <p class="text-gray-500 mb-2">{{ building.location.address }}</p>
                                   <p class="font-bold text-xl mb-3">€{{ building.price.toLocaleString() }}</p>
                                   <div class="flex items-center text-sm text-gray-600 mb-4">
-                                    <span class="mr-3"><i class="fas fa-building mr-1"></i> {{ building.floors }} piani</span>
-                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ building.totalArea }} m²</span>
+                                    <span><i class="fas fa-ruler-combined mr-1"></i>piano {{ building.floor }}</span>
+                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ building.squareMeters }} m²</span>
                                   </div>
                                   <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(building)" class="text-blue-500 hover:underline">Modifica</button>
-                                    <button (click)="deleteListing('buildings', building.id)" class="text-red-500 hover:underline">Elimina</button>
+                                    <button (click)="editListing(building)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
+                                    <button (click)="deleteListing('buildings', building.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
                                   </div>
                                 </div>
                               </div>
@@ -137,24 +147,24 @@
                       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                         @for(land of lands;track land.id){
-                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="relative aspect-w-16 aspect-h-9">
-                                  <img [src]="land.imageUrl || '/assets/placeholder-land.jpg'" alt="{{ land.title }}" class="object-cover w-full h-48">
+                                  <img [src]="land.photos[0] || '/img/house-placeholder.jpg'" alt="{{ land.title }}" class="object-cover w-full h-48">
                                   <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                    {{ land.status }}
+                                    {{ land.listingType }}
                                   </div>
                                 </div>
                                 <div class="p-4">
                                   <h3 class="text-lg font-semibold mb-1 truncate">{{ land.title }}</h3>
-                                  <p class="text-gray-500 mb-2">{{ land.location }}</p>
+                                  <p class="text-gray-500 mb-2">{{ land.location.address }}</p>
                                   <p class="font-bold text-xl mb-3">€{{ land.price.toLocaleString() }}</p>
                                   <div class="flex items-center text-sm text-gray-600 mb-4">
-                                    <span class="mr-3"><i class="fas fa-map-marker-alt mr-1"></i> {{ land.area }} m²</span>
-                                    <span><i class="fas fa-tag mr-1"></i> {{ land.zoning }}</span>
+                                    <span class="mr-3"><i class="fas fa-map-marker-alt mr-1"></i> {{ land.squareMeters }} m²</span>
+                                    <span><i class="fas fa-shield-alt mr-1"></i> {{ land.building ? 'Edificato' : 'Non edificato' }}</span>
                                   </div>
                                   <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(land)" class="text-blue-500 hover:underline">Modifica</button>
-                                    <button (click)="deleteListing('lands', land.id)" class="text-red-500 hover:underline">Elimina</button>
+                                    <button (click)="editListing(land)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
+                                    <button (click)="deleteListing('lands', land.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
                                   </div>
                                 </div>
                               </div>
@@ -170,24 +180,24 @@
           
                       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @for(garage of garages;track garage.id){
-                            <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <div class="relative aspect-w-16 aspect-h-9">
-                                  <img [src]="garage.imageUrl || '/assets/placeholder-garage.jpg'" alt="{{ garage.title }}" class="object-cover w-full h-48">
+                                  <img [src]="garage.photos[0] || '/img/house-placeholder.jpg'" alt="{{ garage.title }}" class="object-cover w-full h-48">
                                   <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                    {{ garage.status }}
+                                    {{ garage.listingType }}
                                   </div>
                                 </div>
                                 <div class="p-4">
                                   <h3 class="text-lg font-semibold mb-1 truncate">{{ garage.title }}</h3>
-                                  <p class="text-gray-500 mb-2">{{ garage.location }}</p>
+                                  <p class="text-gray-500 mb-2">{{ garage.location.address }}</p>
                                   <p class="font-bold text-xl mb-3">€{{ garage.price.toLocaleString() }}</p>
                                   <div class="flex items-center text-sm text-gray-600 mb-4">
-                                    <span class="mr-3"><i class="fas fa-car mr-1"></i> {{ garage.size }} m²</span>
-                                    <span><i class="fas fa-shield-alt mr-1"></i> {{ garage.securitySystem ? 'Sistema di sicurezza' : 'No sicurezza' }}</span>
+                                    <span class="mr-3"><i class="fas fa-car mr-1"></i> {{ garage.squareMeters }} m²</span>
+                                    <span class="mr-3"><i class="fas fa-car mr-1"></i>Piano {{ garage.floor }}</span>
                                   </div>
                                   <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(garage)" class="text-blue-500 hover:underline">Modifica</button>
-                                    <button (click)="deleteListing('garages', garage.id)" class="text-red-500 hover:underline">Elimina</button>
+                                    <button (click)="editListing(garage)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
+                                    <button (click)="deleteListing('garages', garage.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
                                   </div>
                                 </div>
                               </div>

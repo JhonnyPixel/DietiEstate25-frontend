@@ -50,21 +50,24 @@
     </div>
 
     <label class="block text-sm font-medium text-gray-700 mt-4">Descrizione</label>
-    <textarea formControlName="description" class="w-full p-2 border border-gray-300 rounded mt-1"></textarea>
+    <!-- <textarea formControlName="description" class="w-full p-2 border border-gray-300 rounded mt-1 "></textarea> -->
+    <textarea
+    formControlName="description"
+    class="w-full p-2 border border-gray-300 rounded mt-1 resize-y min-h-[200px]"></textarea>
 
     <div formGroupName="locationDto" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <div>
         <label class="block text-sm font-medium text-gray-700">Indirizzo</label>
-        <app-address-search (addressSelected)="onAddressSelected($event)"></app-address-search>
+        <app-address-search (addressSelected)="onAddressSelected($event)" (inputCleared)="onAddressClear()"></app-address-search>
       </div>
-      <div>
+     <!--  <div>
         <label class="block text-sm font-medium text-gray-700">Regione</label>
         <input type="text" formControlName="region" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700">Città</label>
         <input type="text" formControlName="city" class="w-full p-2 border border-gray-300 rounded mt-1">
-      </div>
+      </div> -->
       
       <div class="h-64"><app-leaflet-map></app-leaflet-map></div>
     </div>

@@ -14,6 +14,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { authorizationGuard } from './authorization.guard';
 import { agentRoleGuard } from './agent-role.guard';
 import { managerRoleGuard } from './manager-role.guard';
+import { StarredListingsComponent } from './starred-listings/starred-listings.component';
 
 export const routes: Routes = [
     {   
@@ -42,7 +43,7 @@ export const routes: Routes = [
         component:SearchResultsComponent
     },
     {
-        path:"listing/:id",
+        path:"listing/:type/:id",
         title:"Annuncio",
         component:ListingViewComponent
     },
@@ -74,6 +75,12 @@ export const routes: Routes = [
         path:"myprofile",
         title:"myprofile",
         component:ProfileComponent,
+        canActivate:[authorizationGuard]
+    },
+    {
+        path:"starred",
+        title:"starred",
+        component:StarredListingsComponent,
         canActivate:[authorizationGuard]
     },
     {   

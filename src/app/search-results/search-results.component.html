@@ -1,25 +1,20 @@
-<div class="flex flex-col h-screen">
+<!-- <div class="flex flex-col h-screen">
 
 <header class="text-white p-2 border-b-1 border-gray-400">
     <div class=" flex items-center justify-between px-1 space-x-4">
-      <!-- Logo -->
      
       <div class="flex items-center">
         <img src="img/logo.png" alt="Logo" class="w-28 ml-2" />
       </div>
 
-      <!--Search bar-->
-      <!-- <input type="search" placeholder="Cerca" class="text-black rounded-2xl flex-grow lg:mr-70 md:mr-20 border-1 border-gray-400 py-1 px-2"> -->
-      <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (addressSelected)="addressSelected($event)" class="w-200"></app-address-search>
+      <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (addressSelected)="addressSelected($event)" (inputCleared)="resetLocationFilters()" class="w-200"></app-address-search>
   
-      <!-- Navigation Links -->
       <nav class="hidden md:flex space-x-3 items-center">
         <p class="text-black text-center underline text-gray-400 hover:text-gray-700 transition"> Sei un agenzia o ne fai parte? <br> Continua Qui </p>
         <a href="#" class="text-black px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #2EC4B6 ;">Login</a>
         <a href="#" class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
       </nav>
   
-      <!-- Mobile Menu Icon -->
       <button class="md:hidden flex items-center text-gray-300 hover:text-white">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -28,101 +23,13 @@
     </div>
   </header>
 
-  <!--Filter bar-->
-  <!-- <div class=" flex space-x-4 p-2 border-b-1 border-gray-400">
-    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-        <p>Filtro</p>
-    </div>
-
-    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-        <p>Filtro</p>
-    </div>
-
-    <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-        <p>Filtro</p>
-    </div>
-  </div> -->
-
-  <!-- Filter bar -->
-<!-- Filter bar -->
-<!-- <div class="flex space-x-4 p-2 border-b-1 border-gray-400">
-
-  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="tipologia" class="block text-sm font-medium">Tipologia</label>
-    <select id="tipologia" [(ngModel)]="tipologia" class="border rounded px-2 py-1">
-      <option value="">Tutte</option>
-      <option value="vendita">Vendita</option>
-      <option value="affitto">Affitto</option>
-    </select>
-  </div>
-
-   <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="tipologia" class="block text-sm font-medium">Tipologia</label>
-    <select id="tipologia" [(ngModel)]="tipologia" class="border rounded px-2 py-1">
-      <option value="">Tutte</option>
-      <option value="vendita">Vendita</option>
-      <option value="affitto">Affitto</option>
-    </select>
-  </div>
-
-  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="prezzoMin" class="block text-sm font-medium">Prezzo Min</label>
-    <input type="number" id="prezzoMin" [(ngModel)]="prezzoMin" class="border rounded px-2 py-1 w-24" placeholder="€">
-  </div>
-
-  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="prezzoMax" class="block text-sm font-medium">Prezzo Max</label>
-    <input type="number" id="prezzoMax" [(ngModel)]="prezzoMax" class="border rounded px-2 py-1 w-24" placeholder="€">
-  </div>
-
-  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="stanze" class="block text-sm font-medium">Stanze</label>
-    <select id="stanze" [(ngModel)]="stanze" class="border rounded px-2 py-1">
-      <option value="">Qualsiasi</option>
-      <option value="1">1+</option>
-      <option value="2">2+</option>
-      <option value="3">3+</option>
-      <option value="4">4+</option>
-      <option value="5">5+</option>
-    </select>
-  </div>
-
-  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="classeEnergetica" class="block text-sm font-medium">Classe Energ.</label>
-    <select id="classeEnergetica" [(ngModel)]="classeEnergetica" class="border rounded px-2 py-1">
-      <option value="">Qualsiasi</option>
-      <option value="A4">A4</option>
-      <option value="A3">A3</option>
-      <option value="A2">A2</option>
-      <option value="A1">A1</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="D">D</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="G">G</option>
-    </select>
-  </div>
-
-  <div class="rounded-lg border-1 border-gray-400 px-3 py-1">
-    <label for="posizione" class="block text-sm font-medium">Posizione</label>
-    <input type="text" id="posizione" [(ngModel)]="posizione" class="border rounded px-2 py-1 w-32" placeholder="Città/Comune">
-  </div>
-
-  <div class="rounded-lg bg-blue-500 text-white px-4 py-2 cursor-pointer hover:bg-blue-600">
-    <button (click)="applyFilter()">Cerca</button>
-  </div>
-
-</div> -->
 
   <app-filter-bar (filtersApplied)="onFiltersApplied($event)"></app-filter-bar>
 
 
-  <!--Body-->
   <div class="flex-1 flex">
    
 
-    <!--Mappa-->
     <div class="relative flex-1 bg-gray-400">
         <app-leaflet-map (resultMarkerClicked)="resultMarkedClicked($event)" class="h-full w-full"></app-leaflet-map>
 
@@ -148,11 +55,9 @@
 
     </div>
 
-    <!--Risultati-->
     <div class="flex-1 flex flex-col space-y-10 p-5">
 
         @for(listing of this.listings;track listing.id){
-        <!--Result item-->
         
         <div (click)="openListingDetails(listing)">
 
@@ -163,30 +68,7 @@
       }
 
 
-        <!--Result item-->
-        <!-- <div class="flex p-5 border-1 border-gray-400 rounded-2xl h-min h-fixed">
-            <div class="w-45 h-45 bg-gray-400">
-                <img src="img/logo.png" class="">
-            </div>
-
-            <div class="flex-1 ml-5 flex flex-col space-y-2">
-                <h3 class="text-2xl ">Annuncio</h3>
-                <p class="text-md h-29 text-gray-400 overflow-y-hidden break-words">
-                    Loaoo asdad adasdad sdasdsda dsdadsad adsdsadsd adsdasdsad adasdsdsadad adsdasa dsadadsads dadsdsd adsadsad
-                    ada
-                    dsdsdada adsdasd d as asdas asdasd  dsadsda ds a asdsa asd ad sad asd asds a asds asdsa da asdsad dddddda sd
-
-                    Loaoo asdad adasdad sdasdsda dsdadsad adsdsadsd adsdasdsad adasdsdsadad  ciao  adosod a dsa dadsdasa dsadadsads dadsdsd adsadsad
-                    ada
-                    dsdsdada adsdasd d as asdas asdasd  dsadsda ds a asdsa asd ad sad asd asds a asds asdsa da asdsad dddddda sd
-                    
-                </p>
-                <p class="font-light text-2xl text-gray-700">
-                    500.000 $
-                </p>
-            </div>
-        </div> -->
-
+     
 
 
     </div>
@@ -196,4 +78,141 @@
 
   </div>
 
+</div> -->
+
+
+
+<div class="flex flex-col h-screen overflow-hidden">
+  <!-- Header, filter bar and other components remain unchanged -->
+  <header class="text-white p-2 border-b-1 border-gray-400">
+    <div class=" flex items-center justify-between px-1 space-x-4">
+     
+      <div class="flex items-center">
+        <img src="img/logo.png" alt="Logo" class="w-28 ml-2" />
+      </div>
+
+      <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (addressSelected)="addressSelected($event)" (inputCleared)="resetLocationFilters()" class="w-200"></app-address-search>
+  
+      <nav class="hidden md:flex space-x-3 items-center">
+        <p class="text-black text-center underline text-gray-400 hover:text-gray-700 transition"> Sei un agenzia o ne fai parte? <br> Continua Qui </p>
+        <a href="#" class="text-black px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #2EC4B6 ;">Login</a>
+        <a href="#" class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
+      </nav>
+  
+      <button class="md:hidden flex items-center text-gray-300 hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <app-filter-bar (filtersApplied)="onFiltersApplied($event)"></app-filter-bar>
+
+  <!--Body-->
+  <div class="flex-1 flex min-h-0">
+    <!--Mappa-->
+    <div class="relative flex-1 bg-gray-400">
+      <!-- Map content unchanged -->
+      <app-leaflet-map (resultMarkerClicked)="resultMarkedClicked($event)" class="h-full w-full"></app-leaflet-map>
+      
+      <!-- Selection buttons unchanged -->
+      @if(isSelecting){
+
+        <div class="flex space-x-10 absolute z-9999 bottom-10 left-1/2 transform -translate-x-1/2 ">
+          <button (click)="toggleSelection()" class=" bottom-10 left-80 bg-red-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+            Annulla
+          </button>
+
+          <button (click)="searchFromPoint()" class="bottom-10 left-120 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+            Cerca
+          </button>
+        </div>
+
+        
+      }@else {
+        <button (click)="toggleSelection()" class="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600 z-9999">
+          Cerca da un punto
+        </button>
+      }
+    </div>
+
+    <!--Risultati-->
+    <div class="flex-1 flex flex-col  min-h-0">
+      <!-- Results list -->
+      <div class="flex-1 overflow-y-auto">
+      <div class="flex flex-col space-y-10 p-5">
+        @for(listing of listings; track listing.id) {
+          <div (click)="openListingDetails(listing)" class="w-full">
+            <app-result-item [isActive]="listing.id===focusedListingId" [listing]="listing" (onItemHover)="leafletMap.openPopupById($event)"></app-result-item>
+          </div>
+        }
+      </div>
+
+        <!-- No results message -->
+        @if(listings.length === 0) {
+          <div class="flex justify-center items-center h-full">
+            <p class="text-gray-500 text-lg">Nessun risultato trovato.</p>
+          </div>
+        }
+      </div>
+
+      <!-- Pagination - only show if we have more than one page -->
+      @if(totalPages > 1) {
+        <div class="flex justify-center items-center p-4 border-t-1 border-gray-200">
+          <nav aria-label="Paginazione risultati">
+            <ul class="flex list-none">
+              <!-- Previous button -->
+              <li>
+                <button 
+                  [disabled]="currentPage === 0"
+                  (click)="goToPage(currentPage - 1)"
+                  class="px-3 py-1 border border-gray-300 rounded-l hover:bg-gray-100"
+                  [class.cursor-not-allowed]="currentPage === 0"
+                  [class.text-gray-400]="currentPage === 0">
+                  Precedente
+                </button>
+              </li>
+              
+              <!-- Page numbers -->
+              @for(page of getPagesArray(); track $index) {
+                @if(page >= 0) {
+                  <li>
+                    <button 
+                      (click)="goToPage(page)" 
+                      [class.bg-blue-500]="page === currentPage"
+                      [class.text-white]="page === currentPage"
+                      [class.bg-white]="page !== currentPage"
+                      [class.text-gray-700]="page !== currentPage"
+                      class="px-3 py-1 border-t border-b border-gray-300 hover:bg-gray-100">
+                      {{ page + 1 }}
+                    </button>
+                  </li>
+                } @else {
+                  <li class="px-2 py-1 border-t border-b border-gray-300">...</li>
+                }
+              }
+              
+              <!-- Next button -->
+              <li>
+                <button 
+                  [disabled]="currentPage === totalPages - 1"
+                  (click)="goToPage(currentPage + 1)"
+                  class="px-3 py-1 border border-gray-300 rounded-r hover:bg-gray-100"
+                  [class.cursor-not-allowed]="currentPage === totalPages - 1"
+                  [class.text-gray-400]="currentPage === totalPages - 1">
+                  Successiva
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        
+        <!-- Results count indicator -->
+        <div class="flex justify-center items-center pb-2 text-sm text-gray-500">
+          Risultati {{ displayedResultsStart }}-{{ displayedResultsEnd }} di {{ totalResults }}
+        </div>
+      }
+    </div>
+  </div>
 </div>
