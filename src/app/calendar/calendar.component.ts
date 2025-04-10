@@ -51,7 +51,7 @@ import EventData = DayPilot.EventData;
     }
 
     button {
-      background-color: #3c78d8;
+      background-color:rgb(255, 139, 31);
       color: white;
       border: 0;
       padding: .5rem 1rem;
@@ -70,7 +70,7 @@ import EventData = DayPilot.EventData;
     }
 
     button.selected {
-      background-color: #1c4587;
+      background-color: rgb(198, 109, 25);
       box-shadow: 0 3px 5px rgba(0,0,0,0.1);
     }
 
@@ -85,7 +85,7 @@ import EventData = DayPilot.EventData;
     }
 
     button:hover {
-      background-color: #2f66c4;
+      background-color: rgb(214, 117, 26);
       box-shadow: 0 5px 7px rgba(0,0,0,0.1);
     }
 

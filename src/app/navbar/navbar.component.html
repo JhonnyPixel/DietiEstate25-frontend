@@ -13,6 +13,9 @@
         <a routerLink="/register" class="text-white px-5 h-min py-1.5 rounded-xl hover:text-white transition" style="background-color: #FF9F1C;">Signup</a>
         }
         @else{
+
+          <button routerLink="/search" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Cerca</button>
+          
          
           <button (click)="toggleNotifiche()" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black relative hover:bg-gray-100 hover:border-gray-100 transition">
             <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5"></span>
@@ -39,25 +42,25 @@
     <div class="px-4 py-3">
       <!-- Toggle per la prima categoria -->
       <div class="flex items-center justify-between mb-4">
-        <label class="text-sm font-medium text-gray-700">Notifiche appuntamenti</label>
-        <div (click)="toggleAppointmentNotifications()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': appointmentNotifications, 'bg-gray-300': !appointmentNotifications}">
-          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': appointmentNotifications}"></div>
+        <label class="text-sm font-medium text-gray-700">Annunci preferiti</label>
+        <div (click)="toggleStarredListings()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': starredListings, 'bg-gray-300': !starredListings}">
+          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': starredListings}"></div>
         </div>
       </div>
       
       <!-- Toggle per la seconda categoria -->
       <div class="flex items-center justify-between mb-4">
-        <label class="text-sm font-medium text-gray-700">Notifiche messaggi</label>
-        <div (click)="toggleMessageNotifications()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': messageNotifications, 'bg-gray-300': !messageNotifications}">
-          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': messageNotifications}"></div>
+        <label class="text-sm font-medium text-gray-700">Richieste/Risposte Visite</label>
+        <div (click)="toggleVisit()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': visit, 'bg-gray-300': !visit}">
+          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': visit}"></div>
         </div>
       </div>
       
       <!-- Toggle per la terza categoria -->
       <div class="flex items-center justify-between mb-4">
-        <label class="text-sm font-medium text-gray-700">Notifiche sistema</label>
-        <div (click)="toggleSystemNotifications()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': systemNotifications, 'bg-gray-300': !systemNotifications}">
-          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': systemNotifications}"></div>
+        <label class="text-sm font-medium text-gray-700">Annunci raccomandati</label>
+        <div (click)="toggleRecommendedListings()" class="relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full" [ngClass]="{'bg-[#2EC4B6]': recommendedListings, 'bg-gray-300': !recommendedListings}">
+          <div class="absolute left-0 w-6 h-6 transition duration-200 ease-in-out transform bg-white rounded-full shadow-md" [ngClass]="{'translate-x-6': recommendedListings}"></div>
         </div>
       </div>
     </div>
@@ -70,6 +73,9 @@
   </div>
 }
 </div>
+
+          <button routerLink="/starred" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Preferiti</button>
+
           @if(this.authService.isAgent()){
             <button routerLink="/mylistings" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Annunci</button>
             <button routerLink="/calendar" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black hover:bg-gray-100 hover:border-gray-100 transition">Calendario</button>

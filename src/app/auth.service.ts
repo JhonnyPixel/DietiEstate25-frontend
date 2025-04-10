@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
+import { Subject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private logoutSubject = new Subject<void>();
+  logout$ = this.logoutSubject.asObservable(); // Observable pubblico da ascoltare
 
   constructor(private httpClient:HttpClient) { }
 
@@ -140,6 +145,8 @@ export class AuthService {
     localStorage.removeItem("email");
     localStorage.removeItem("role");
     localStorage.removeItem("userData");
+
+    this.logoutSubject.next();
   }
 
   getAgency(userId:string){

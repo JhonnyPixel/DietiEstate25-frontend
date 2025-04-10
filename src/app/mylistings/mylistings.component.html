@@ -1,4 +1,217 @@
-<app-navbar></app-navbar>
+<!-- <app-navbar></app-navbar>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold">I Tuoi Annunci</h1>
+    @if(getListingsCount() > 0){
+    <button routerLink="/create" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg flex items-center">
+        <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+    }
+</div>
+    
+    @if(isLoading){
+        <div class="flex justify-center items-center h-64">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Caricamento...</span>
+            </div>
+        </div>
+    }
+  
+    
+    @if(errorMessage){
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{ errorMessage }}
+        </div>
+    }
+   
+    
+    @if(!isLoading && !errorMessage){
+        <div>
+        
+            @if(getListingsCount() === 0){
+              <div class="text-center py-12">
+                  <p class="text-xl text-gray-600">Non hai ancora pubblicato annunci.</p>
+                  <button routerLink="/create" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg">
+                    Crea il tuo primo annuncio
+                  </button>
+              </div>
+            }
+            
+            
+            @if(getListingsCount()>0){
+      
+              <div>
+                  <div class="border-b border-gray-200 mb-6">
+                    <nav class="flex -mb-px">
+                      <button 
+                        (click)="setActiveTab('houses')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
+                        [ngClass]="activeTab === 'houses' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Case ({{ houses.length }})
+                      </button>
+                      <button 
+                        (click)="setActiveTab('buildings')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
+                        [ngClass]="activeTab === 'buildings' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Edifici ({{ buildings.length }})
+                      </button>
+                      <button 
+                        (click)="setActiveTab('lands')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
+                        [ngClass]="activeTab === 'lands' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Terreni ({{ lands.length }})
+                      </button>
+                      <button 
+                        (click)="setActiveTab('garages')" 
+                        class="py-4 px-6 font-medium text-sm border-b-2 transition-colors"
+                        [ngClass]="activeTab === 'garages' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+                      >
+                        Garage ({{ garages.length }})
+                      </button>
+                    </nav>
+                  </div>
+                  
+                  @if(activeTab === 'houses'){
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          @for(house of houses;track house.id){
+
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="house.photos[0] || '/img/house-placeholder.jpg'" alt="{{ house.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ house.listingType }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ house.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ house.location.address }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ house.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-bed mr-1"></i> {{ house.nRooms }} stanze</span>
+                                    
+                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ house.squareMeters }} m²</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(house)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                                    <button (click)="deleteListing('houses', house.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+
+                          }
+                          
+                        </div>
+                  }
+                  
+                  
+                  @else if(activeTab === 'buildings'){
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          @for(building of buildings;track building.id){
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="building.photos[0] || '/img/house-placeholder.jpg'" alt="{{ building.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ building.listingType }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ building.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ building.location.address }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ building.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span><i class="fas fa-ruler-combined mr-1"></i>piano {{ building.floor }}</span>
+                                    <span><i class="fas fa-ruler-combined mr-1"></i> {{ building.squareMeters }} m²</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(building)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                                    <button (click)="deleteListing('buildings', building.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+                          }
+                          
+                        </div>
+                  }
+                  
+                  
+                  @else if(activeTab === 'lands'){
+          
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                        @for(land of lands;track land.id){
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="land.photos[0] || '/img/house-placeholder.jpg'" alt="{{ land.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ land.listingType }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ land.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ land.location.address }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ land.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-map-marker-alt mr-1"></i> {{ land.squareMeters }} m²</span>
+                                    <span><i class="fas fa-shield-alt mr-1"></i> {{ land.building ? 'Edificato' : 'Non edificato' }}</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(land)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                                    <button (click)="deleteListing('lands', land.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+                        }
+                          
+                        </div>
+          
+                  }
+                  
+                  
+                  @else if(activeTab === 'garages'){
+          
+                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @for(garage of garages;track garage.id){
+                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div class="relative aspect-w-16 aspect-h-9">
+                                  <img [src]="garage.photos[0] || '/img/house-placeholder.jpg'" alt="{{ garage.title }}" class="object-cover w-full h-48">
+                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                                    {{ garage.listingType }}
+                                  </div>
+                                </div>
+                                <div class="p-4">
+                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ garage.title }}</h3>
+                                  <p class="text-gray-500 mb-2">{{ garage.location.address }}</p>
+                                  <p class="font-bold text-xl mb-3">€{{ garage.price.toLocaleString() }}</p>
+                                  <div class="flex items-center text-sm text-gray-600 mb-4">
+                                    <span class="mr-3"><i class="fas fa-car mr-1"></i> {{ garage.squareMeters }} m²</span>
+                                    <span class="mr-3"><i class="fas fa-car mr-1"></i>Piano {{ garage.floor }}</span>
+                                  </div>
+                                  <div class="flex justify-between mt-2">
+                                    <button (click)="editListing(garage)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                                    <button (click)="deleteListing('garages', garage.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
+                                  </div>
+                                </div>
+                              </div>
+                        }
+                        
+                        </div>
+          
+                  }
+                  
+                </div>
+            }
+            
+          </div>
+    }
+   
+  </div>
+ -->
+
+ <app-navbar></app-navbar>
 
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
@@ -50,28 +263,28 @@
                         class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
                         [ngClass]="activeTab === 'houses' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
                       >
-                        Case ({{ houses.length }})
+                        Case ({{ housesPagination.totalElements }})
                       </button>
                       <button 
                         (click)="setActiveTab('buildings')" 
                         class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
                         [ngClass]="activeTab === 'buildings' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
                       >
-                        Edifici ({{ buildings.length }})
+                        Edifici ({{ buildingsPagination.totalElements }})
                       </button>
                       <button 
                         (click)="setActiveTab('lands')" 
                         class="py-4 px-6 font-medium text-sm border-b-2 transition-colors mr-8"
                         [ngClass]="activeTab === 'lands' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
                       >
-                        Terreni ({{ lands.length }})
+                        Terreni ({{ landsPagination.totalElements }})
                       </button>
                       <button 
                         (click)="setActiveTab('garages')" 
                         class="py-4 px-6 font-medium text-sm border-b-2 transition-colors"
                         [ngClass]="activeTab === 'garages' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
                       >
-                        Garage ({{ garages.length }})
+                        Garage ({{ garagesPagination.totalElements }})
                       </button>
                     </nav>
                   </div>
@@ -98,15 +311,71 @@
                                     <span><i class="fas fa-ruler-combined mr-1"></i> {{ house.squareMeters }} m²</span>
                                   </div>
                                   <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(house)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
-                                    <button (click)="deleteListing('houses', house.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
+                                    <button (click)="editListing(house)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                                    <button (click)="deleteListing('houses', house.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
                                   </div>
                                 </div>
                               </div>
 
                           }
-                          
                         </div>
+
+                        <!-- Pagination - only show if we have more than one page -->
+                        @if(housesPagination.totalPages > 1) {
+                          <div class="flex flex-col items-center mt-6">
+                            <nav aria-label="Paginazione risultati" class="mb-2">
+                              <ul class="flex list-none">
+                                <!-- Previous button -->
+                                <li>
+                                  <button 
+                                    [disabled]="housesPagination.currentPage === 0"
+                                    (click)="goToPage('houses', housesPagination.currentPage - 1)"
+                                    class="px-3 py-1 border border-gray-300 rounded-l hover:bg-gray-100"
+                                    [class.cursor-not-allowed]="housesPagination.currentPage === 0"
+                                    [class.text-gray-400]="housesPagination.currentPage === 0">
+                                    Precedente
+                                  </button>
+                                </li>
+                                
+                                <!-- Page numbers -->
+                                @for(page of getPagesArray('houses'); track $index) {
+                                  @if(page >= 0) {
+                                    <li>
+                                      <button 
+                                        (click)="goToPage('houses', page)" 
+                                        [class.bg-blue-500]="page === housesPagination.currentPage"
+                                        [class.text-white]="page === housesPagination.currentPage"
+                                        [class.bg-white]="page !== housesPagination.currentPage"
+                                        [class.text-gray-700]="page !== housesPagination.currentPage"
+                                        class="px-3 py-1 border-t border-b border-gray-300 hover:bg-gray-100">
+                                        {{ page + 1 }}
+                                      </button>
+                                    </li>
+                                  } @else {
+                                    <li class="px-2 py-1 border-t border-b border-gray-300">...</li>
+                                  }
+                                }
+                                
+                                <!-- Next button -->
+                                <li>
+                                  <button 
+                                    [disabled]="housesPagination.currentPage === housesPagination.totalPages - 1"
+                                    (click)="goToPage('houses', housesPagination.currentPage + 1)"
+                                    class="px-3 py-1 border border-gray-300 rounded-r hover:bg-gray-100"
+                                    [class.cursor-not-allowed]="housesPagination.currentPage === housesPagination.totalPages - 1"
+                                    [class.text-gray-400]="housesPagination.currentPage === housesPagination.totalPages - 1">
+                                    Successiva
+                                  </button>
+                                </li>
+                              </ul>
+                            </nav>
+                            
+                            <!-- Results count indicator -->
+                            <div class="text-sm text-gray-500">
+                              Risultati {{ getDisplayedResultsStart('houses') }}-{{ getDisplayedResultsEnd('houses') }} di {{ housesPagination.totalElements }}
+                            </div>
+                          </div>
+                        }
                   }
                   
                   
@@ -130,87 +399,247 @@
                                     <span><i class="fas fa-ruler-combined mr-1"></i> {{ building.squareMeters }} m²</span>
                                   </div>
                                   <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(building)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
-                                    <button (click)="deleteListing('buildings', building.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
+                                    <button (click)="editListing(building)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                                    <button (click)="deleteListing('buildings', building.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
                                   </div>
                                 </div>
                               </div>
                           }
-                          
                         </div>
-                  }
-                  
-                  
-                  <!-- Lands -->
-                  @else if(activeTab === 'lands'){
-          
-                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                        @for(land of lands;track land.id){
-                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <div class="relative aspect-w-16 aspect-h-9">
-                                  <img [src]="land.photos[0] || '/img/house-placeholder.jpg'" alt="{{ land.title }}" class="object-cover w-full h-48">
-                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                    {{ land.listingType }}
-                                  </div>
-                                </div>
-                                <div class="p-4">
-                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ land.title }}</h3>
-                                  <p class="text-gray-500 mb-2">{{ land.location.address }}</p>
-                                  <p class="font-bold text-xl mb-3">€{{ land.price.toLocaleString() }}</p>
-                                  <div class="flex items-center text-sm text-gray-600 mb-4">
-                                    <span class="mr-3"><i class="fas fa-map-marker-alt mr-1"></i> {{ land.squareMeters }} m²</span>
-                                    <span><i class="fas fa-shield-alt mr-1"></i> {{ land.building ? 'Edificato' : 'Non edificato' }}</span>
-                                  </div>
-                                  <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(land)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
-                                    <button (click)="deleteListing('lands', land.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
-                                  </div>
-                                </div>
-                              </div>
+                        <!-- Pagination for buildings -->
+                        @if(buildingsPagination.totalPages > 1) {
+                          <div class="flex flex-col items-center mt-6">
+                            <nav aria-label="Paginazione risultati" class="mb-2">
+                              <ul class="flex list-none">
+                                <!-- Previous button -->
+                                <li>
+                                  <button 
+                                    [disabled]="buildingsPagination.currentPage === 0"
+                                    (click)="goToPage('buildings', buildingsPagination.currentPage - 1)"
+                                    class="px-3 py-1 border border-gray-300 rounded-l hover:bg-gray-100"
+                                    [class.cursor-not-allowed]="buildingsPagination.currentPage === 0"
+                                    [class.text-gray-400]="buildingsPagination.currentPage === 0">
+                                    Precedente
+                                  </button>
+                                </li>
+                                
+                                <!-- Page numbers -->
+                                @for(page of getPagesArray('buildings'); track $index) {
+                                  @if(page >= 0) {
+                                    <li>
+                                      <button 
+                                        (click)="goToPage('buildings', page)" 
+                                        [class.bg-blue-500]="page === buildingsPagination.currentPage"
+                                        [class.text-white]="page === buildingsPagination.currentPage"
+                                        [class.bg-white]="page !== buildingsPagination.currentPage"
+                                        [class.text-gray-700]="page !== buildingsPagination.currentPage"
+                                        class="px-3 py-1 border-t border-b border-gray-300 hover:bg-gray-100">
+                                        {{ page + 1 }}
+                                      </button>
+                                    </li>
+                                  } @else {
+                                    <li class="px-2 py-1 border-t border-b border-gray-300">...</li>
+                                  }
+                                }
+                                
+                                <!-- Next button -->
+                                <li>
+                                  <button 
+                                    [disabled]="buildingsPagination.currentPage === buildingsPagination.totalPages - 1"
+                                    (click)="goToPage('buildings', buildingsPagination.currentPage + 1)"
+                                    class="px-3 py-1 border border-gray-300 rounded-r hover:bg-gray-100"
+                                    [class.cursor-not-allowed]="buildingsPagination.currentPage === buildingsPagination.totalPages - 1"
+                                    [class.text-gray-400]="buildingsPagination.currentPage === buildingsPagination.totalPages - 1">
+                                    Successiva
+                                  </button>
+                                </li>
+                              </ul>
+                            </nav>
+                            
+                            <!-- Results count indicator -->
+                            <div class="text-sm text-gray-500">
+                              Risultati {{ getDisplayedResultsStart('buildings') }}-{{ getDisplayedResultsEnd('buildings') }} di {{ buildingsPagination.totalElements }}
+                            </div>
+                          </div>
                         }
-                          
-                        </div>
-          
                   }
-                  
-                  
-                  <!-- Garages -->
-                  @else if(activeTab === 'garages'){
-          
-                      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        @for(garage of garages;track garage.id){
-                            <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <div class="relative aspect-w-16 aspect-h-9">
-                                  <img [src]="garage.photos[0] || '/img/house-placeholder.jpg'" alt="{{ garage.title }}" class="object-cover w-full h-48">
-                                  <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
-                                    {{ garage.listingType }}
-                                  </div>
-                                </div>
-                                <div class="p-4">
-                                  <h3 class="text-lg font-semibold mb-1 truncate">{{ garage.title }}</h3>
-                                  <p class="text-gray-500 mb-2">{{ garage.location.address }}</p>
-                                  <p class="font-bold text-xl mb-3">€{{ garage.price.toLocaleString() }}</p>
-                                  <div class="flex items-center text-sm text-gray-600 mb-4">
-                                    <span class="mr-3"><i class="fas fa-car mr-1"></i> {{ garage.squareMeters }} m²</span>
-                                    <span class="mr-3"><i class="fas fa-car mr-1"></i>Piano {{ garage.floor }}</span>
-                                  </div>
-                                  <div class="flex justify-between mt-2">
-                                    <button (click)="editListing(garage)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Modifica</button>
-                                    <button (click)="deleteListing('garages', garage.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Elimina</button>
-                                  </div>
-                                </div>
-                              </div>
-                        }
-                        
-                        </div>
-          
-                  }
-                  
-                </div>
-            }
-            
+                  <!-- Lands -->
+@else if(activeTab === 'lands'){
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for(land of lands;track land.id){
+        <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="relative aspect-w-16 aspect-h-9">
+              <img [src]="land.photos[0] || '/img/house-placeholder.jpg'" alt="{{ land.title }}" class="object-cover w-full h-48">
+              <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                {{ land.listingType }}
+              </div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-semibold mb-1 truncate">{{ land.title }}</h3>
+              <p class="text-gray-500 mb-2">{{ land.location.address }}</p>
+              <p class="font-bold text-xl mb-3">€{{ land.price.toLocaleString() }}</p>
+              <div class="flex items-center text-sm text-gray-600 mb-4">
+                <span class="mr-3"><i class="fas fa-map-marker-alt mr-1"></i> {{ land.squareMeters }} m²</span>
+                <span><i class="fas fa-shield-alt mr-1"></i> {{ land.building ? 'Edificato' : 'Non edificato' }}</span>
+              </div>
+              <div class="flex justify-between mt-2">
+                <button (click)="editListing(land)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                <button (click)="deleteListing('lands', land.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
+              </div>
+            </div>
           </div>
     }
-   
   </div>
+
+  <!-- Pagination for lands -->
+  @if(landsPagination.totalPages > 1) {
+    <div class="flex flex-col items-center mt-6">
+      <nav aria-label="Paginazione risultati" class="mb-2">
+        <ul class="flex list-none">
+          <!-- Previous button -->
+          <li>
+            <button 
+              [disabled]="landsPagination.currentPage === 0"
+              (click)="goToPage('lands', landsPagination.currentPage - 1)"
+              class="px-3 py-1 border border-gray-300 rounded-l hover:bg-gray-100"
+              [class.cursor-not-allowed]="landsPagination.currentPage === 0"
+              [class.text-gray-400]="landsPagination.currentPage === 0">
+              Precedente
+            </button>
+          </li>
+          
+          <!-- Page numbers -->
+          @for(page of getPagesArray('lands'); track $index) {
+            @if(page >= 0) {
+              <li>
+                <button 
+                  (click)="goToPage('lands', page)" 
+                  [class.bg-blue-500]="page === landsPagination.currentPage"
+                  [class.text-white]="page === landsPagination.currentPage"
+                  [class.bg-white]="page !== landsPagination.currentPage"
+                  [class.text-gray-700]="page !== landsPagination.currentPage"
+                  class="px-3 py-1 border-t border-b border-gray-300 hover:bg-gray-100">
+                  {{ page + 1 }}
+                </button>
+              </li>
+            } @else {
+              <li class="px-2 py-1 border-t border-b border-gray-300">...</li>
+            }
+          }
+          
+          <!-- Next button -->
+          <li>
+            <button 
+              [disabled]="landsPagination.currentPage === landsPagination.totalPages - 1"
+              (click)="goToPage('lands', landsPagination.currentPage + 1)"
+              class="px-3 py-1 border border-gray-300 rounded-r hover:bg-gray-100"
+              [class.cursor-not-allowed]="landsPagination.currentPage === landsPagination.totalPages - 1"
+              [class.text-gray-400]="landsPagination.currentPage === landsPagination.totalPages - 1">
+              Successiva
+            </button>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Results count indicator -->
+      <div class="text-sm text-gray-500">
+        Risultati {{ getDisplayedResultsStart('lands') }}-{{ getDisplayedResultsEnd('lands') }} di {{ landsPagination.totalElements }}
+      </div>
+    </div>
+  }
+}
+
+<!-- Garages -->
+@else if(activeTab === 'garages'){
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for(garage of garages;track garage.id){
+        <div class="border border-gray-400 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="relative aspect-w-16 aspect-h-9">
+              <img [src]="garage.photos[0] || '/img/house-placeholder.jpg'" alt="{{ garage.title }}" class="object-cover w-full h-48">
+              <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-sm">
+                {{ garage.listingType }}
+              </div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-semibold mb-1 truncate">{{ garage.title }}</h3>
+              <p class="text-gray-500 mb-2">{{ garage.location.address }}</p>
+              <p class="font-bold text-xl mb-3">€{{ garage.price.toLocaleString() }}</p>
+              <div class="flex items-center text-sm text-gray-600 mb-4">
+                <span class="mr-3"><i class="fas fa-car mr-1"></i> {{ garage.squareMeters }} m²</span>
+                <span class="mr-3"><i class="fas fa-car mr-1"></i>Piano {{ garage.floor }}</span>
+              </div>
+              <div class="flex justify-between mt-2">
+                <button (click)="editListing(garage)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifica</button>
+                <button (click)="deleteListing('garages', garage.id)" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Elimina</button>
+              </div>
+            </div>
+          </div>
+    }
+  </div>
+
+  <!-- Pagination for garages -->
+  @if(garagesPagination.totalPages > 1) {
+    <div class="flex flex-col items-center mt-6">
+      <nav aria-label="Paginazione risultati" class="mb-2">
+        <ul class="flex list-none">
+          <!-- Previous button -->
+          <li>
+            <button 
+              [disabled]="garagesPagination.currentPage === 0"
+              (click)="goToPage('garages', garagesPagination.currentPage - 1)"
+              class="px-3 py-1 border border-gray-300 rounded-l hover:bg-gray-100"
+              [class.cursor-not-allowed]="garagesPagination.currentPage === 0"
+              [class.text-gray-400]="garagesPagination.currentPage === 0">
+              Precedente
+            </button>
+          </li>
+          
+          <!-- Page numbers -->
+          @for(page of getPagesArray('garages'); track $index) {
+            @if(page >= 0) {
+              <li>
+                <button 
+                  (click)="goToPage('garages', page)" 
+                  [class.bg-blue-500]="page === garagesPagination.currentPage"
+                  [class.text-white]="page === garagesPagination.currentPage"
+                  [class.bg-white]="page !== garagesPagination.currentPage"
+                  [class.text-gray-700]="page !== garagesPagination.currentPage"
+                  class="px-3 py-1 border-t border-b border-gray-300 hover:bg-gray-100">
+                  {{ page + 1 }}
+                </button>
+              </li>
+            } @else {
+              <li class="px-2 py-1 border-t border-b border-gray-300">...</li>
+            }
+          }
+          
+          <!-- Next button -->
+          <li>
+            <button 
+              [disabled]="garagesPagination.currentPage === garagesPagination.totalPages - 1"
+              (click)="goToPage('garages', garagesPagination.currentPage + 1)"
+              class="px-3 py-1 border border-gray-300 rounded-r hover:bg-gray-100"
+              [class.cursor-not-allowed]="garagesPagination.currentPage === garagesPagination.totalPages - 1"
+              [class.text-gray-400]="garagesPagination.currentPage === garagesPagination.totalPages - 1">
+              Successiva
+            </button>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Results count indicator -->
+      <div class="text-sm text-gray-500">
+        Risultati {{ getDisplayedResultsStart('garages') }}-{{ getDisplayedResultsEnd('garages') }} di {{ garagesPagination.totalElements }}
+      </div>
+    </div>
+  }
+}
+
+            </div>
+          }
+          
+        </div>
+  }
+ 
+</div>

@@ -6,15 +6,9 @@
     <div class="flex-1 flex flex-col">
 
         <!--Price and stand-out info-->
-        <div class="flex justify-between pr-60">
+        <div class="flex flex-col space-y-10  xl:flex-row xl:space-y-0 xl:justify-between ">
 
-            <button 
-                (click)="toggleFavorite()"
-                class=" p-5 rounded-full hover:bg-yellow-100 transition"
-                [ngClass]="{ 'text-yellow-400': isFavorite, 'text-gray-400': !isFavorite }"
-                aria-label="Aggiungi ai preferiti">
-                <fa-icon [icon]="faStar" class="text-4xl"></fa-icon>
-            </button>
+            
 
             <!--Price and Address-->
             <div class="flex flex-col">
@@ -23,7 +17,7 @@
             </div>
 
             <!--Beds,Baths,Sqft-->
-            <div class="flex space-x-18">
+            <div class="flex space-x-18 xl:mx-auto">
 
                 <div class="flex flex-col">
                     <p class="text-4xl font-semibold">{{listing.nRooms ?? 1}}</p>
@@ -42,6 +36,14 @@
                     <p class="text-4xl font-semibold">{{listing.floor ?? '2'}}</p>
                     <p class="text-gray-500 text-2xl">floor</p>
                 </div>
+
+                <button 
+                (click)="toggleFavorite()"
+                class=" p-5 rounded-full hover:bg-yellow-100 transition"
+                [ngClass]="{ 'text-yellow-400': isFavorite, 'text-gray-400': !isFavorite }"
+                aria-label="Aggiungi ai preferiti">
+                <fa-icon [icon]="faStar" class="text-4xl"></fa-icon>
+            </button>
 
             </div>
         

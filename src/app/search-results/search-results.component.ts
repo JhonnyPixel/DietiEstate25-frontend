@@ -184,10 +184,11 @@ import { AddressSearchComponent } from '../address-search/address-search.compone
 import { Router, RouterLink } from '@angular/router';
 
 import { ResultItemComponent } from '../result-item/result-item.component';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-search-results',
-  imports: [LeafletMapComponent, FormsModule, FilterBarComponent, AddressSearchComponent, RouterLink, ResultItemComponent],
+  imports: [LeafletMapComponent,NavbarComponent, FormsModule, FilterBarComponent, AddressSearchComponent, RouterLink, ResultItemComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })
@@ -266,9 +267,9 @@ export class SearchResultsComponent {
   fetchListings() {
     this.restBackend.getListings(this.filters).subscribe((response:any) => {
       // Assuming the API returns pagination metadata
-      if (response && typeof response === 'object') {
-        if ('data' in response && Array.isArray(response.data)) {
-          this.listings = response.data;
+     /*  if (response && typeof response === 'object') {
+        if ('content' in response && Array.isArray(response.content)) {
+          this.listings = response.content;
           
           // Update pagination info if available
           if ('pagination' in response) {
@@ -291,7 +292,17 @@ export class SearchResultsComponent {
       } else {
         this.listings = response as [];
       }
-      
+       */
+
+      console.log("risposta backend:",response)
+
+      this.listings = response.content;
+
+      this.currentPage = response.pageable.pageNumber || 0;
+      this.totalPages = response.totalPages || 1;
+      this.totalResults = response.totalElements || this.listings.length;
+      this.resultsPerPage = response.pageable.pageSize || 10;
+
       console.log("dati arrivati: ", this.listings);
       console.log("Pagination info:", {
         currentPage: this.currentPage,
@@ -365,7 +376,7 @@ export class SearchResultsComponent {
 
     this.restBackend.getListings(filters).subscribe((response:any) => {
       // Handle response with pagination
-      if (response && typeof response === 'object') {
+      /* if (response && typeof response === 'object') {
         if ('data' in response && Array.isArray(response.data)) {
           this.listings = response.data;
           
@@ -383,7 +394,15 @@ export class SearchResultsComponent {
         }
       } else {
         this.listings = response as [];
-      }
+      } */
+
+      this.listings = response.content;
+
+      this.currentPage = response.pageable.pageNumber || 0;
+      this.totalPages = response.totalPages || 1;
+      this.totalResults = response.totalElements || this.listings.length;
+      this.resultsPerPage = response.pageable.pageSize || 10;
+
       
       console.log("dati arrivati: ", this.listings);
       this.toggleSelection(); // Reimposto la mappa

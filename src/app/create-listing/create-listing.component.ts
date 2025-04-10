@@ -24,6 +24,56 @@ export class CreateListingComponent implements OnInit {
   pageTitle = 'Crea nuovo annuncio';
   submitButtonText = 'Salva';
 
+
+  filterConfig: { [key: string]: string[] } = {
+    houses: [
+        'listingType',
+        'price',
+        'title',
+        'description',
+        'energyClass',
+        'locationDto',
+        'squareMeters',
+        'nRooms',
+        'nBathrooms',
+        'floor',
+        'elevator',
+        'otherFeatures'
+      ],
+    buildings: [
+      'listingType',
+      'locationDto',
+      'title',
+      'price',
+      'description',
+      'squareMeters',
+      'elevator',
+      'otherFeatures',
+      ],
+    garages: [
+      'listingType',
+      'locationDto',
+      'title',
+      'price',
+      'description',
+      'squareMeters',
+      'floor',
+      'otherFeatures',
+    ],
+    lands: [
+      'listingType',
+      'locationDto',
+      'title',
+      'price',
+      'description',
+      'squareMeters',
+      'building',
+      'otherFeatures',
+    ]
+  };
+
+  availableFilters: string[] = this.filterConfig["houses"]; 
+
   energyClasses: string[] = ['A4', 'A3', 'A2', 'A1', 'B', 'C', 'D', 'E', 'F', 'G'];
   categories: string[] = ['houses', 'buildings', 'garages', 'lands'];
   listingTypes: string[] = ['BUY', 'RENT'];
@@ -54,7 +104,8 @@ export class CreateListingComponent implements OnInit {
     floor: new FormControl(1, Validators.required),
     energyClass: new FormControl('A4', Validators.required),
     otherFeatures: new FormControl<string[]>([]),
-    elevator: new FormControl(false)
+    elevator: new FormControl(false),
+    building: new FormControl(false)
   });
 
   constructor(private restBackend: RestBackendService, private router: Router,private toaster:ToastrService) {
@@ -82,6 +133,39 @@ export class CreateListingComponent implements OnInit {
         this.addressSearchBar.insertInput(this.existingListing.location.address || '');
       });
     }
+  }
+
+  
+  onCategoryChange(event:any) {
+
+    this.propertyForm.patchValue({
+      category:event.target.value
+    })
+    console.log(event.target.value);
+    this.availableFilters=this.filterConfig[event.target.value]
+    //this.filterForm // Reset filtri quando cambia categoria
+    this.resetControls();
+  }
+
+  resetControls() {
+    // Aggiungi logica per resettare o disabilitare i controlli non necessari
+    Object.keys(this.propertyForm.controls).forEach(control => {
+      const ctrl = this.propertyForm.controls[control as keyof typeof this.propertyForm.controls];
+    
+      if (control === 'category') {
+        ctrl.enable();
+      } else {
+        const controlEnabled = this.availableFilters.includes(control);
+    
+        if (controlEnabled) {
+          ctrl.enable();
+        } else {
+          ctrl.disable();
+        }
+      }
+    });
+
+    console.log("valoe del form dopo il reset",this.propertyForm.value)
   }
 
   loadExistingListing() {
@@ -194,12 +278,12 @@ export class CreateListingComponent implements OnInit {
               uploadRes => {
                 console.log("Photos uploaded:", uploadRes);
                 // Redirect dopo il completamento
-                this.router.navigate(['/search']);
+                this.router.navigate(['/mylistings']);
               }
             );
           } else {
             // Redirect anche se non ci sono foto
-            this.router.navigate(['/search']);
+            this.router.navigate(['/mylistings']);
           }
         });
       }
@@ -219,17 +303,17 @@ export class CreateListingComponent implements OnInit {
         uploadRes => {
           console.log("New photos uploaded:", uploadRes);
           // Redirect dopo il completamento
-          this.router.navigate(['/search']);
+          this.router.navigate(['/mylistings']);
         },
         error => {
           console.error("Error uploading new photos:", error);
           // Redirect anche in caso di errore
-          this.router.navigate(['/search']);
+          this.router.navigate(['/mylistings']);
         }
       );
     } else {
       // Redirect se non ci sono nuove foto da caricare
-      this.router.navigate(['/search']);
+      this.router.navigate(['/mylistings']);
     }
   }
 
@@ -338,6 +422,6 @@ export class CreateListingComponent implements OnInit {
   // Metodo per annullare e tornare indietro
   cancel() {
     // Torna alla pagina precedente
-    this.router.navigate(['/listings']);
+    this.router.navigate(['/mylistings']);
   }
 }

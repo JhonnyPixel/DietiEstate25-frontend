@@ -10,7 +10,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Categoria</label>
         @if(!isEditMode){
-        <select formControlName="category" class="w-full p-2 border border-gray-300 rounded mt-1"  [disabled]="isEditMode">
+        <select (change)="onCategoryChange($event)" formControlName="category" class="w-full p-2 border border-gray-300 rounded mt-1"  [disabled]="isEditMode">
           @for(category of categories; track category) {
             <option [value]="category">{{ category }}</option>
           }
@@ -31,14 +31,20 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      @if(this.availableFilters.includes('title')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Titolo</label>
         <input type="text" formControlName="title" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
+      }
+
+      @if(this.availableFilters.includes('price')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Prezzo</label>
         <input type="number" formControlName="price" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
+    }
+    @if(this.availableFilters.includes('energyClass')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Classe energetica</label>
         <select formControlName="energyClass" class="w-full p-2 border border-gray-300 rounded mt-1">
@@ -47,7 +53,10 @@
           }
         </select>
       </div>
+    }
     </div>
+
+    @if(this.availableFilters.includes('description')){
 
     <label class="block text-sm font-medium text-gray-700 mt-4">Descrizione</label>
     <!-- <textarea formControlName="description" class="w-full p-2 border border-gray-300 rounded mt-1 "></textarea> -->
@@ -55,10 +64,13 @@
     formControlName="description"
     class="w-full p-2 border border-gray-300 rounded mt-1 resize-y min-h-[200px]"></textarea>
 
+    }
+
+    @if(this.availableFilters.includes('locationDto')){
     <div formGroupName="locationDto" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
       <div>
         <label class="block text-sm font-medium text-gray-700">Indirizzo</label>
-        <app-address-search (addressSelected)="onAddressSelected($event)" (inputCleared)="onAddressClear()"></app-address-search>
+        <app-address-search [showRecentSearches]="false" (addressSelected)="onAddressSelected($event)" (inputCleared)="onAddressClear()"></app-address-search>
       </div>
      <!--  <div>
         <label class="block text-sm font-medium text-gray-700">Regione</label>
@@ -71,32 +83,54 @@
       
       <div class="h-64"><app-leaflet-map></app-leaflet-map></div>
     </div>
+  }
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
+      @if(this.availableFilters.includes('squareMeters')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Dimensioni (mq)</label>
         <input type="number" formControlName="squareMeters" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
+    }
+    @if(this.availableFilters.includes('nRooms')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Numero di stanze</label>
         <input type="number" formControlName="nRooms" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
+    }
+    @if(this.availableFilters.includes('nBathrooms')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Bagni</label>
         <input type="number" formControlName="nBathrooms" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
+    }
+    @if(this.availableFilters.includes('floor')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Piano</label>
         <input type="number" formControlName="floor" class="w-full p-2 border border-gray-300 rounded mt-1">
       </div>
+    }
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      @if(this.availableFilters.includes('elevator')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Ascensore</label>
         <input type="checkbox" formControlName="elevator" class="mt-1">
       </div>
+    }
 
+    @if(this.availableFilters.includes('building')){
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Edificato</label>
+        <input type="checkbox" formControlName="building" class="mt-1">
+      </div>
+    
+    }
+
+
+    @if(this.availableFilters.includes('otherFeatures')){
       <div>
         <label class="block text-sm font-medium text-gray-700">Servizi</label>
         <div class="flex gap-2">
@@ -104,6 +138,7 @@
           <button type="button" (click)="addService()" class="bg-blue-500 text-white px-3 py-1 rounded mt-1">Aggiungi</button>
         </div>
       </div>
+    }
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">

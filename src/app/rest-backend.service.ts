@@ -74,36 +74,36 @@ export class RestBackendService {
 
 
 
-  getUserHouses(){
+  getUserHouses(page:number=0){
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
-    //params= params.set('listingType','RENT'); //replace all thisa lines with listinType:any when riccardo has done
+    params= params.set('page',page); //replace all thisa lines with listinType:any when riccardo has done
 
     let url=`http://localhost:8080/api/listings/houses`
 
     return this.httpClient.get<any>(url,{params});
   }
 
-  getUserBuildings(){
+  getUserBuildings(page:number=0){
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
-    //params= params.set('listingType','RENT');
+    params= params.set('page',page);
 
     let url=`http://localhost:8080/api/listings/buildings`
 
     return this.httpClient.get<any>(url,{params});
   }
 
-  getUserLands(){
+  getUserLands(page:number=0){
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
-    //params= params.set('listingType','RENT');
+    params= params.set('page',page);
 
     let url=`http://localhost:8080/api/listings/lands`
 
     return this.httpClient.get<any>(url,{params});
   }
 
-  getUserGarages(){
+  getUserGarages(page:number=0){
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
-    //params= params.set('listingType','RENT');
+    params= params.set('page',page);
 
     let url=`http://localhost:8080/api/listings/garages`
 
@@ -137,7 +137,7 @@ export class RestBackendService {
 
 
   createListing(data:any){
-    let url=`http://localhost:8080/api/listings/${data["category"]}`
+    /* let url=`http://localhost:8080/api/listings/${data["category"]}`
 
     //let url=`https://dietiestates25-875570932601.europe-west8.run.app/api/listings/${data["category"]}`
 
@@ -170,7 +170,35 @@ export class RestBackendService {
       otherFeatures:data.otherFeatures ,
       photos:data.photos,
       elevator:data.elevator
-    })
+    }) */
+
+      const url = `http://localhost:8080/api/listings/${data["category"]}`;
+      console.log("Sono createListing e mi è arrivato questo:", data);
+    
+      // Costruzione dinamica del body
+      const body: any = {};
+    
+      // Aggiungi dinamicamente tutte le proprietà tranne locationDto
+      Object.keys(data).forEach(key => {
+        if (key !== 'locationDto') {
+          body[key] = data[key];
+        }
+      });
+    
+      // Gestione speciale per locationDto (se esiste)
+      if (data.locationDto) {
+        body.locationDto = {
+          region: data.locationDto.region,
+          city: data.locationDto.city,
+          address: data.locationDto.address,
+          longitude: data.locationDto.longitude,
+          latitude: data.locationDto.latitude
+        };
+      }
+    
+      return this.httpClient.post<{}>(url, body);
+
+
   }
 
   updateListing(id: string, data: any){

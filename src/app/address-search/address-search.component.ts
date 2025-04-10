@@ -161,7 +161,7 @@ export class AddressSearchComponent implements OnInit {
 }
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
@@ -193,18 +193,30 @@ export class AddressSearchComponent implements OnInit {
   @Output() addressSelected = new EventEmitter<AddressSuggestion>();
   @Output() recentSearchSelected = new EventEmitter();
   @Output() inputCleared = new EventEmitter<void>();
+
+  @Input() showRecentSearches:boolean=true
   
   searchControl = new FormControl('');
   suggestions: AddressSuggestion[] = [];
   recentSearches: any = [];
+  nRecentSearches:number=5;
   isLoading = false;
-  showDropdown = true; // Aggiungiamo un flag per controllare la visibilità del dropdown
+  showDropdown = false; // Aggiungiamo un flag per controllare la visibilità del dropdown
   
   constructor(private http: HttpClient, private auth: AuthService) {}
   
   ngOnInit() {
     // Carica le ricerche recenti all'avvio del componente
-    this.loadRecentSearches();
+    if(this.showRecentSearches){
+      this.loadRecentSearches();
+    }
+
+     // Aggiungi un listener separato per rilevare quando l'input diventa vuoto
+  this.searchControl.valueChanges.subscribe(value => {
+    if (value === '') {
+      this.clearSearch();
+    }
+  });
     
     // Implementazione con debounce per limitare le chiamate API
     this.searchControl.valueChanges.pipe(
@@ -251,7 +263,7 @@ export class AddressSearchComponent implements OnInit {
         return of([]);
       })
     ).subscribe(recentSearches => {
-      this.recentSearches = recentSearches;
+      this.recentSearches = recentSearches.slice(0, this.nRecentSearches);
       console.log(recentSearches);
       
       // Se il campo di ricerca è vuoto, mostra subito le ricerche recenti
@@ -259,6 +271,23 @@ export class AddressSearchComponent implements OnInit {
         this.suggestions = [...this.recentSearches];
       }
     });
+
+    //mock data
+   /*  this.recentSearches=[
+      {
+        id:1,
+      culo:1
+    },
+    {
+      id:2,
+      culo:1
+    }
+  ]
+
+
+    this.suggestions = [...this.recentSearches]; */
+
+    
   }
   
   searchAddresses(query: string): Observable<AddressSuggestion[]> {

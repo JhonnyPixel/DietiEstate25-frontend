@@ -11,7 +11,7 @@ export class NotificationService {
 // notification.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { AuthService } from './auth.service'; // Suppongo che tu abbia un servizio di autenticazione
 import SockJS from 'sockjs-client';
 import {Client} from '@stomp/stompjs';
@@ -32,12 +32,19 @@ export class NotificationService {
 
   private socket$: WebSocketSubject<any>;
 
+  private settaggi:any={}
+  private settingsLoaded:boolean=false
+
   constructor(
     private http: HttpClient,
     private authService: AuthService
   ) {
 
     this.socket$ = webSocket('http://localhost:8080/ws');
+
+    this.authService.logout$.subscribe(() => {
+      this.deleteSettaggi();
+    });
   }
 
   // Inizializza il servizio con entrambi i metodi di fetch
@@ -75,10 +82,36 @@ export class NotificationService {
 
     let url=`http://localhost:8080/api/notifications/settings?userId=${this.authService.getUserId()}`
 
-    return this.http.post(url,settings)
+    return this.http.put(url,settings)
 
 
   }
+
+
+  getSettaggi(): Observable<any> {
+
+
+    if (this.settingsLoaded) {
+      return of(this.settaggi); // se già caricati, restituisce subito i dati come observable
+    } else {
+
+      let url=`http://localhost:8080/api/notifications/settings?userId=${this.authService.getUserId()}`
+      
+      return this.http.get(url).pipe(
+        tap(dati => {
+          console.log("getsettaggi: ",dati)
+          this.settaggi = dati;
+          this.settingsLoaded = true;
+        })
+      );
+    }
+  }
+
+  deleteSettaggi(){
+    this.settaggi = {};
+    this.settingsLoaded = false;
+  }
+  
 
   // Connetti al WebSocket per ricevere notifiche in tempo reale
   private connectWebSocket(): void {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NotificationPanelComponent } from '../notification-panel/notification-panel.component';
 import { AuthService } from '../auth.service';
 import { RouterLink } from '@angular/router';
@@ -14,13 +14,28 @@ import { NgClass } from '@angular/common';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
 
   constructor(public authService:AuthService,private notifyService:NotificationService,private appointmentService:AppointmentService){
     /* notifyService.getMessages().subscribe((data)=>{
       console.log("notifica arrivata: ",data)
     })  */
+
+
   }
+
+  ngOnInit(): void {
+    this.notifyService.getSettaggi().subscribe(
+      data=>{
+        console.log(data);
+        this.starredListings=data.starredListings
+        this.visit=data.visit
+        this.recommendedListings=data.recommendedListings
+      }
+    )
+  }
+
+  
 
   isNotificationPanelOpen:boolean=false
   
@@ -99,10 +114,9 @@ export class NavbarComponent {
 isSettingsDropdownOpen = false;
 
 // Variabili per i tre tipi di notifiche
-starredListings
- = true;
-messageNotifications = true;
-systemNotifications = true;
+starredListings= true;
+visit = true;
+recommendedListings = true;
 
 // Funzione per aprire/chiudere il dropdown delle impostazioni
 toggleSettingsDropdown() {
@@ -110,35 +124,39 @@ toggleSettingsDropdown() {
 }
 
 // Funzioni per gestire i toggle
-toggleAppointmentNotifications() {
+toggleStarredListings() {
   this.starredListings
    = !this.starredListings
   ;
 }
 
-toggleMessageNotifications() {
-  this.messageNotifications = !this.messageNotifications;
+toggleVisit() {
+  this.visit = !this.visit;
 }
 
-toggleSystemNotifications() {
-  this.systemNotifications = !this.systemNotifications;
+toggleRecommendedListings() {
+  this.recommendedListings = !this.recommendedListings;
 }
 
 // Funzione per applicare le impostazioni
 applyNotificationSettings() {
   // Implementa qui la logica per salvare le impostazioni
   console.log('Impostazioni notifiche salvate:', {
-    appuntamenti: this.starredListings
+    starredListings: this.starredListings
     ,
-    messaggi: this.messageNotifications,
-    sistema: this.systemNotifications
+    visit: this.visit,
+    recommendedListings: this.recommendedListings
   });
 
   this.notifyService.modifyNotificationSettings({
     starredListings:this.starredListings,
     visit: this.visit,
     recommendedListings: this.recommendedListings
-  })
+  }).subscribe(
+    data=>{
+      console.log("results:",data)
+    }
+  )
   
   // Chiudi il dropdown dopo aver applicato le impostazioni
   this.isSettingsDropdownOpen = false;
