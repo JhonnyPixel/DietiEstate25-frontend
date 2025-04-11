@@ -84,6 +84,9 @@ export class SearchComponent {
   recentSearchSelected(recent:any){
     this.filters=recent;
 
+    console.log("riceca:",recent)
+    console.log("filtri aggioranti",this.filters)
+
     //this.filters.category=recent.
 
     // Update slider values when a recent search is selected
@@ -99,6 +102,30 @@ export class SearchComponent {
     this.filters.centerLongitude=parseFloat(place.lon);
     this.filters.radius=place.radius;
     
+  }
+
+  resetFilters(){
+    this.filters={
+      listingType: 'BUY',
+      category: 'houses',
+      priceMin: null,
+      priceMax: null,
+      surfaceMin: null,
+      surfaceMax: null,
+      region: null,
+      city: null,
+      nRoomsMin: null,
+      nRoomsMax: null,
+      nBathroomsMin: null,
+      nBathroomsMax: null,
+      floorMin: null,
+      floorMax: null,
+      energyClassMin: null,
+      building: false,
+      centerLatitude: null,
+      centerLongitude: null,
+      radius: null
+    };
   }
 
   search() {

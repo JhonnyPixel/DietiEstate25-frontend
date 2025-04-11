@@ -2,50 +2,74 @@
 [imageSize]="{ width: '400px', height: '300px' }"
 [lazyLoading]="false"></ng-image-slider>
 
-<div class="w-full flex p-18">
+<div class="w-full flex px-18">
     <div class="flex-1 flex flex-col">
 
+        <div class="flex space-x-5 my-8">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-lg font-medium bg-blue-100 text-blue-800">
+                {{listing.category}}
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-lg font-medium bg-green-100 text-green-800">
+                {{listing.listingType}}
+            </span>
+        </div>
+
         <!--Price and stand-out info-->
-        <div class="flex flex-col space-y-10  xl:flex-row xl:space-y-0 xl:justify-between ">
+        <div class="flex flex-col space-y-10  xl:flex-row xl:space-y-0 ">
 
             
 
             <!--Price and Address-->
             <div class="flex flex-col">
-                <p class="text-5xl font-semibold">{{listing.price?? '500.000'}}$</p>
-                <p class="text-gray-500 text-2xl ">{{listing.location.address?? 'C.so Amedeo di Savoia, Garnet Valley, PA 1909'}}</p>
+                <p class="text-5xl font-semibold">{{listing.price}}$</p>
+                <p class="text-gray-500 text-2xl ">{{listing.location.address}}</p>
             </div>
 
             <!--Beds,Baths,Sqft-->
-            <div class="flex space-x-18 xl:mx-auto">
+            <div class="flex space-x-18 xl:ml-30">
 
+                @if(listing.category=='HOUSE'){
+
+                    <div class="flex flex-col">
+                        <p class="text-4xl font-semibold">{{listing.nRooms ?? 'N/A'}}</p>
+                        <p class="text-gray-500 text-2xl">room</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="text-4xl font-semibold">{{listing.nBathrooms ?? 'N/A'}}</p>
+                        <p class="text-gray-500 text-2xl">bath</p>
+                    </div>
+
+                }
+
+                
                 <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">{{listing.nRooms ?? 1}}</p>
-                    <p class="text-gray-500 text-2xl">room</p>
-                </div>
-                <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">{{listing.nBathrooms ?? 1}}</p>
-                    <p class="text-gray-500 text-2xl">bath</p>
-                </div>
-                <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">{{listing.squareMeters ?? 332}}</p>
+                    <p class="text-4xl font-semibold">{{listing.squareMeters ?? 'N/A'}}</p>
                     <p class="text-gray-500 text-2xl">sqft</p>
                 </div>
 
-                <div class="flex flex-col">
-                    <p class="text-4xl font-semibold">{{listing.floor ?? '2'}}</p>
-                    <p class="text-gray-500 text-2xl">floor</p>
-                </div>
+                @if(listing.category=='HOUSE' || listing.category=='GARAGE'){
 
-                <button 
+                    <div class="flex flex-col">
+                        <p class="text-4xl font-semibold">{{listing.floor ?? 'N/A'}}</p>
+                        <p class="text-gray-500 text-2xl">floor</p>
+                    </div>
+
+
+                }
+
+                
+
+                
+
+            </div>
+
+            <button 
                 (click)="toggleFavorite()"
-                class=" p-5 rounded-full hover:bg-yellow-100 transition"
+                class=" p-5 rounded-full hover:bg-yellow-100 transition xl:mx-auto"
                 [ngClass]="{ 'text-yellow-400': isFavorite, 'text-gray-400': !isFavorite }"
                 aria-label="Aggiungi ai preferiti">
                 <fa-icon [icon]="faStar" class="text-4xl"></fa-icon>
             </button>
-
-            </div>
         
         </div>
 
@@ -57,6 +81,7 @@
 
          <!--Important Apartment Features-->
          <div class="grid grid-cols-3 gap-4 pt-5">
+            
             @if(listing.elevator){
                 <div class="p-5 relative flex space-x-2 items-center">
                     <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
@@ -72,6 +97,18 @@
                 </div>
             }
 
+            @if(listing.building){
+                <div class="p-5 relative flex space-x-2 items-center">
+                    <div class="absolute inset-0 bg-gray-500 opacity-10"></div>
+                    <fa-icon class="text-xl" [icon]="faBuilding" [style.color]="'orange'"></fa-icon>
+                    <p>Terreno Edificato</p>
+                </div>
+            }
+
+            @if(!listing.elevator && !listing.energyClass && !listing.building){
+                <p class="text-gray-500 text-lg">Nessuna feature stand-out.</p>
+            }
+
         </div>
 
 
@@ -80,13 +117,13 @@
     </div>
 
     <!--image name reviews...-->
-    <div class="flex flex-col w-100 border-1 border-gray-300 rounded-lg items-center p-5">
+    <div class="flex flex-col w-100 border-1 border-gray-300 rounded-lg items-center p-5 mt-20">
 
         <!--image and name-->
         <div class="flex flex-col items-center">
             <div class="w-24 h-24">
                 <img 
-                  src="img/logo.png" 
+                  [src]="listing.agent.profilePicUrl ?? '/img/agent-placeholder.jpg'" 
                   alt="Profile Picture" 
                   class="rounded-full object-cover w-full h-full border-1 border-gray-400"
                 />
@@ -136,8 +173,8 @@
         </div>
 
         <div class="flex-1 w-full flex flex-col gap-2 justify-end">
-            <button class="w-full p-1 rounded-sm border-1 border-blue-450 text-blue-500 hover:bg-blue-500 hover:text-white transition">Contatta</button>
-            <button (click)="openModal()" class="w-full p-3 rounded-sm border-1 bg-blue-500 text-white hover:bg-blue-600 transition">Richiedi Appuntamento</button>
+<!--             <button class="w-full p-1 rounded-sm border-1 border-blue-450 text-blue-500 hover:bg-blue-500 hover:text-white transition">Contatta</button>
+ -->            <button (click)="openModal()" class="w-full p-3 rounded-sm border-1 bg-blue-500 text-white hover:bg-blue-600 transition">Richiedi Appuntamento</button>
         </div>
 
         
@@ -154,7 +191,7 @@
         @for(feature of listing.otherFeatures;track feature){
             <p class="py-1 px-2 text-xl bg-gray-200 font-semibold">{{feature}}</p>
         }@empty{
-            <p>No feature</p>
+            <p class="text-gray-500 text-lg">Nessun altra feature specificata.</p>
         }
     </div>
 
@@ -163,7 +200,7 @@
 <!--Description of the apartment-->
 <div class="p-18">
     <h3 class="text-2xl font-semibold">Descrizione</h3>
-    <p>
+    <p class="mt-6">
         {{listing.description}}
     </p>
     

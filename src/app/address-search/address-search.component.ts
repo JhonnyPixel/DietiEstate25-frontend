@@ -161,12 +161,16 @@ export class AddressSearchComponent implements OnInit {
 }
  */
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { AuthService } from '../auth.service';
+
+import { faClockRotateLeft,faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 interface AddressSuggestion {
   display_name: string;
@@ -184,7 +188,7 @@ interface AddressSuggestion {
 
 @Component({
   selector: 'app-address-search',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,FontAwesomeModule],
   templateUrl: './address-search.component.html',
   styleUrl: './address-search.component.scss'
 })
@@ -203,6 +207,10 @@ export class AddressSearchComponent implements OnInit {
   isLoading = false;
   showDropdown = false; // Aggiungiamo un flag per controllare la visibilità del dropdown
   
+  faClock=faClockRotateLeft
+  faMark=faLocationDot
+
+
   constructor(private http: HttpClient, private auth: AuthService) {}
   
   ngOnInit() {

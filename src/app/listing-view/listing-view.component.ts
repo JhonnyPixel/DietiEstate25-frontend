@@ -5,7 +5,7 @@ import { WeatherService,WeatherForecast, WeatherCondition} from '../weather.serv
 import { ActivatedRoute } from '@angular/router';
 import { RestBackendService } from '../rest-backend.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faElevator,faLightbulb,faStar } from '@fortawesome/free-solid-svg-icons';
+import { faElevator,faLightbulb,faStar,faBuilding } from '@fortawesome/free-solid-svg-icons';
 
 import { StarRatingModule } from 'angular-star-rating';
 
@@ -52,6 +52,7 @@ export class ListingViewComponent {
    faElevator=faElevator
    faLightbulb=faLightbulb
    faStar=faStar
+   faBuilding=faBuilding
 
   userRating: number = 0; // Memorizza il voto dell'utente
   userComment: string = ''; // Memorizza il commento
@@ -141,9 +142,9 @@ setPhotos(){
   else{
     this.imageObject=this.imageObject.concat(
       {
-      image: 'img/apartment1.jpeg',
-      thumbImage: 'img/apartment1.jpeg',
-      alt: 'alt of image'
+      image: 'img/house-placeholder.jpg',
+      thumbImage: 'img/house-placeholder.jpg',
+      alt: 'placeholder'
     });
   }
 }

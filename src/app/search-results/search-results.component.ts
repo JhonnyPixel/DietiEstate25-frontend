@@ -344,7 +344,14 @@ export class SearchResultsComponent {
 
   recentSearchSelected(recent: any) {
     this.currentPage = 0;  // Reset to page 0
-    this.filters = recent;
+    /* this.filters = recent; */
+
+    const category=this.getCategorySlug(recent.searchType)
+    recent.searchType=null
+    delete recent.searchType //formatta per bene la categoria
+    this.filters.category=category
+
+    this.onFiltersApplied(recent);
     this.filters.page = this.currentPage;
     this.fetchListings();
   }
@@ -412,15 +419,21 @@ export class SearchResultsComponent {
     });
   }
 
-  openListingDetails(listing: any): void {
-    console.log(listing);
-    
+  getCategorySlug(cat:string){
     const categorySlug = {
       HOUSE: 'houses',
       BUILDING: 'buildings',
       GARAGE: 'garages',
       LAND: 'lands'
-    }[listing.category as 'HOUSE' | 'BUILDING' | 'GARAGE' | 'LAND'];
+    }[cat as 'HOUSE' | 'BUILDING' | 'GARAGE' | 'LAND'];
+
+    return categorySlug
+  }
+
+  openListingDetails(listing: any): void {
+    console.log(listing);
+    
+    const categorySlug = this.getCategorySlug(listing.category)
     
     this.router.navigate(['/listing', categorySlug, listing.id], {
       state: { listingData: listing }

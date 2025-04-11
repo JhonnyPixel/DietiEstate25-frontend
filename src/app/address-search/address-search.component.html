@@ -177,11 +177,65 @@
         <div  
           (mousedown)="selectRecent(search)"
           class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150">
-          <div class="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            </svg>
+          <div class="flex items-start space-x-2">
+            <fa-icon [icon]="faClock" class="text-gray-400"></fa-icon>
             <span class="text-sm text-gray-700 truncate">{{ search.display_name || 'Ricerca Recente' }}</span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+            >
+              {{ search.searchType }}
+            </span>
+
+            @if(search.city){
+
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
+            >
+              {{ search.city }}
+            </span>
+
+            }@else if(search.region){
+
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
+            >
+              {{ search.region }}
+            </span>
+            }
+
+            @if(search.listingType){
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800"
+              >
+                {{ search.listingType }}
+              </span>
+            }
+
+            @if(search.priceMax || search.priceMin){
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
+              >
+                {{ search.priceMin ?? 'Min'  }}$ - {{search.priceMax ?? 'Max'}}$
+              </span>
+            }
+
+            @if(search.squareMetersMax || search.squareMetersMin){
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800"
+             >
+                {{ search.squareMetersMin ?? 'Min' }}m² - {{search.squareMetersMax ?? 'Max'}}m²
+              </span>
+            }
+
+            @if(search.nRoomsMax || search.nRoomsMin){
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"
+              >
+                {{ search.nRoomsMin ?? 'Min' }}-{{search.nRoomsMax ?? 'Max'}}
+              </span>
+            }
+
+            @if(search.nBathroomsMax || search.nBathroomsMin){
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
+              >
+                {{ search.nBathroomsMin ?? 'Min' }}-{{search.nBathroomsMax ?? 'Max'}}
+              </span>
+            }
+
+
           </div>
         </div>
       }
@@ -193,11 +247,12 @@
         <div  
           (mousedown)="selectAddress(suggestion)"
           class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors duration-150">
-          <div class="flex items-start">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="flex items-start space-x-2">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             </svg>
-            <span class="text-sm text-gray-700 truncate">{{ suggestion.display_name }}</span>
+<!--             <fa-icon [icon]="faMark" class="text-gray-400"></fa-icon>
+ -->            <span class="text-sm text-gray-700 truncate">{{ suggestion.display_name }}</span>
           </div>
         </div>
       }

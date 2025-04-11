@@ -6,7 +6,7 @@
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <!-- Header con foto profilo e nome -->
       <div class="bg-white shadow rounded-lg overflow-hidden mb-6">
-        <div class="relative h-48 bg-gradient-to-r from-indigo-500 to-purple-600">
+        <div class="relative h-48 bg-gradient-to-r from-orange-300 to-orange-600">
           <!-- Pulsante modifica -->
           @if(!isEditing) {
             <button 
@@ -31,9 +31,10 @@
           <!-- Avatar placeholder per altri ruoli -->
           @if((!auth.isCustomer() && !auth.isAgent()) || !userProfile?.profilePicUrl) {
             <div class="absolute -top-16 w-32 h-32 rounded-full border-4 border-white bg-gray-200 flex items-center justify-center shadow-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+              </svg> -->
+              <img src="/img/agent-placeholder.jpg" class="w-full h-full object-cover rounded-full">
             </div>
           }
           
