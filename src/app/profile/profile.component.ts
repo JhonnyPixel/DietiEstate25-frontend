@@ -10,12 +10,15 @@ import { AuthService } from '../auth.service';
 import { AccountsBackendService } from '../accounts-backend.service';
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 interface UserProfile {
   id?: string | number;
   firstName: string;
   lastName: string;
   email: string;
+  bio:string;
   dob: string;
   password?: string;
   profilePicUrl?: string;
@@ -28,12 +31,16 @@ interface UserProfile {
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
-  imports:[TitleCasePipe,NgClass,FormsModule,ReactiveFormsModule,DatePipe,NavbarComponent]
+  imports:[TitleCasePipe,NgClass,FormsModule,ReactiveFormsModule,DatePipe,NavbarComponent,FontAwesomeModule]
 })
 export class ProfileComponent implements OnInit {
   userProfile: UserProfile | null = null;
   profileForm: FormGroup;
   isEditing = false;
+  showPassword=false;
+
+  faEye=faEye
+  faEyeSlash=faEyeSlash
 
   newProfilePic:File|null=null
   
@@ -50,6 +57,7 @@ export class ProfileComponent implements OnInit {
       email: ['', [Validators.required /*, Validators.email */]],
       dob: ['', Validators.required],
       password: [''],
+      bio:[''],
       profilePicUrl: [''],
       ragioneSociale: [''],
       partitaIva: ['']
@@ -63,6 +71,11 @@ export class ProfileComponent implements OnInit {
       (profile: UserProfile) => {
 
         profile.role=(this.auth.getRole() as UserProfile["role"])
+
+        if(profile.role==='ADMIN'){
+          profile.ragioneSociale=this.auth.getRagioneSociale()!
+          profile.partitaIva=this.auth.getPartitaIva()!
+        }
 
         console.log("arrivati i dati profilo",profile)
         this.userProfile = profile;
@@ -96,7 +109,7 @@ export class ProfileComponent implements OnInit {
       firstName: profile.firstName,
       lastName: profile.lastName,
       email: profile.email,
-      dob: profile.dob
+      dob: profile.dob,
     };
 
     if (profile.role === 'CUSTOMER') {
@@ -105,6 +118,8 @@ export class ProfileComponent implements OnInit {
     } else if (profile.role === 'ADMIN') {
       formData.ragioneSociale = profile.ragioneSociale || '';
       formData.partitaIva = profile.partitaIva || '';
+    } else if(profile.role === 'AGENT'){
+      formData.bio = profile.bio
     }
 
     this.profileForm.patchValue(formData);
@@ -272,6 +287,15 @@ export class ProfileComponent implements OnInit {
 
             console.log("Dati cambiati con successo:",response)
             // Aggiorna il profilo locale con i nuovi valori mantenendo il tipo originale
+
+            if(changedFields['ragioneSociale']){
+              localStorage.setItem('ragioneSociale',changedFields['ragioneSociale'])
+            }
+
+            if(changedFields['partitaIva']){
+              localStorage.setItem('partitaIva',changedFields['partitaIva'])
+
+            }
 
             if(changedFields['email'] || changedFields['password']){
               this.auth.logout();

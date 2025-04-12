@@ -33,7 +33,7 @@
                   <div class="absolute left-0 w-48 bg-white rounded-lg shadow-lg hidden group-hover:block">
                     <div class="p-4">
                         <label for="options" class="text-sm font-semibold">Scegli un'opzione</label>
-                        <select id="options" name="options" [(ngModel)]="filters.category" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900">
+                        <select (change)="onCategoryChange($event)" id="options" name="options" [(ngModel)]="filters.category" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-gray-900">
                           <option value="houses">Case</option>
                           <option value="buildings">Palazzi</option>
                           <option value="garages">Garage</option>
@@ -184,9 +184,11 @@
                       
                       <!-- Locali e Bagni -->
                       <div class="grid grid-cols-2 gap-3 mb-4">
+                        @if(availableFilters.includes('nRoomsMin') || availableFilters.includes('nRoomsMax')) {
                         <div>
                           <label class="block text-sm font-medium text-gray-700 mb-1">Locali</label>
                           <div class="flex items-center space-x-2">
+                            @if(availableFilters.includes('nRoomsMin')) {
                             <select id="nRoomsMin" name="nRoomsMin" [(ngModel)]="filters.nRoomsMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
                               <option value="">Min</option>
                               <option value="1">1</option>
@@ -195,7 +197,11 @@
                               <option value="4">4</option>
                               <option value="5">5+</option>
                             </select>
+                            }
+
+                            @if(availableFilters.includes('nRoomsMax')) {
                             <span class="text-gray-500">-</span> 
+
                             <select id="nRoomsMax" name="nRoomsMax" [(ngModel)]="filters.nRoomsMax" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
                               <option value="">Max</option>
                               <option value="1">1</option>
@@ -204,17 +210,23 @@
                               <option value="4">4</option>
                               <option value="5">5+</option>
                             </select>
+                          }
                           </div>
                         </div>
+                        }
+                        @if(availableFilters.includes('nBathroomsMin') || availableFilters.includes('nBathroomsMax')) {
                         <div>
                           <label class="block text-sm font-medium text-gray-700 mb-1">Bagni</label>
                           <div class="flex items-center space-x-2">
+                            @if(availableFilters.includes('nBathroomsMin')) {
                             <select id="nBathroomsMin" name="nBathroomsMin" [(ngModel)]="filters.nBathroomsMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
                               <option value="">Min</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3+</option>
                             </select>
+                          }
+                          @if(availableFilters.includes('nBathroomsMax')) {
                             <span class="text-gray-500">-</span>
                             <select id="nBathroomsMax" name="nBathroomsMax"  [(ngModel)]="filters.nBathroomsMax" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
                               <option value="">Max</option>
@@ -222,14 +234,18 @@
                               <option value="2">2</option>
                               <option value="3">3+</option>
                             </select>
+                          }
                           </div>
                         </div>
+                      }
                       </div>
                       
                       <!-- Piano -->
+                      @if(availableFilters.includes('floorMin') || availableFilters.includes('floorMax')) {
                       <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Piano</label>
                         <div class="flex items-center space-x-2">
+                          @if(availableFilters.includes('floorMin')) {
                           <select id="floorMin" name="floorMin" [(ngModel)]="filters.floorMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">Min</option>
                             <option value="0">PT</option>
@@ -238,6 +254,8 @@
                             <option value="3">3</option>
                             <option value="4">4+</option>
                           </select>
+                          }
+                          @if(availableFilters.includes('floorMax')) {
                           <span class="text-gray-500">-</span>
                           <select id="floorMax" name="floorMax" [(ngModel)]="filters.floorMax" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
                             <option value="">Max</option>
@@ -247,10 +265,13 @@
                             <option value="3">3</option>
                             <option value="4">4+</option>
                           </select>
+                        }
                         </div>
                       </div>
+                    }
                       
                       <!-- Classe Energetica -->
+                      @if(availableFilters.includes('energyClassMin')) {
                       <div class="mb-4">
                         <label for="energyClassMin" class="block text-sm font-medium text-gray-700 mb-1">Classe Energetica min.</label>
                         <select id="energyClassMin" name="energyClassMin" [(ngModel)]="filters.energyClassMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
@@ -268,24 +289,27 @@
                           <option value="G">G</option>
                         </select>
                       </div>
+                    }
                       
                       <!-- Palazzina -->
+                      @if(availableFilters.includes('building')) {
                       <div class="mb-5">
                         <label class="inline-flex items-center">
                           <input type="checkbox" name="building" [(ngModel)]="filters.building" value="true" class="rounded text-blue-600 h-4 w-4 focus:ring-blue-500">
                           <span class="ml-2 text-sm text-gray-700">Edificato</span>
                         </label>
                       </div>
+                    }
                       
                       <!-- Pulsanti -->
-                      <div class="flex space-x-2">
+                      <!-- <div class="flex space-x-2">
                         <button class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 text-sm">
                           Azzera
                         </button>
-                       <!--  <button class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-sm">
+                        <button class="flex-1 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-sm">
                           Applica
-                        </button> -->
-                      </div>
+                        </button>
+                      </div> -->
 
                     </div>
                   </div>
@@ -321,7 +345,7 @@
                 <!--Search Input Field-->
                 <div class="flex-1 relative group">
                   <!-- <input type="search" placeholder="Cerca per comune, via, indirizzo..." class="w-full focus:outline-none"> -->
-                   <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (addressSelected)="addressSelected($event)"></app-address-search>
+                   <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (inputCleared)="addressClear()" (addressSelected)="addressSelected($event)"></app-address-search>
                   <!-- <div class="hidden group-focus-within:block absolute bg-white w-full top-full rounded-b-xl pb-2.5">
 
                     <div class="px-5 py-5 hover:bg-gray-100 border-b-2 border-gray-100 text-lg"><img class="inline-block" src="cia"><p class="inline-block">Ricerca da punto sulla mappa</p></div>

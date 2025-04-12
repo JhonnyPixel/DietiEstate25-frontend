@@ -7,6 +7,7 @@ import { NotificationService } from '../notification.service';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'node:console';
 import { AnyARecord } from 'node:dns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ import { AnyARecord } from 'node:dns';
 })
 export class LoginComponent {
 
-  constructor(private authService:AuthService,private toaster:ToastrService,private notification:NotificationService){}
+  constructor(private authService:AuthService,private router:Router,private toaster:ToastrService,private notification:NotificationService){}
 
 
   loginForm = new FormGroup({
@@ -40,7 +41,7 @@ export class LoginComponent {
         localStorage.setItem("email",data.email)
         localStorage.setItem("role",data.role)
 
-        this.toaster.success(`Login riuscito benvenuto ${data.email}`)
+        this.toaster.success(`Login riuscito, ciao ${data.email}`)
 
         this.notification.initialize(); //recupera la notifiche all' accesso
 
@@ -49,8 +50,15 @@ export class LoginComponent {
           this.authService.getAgency(data.id).subscribe(agencyData=>{
             console.log("dati sull agenzia: ",agencyData);
             localStorage.setItem("agencyId",agencyData.id);
+            localStorage.setItem("partitaIva",agencyData.partitaIva);
+            localStorage.setItem("ragioneSociale",agencyData.ragioneSociale);
+            this.router.navigateByUrl("/search")
           })
+        }else{
+          this.router.navigateByUrl("/search")
         }
+
+        
       
     },
     error=>{

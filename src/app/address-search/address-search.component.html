@@ -168,7 +168,7 @@
   </div>
   } -->
 
-  @if(showDropdown){ <!-- qui c'era questa condizione: && suggestions.length -->
+  @if(showDropdown && isFocused){ <!-- qui c'era questa condizione: && suggestions.length -->
 
   <div class="absolute w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-9999">
     <!-- Ricerche recenti -->
@@ -210,7 +210,7 @@
             @if(search.priceMax || search.priceMin){
               <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
               >
-                {{ search.priceMin ?? 'Min'  }}$ - {{search.priceMax ?? 'Max'}}$
+                {{ search.priceMin ?? 'Min'  }}€ - {{search.priceMax ?? 'Max'}}€
               </span>
             }
 
@@ -224,14 +224,14 @@
             @if(search.nRoomsMax || search.nRoomsMin){
               <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800"
               >
-                {{ search.nRoomsMin ?? 'Min' }}-{{search.nRoomsMax ?? 'Max'}}
+                {{ search.nRoomsMin ?? 'Min' }}-{{search.nRoomsMax ?? 'Max'}} stanze
               </span>
             }
 
             @if(search.nBathroomsMax || search.nBathroomsMin){
               <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
               >
-                {{ search.nBathroomsMin ?? 'Min' }}-{{search.nBathroomsMax ?? 'Max'}}
+                {{ search.nBathroomsMin ?? 'Min' }}-{{search.nBathroomsMax ?? 'Max'}} bagni
               </span>
             }
 

@@ -198,6 +198,9 @@ export class SearchResultsComponent {
 
   @ViewChild(LeafletMapComponent) leafletMap!: LeafletMapComponent;
   @ViewChild(FilterBarComponent) filterBar!: FilterBarComponent;
+  @ViewChild(AddressSearchComponent) addressBar!: AddressSearchComponent;
+
+  filtersFromSearch:any=null
 
   listings: Array<any> = [];
   
@@ -234,6 +237,8 @@ export class SearchResultsComponent {
     page: 0  // Starting from page 0
   };
 
+  
+
   ngOnInit() {
     const state = window.history.state;
     const filters = state ? state.filters : null;
@@ -241,7 +246,18 @@ export class SearchResultsComponent {
     console.log('sono in OnInit', state);
     if (filters) {
       console.log('Dati ricevuti:', filters);
+      this.filtersFromSearch={...filters}
       this.onFiltersApplied(filters);
+      
+    }
+  }
+
+  ngAfterViewInit(){
+    const state = window.history.state;
+    const address = state ? state.address : null;
+
+    if(address){
+      this.addressBar.insertInput(address)
     }
   }
 
@@ -253,6 +269,8 @@ export class SearchResultsComponent {
   onFiltersApplied(filters: any) {
     // Reset to first page when new filters are applied
     this.currentPage = 0;  // Reset to page 0
+
+    console.log("filtri applicati: ",filters);
     
     for (let key in filters) {
       this.filters[key] = filters[key];
@@ -262,9 +280,34 @@ export class SearchResultsComponent {
     this.filters.page = this.currentPage;
     
     this.fetchListings();
+
+
+      /* // Reset to first page when new filters are applied
+      console.log("filtri applicati: ",filters);
+  this.currentPage = 0;
+  
+  // Create a brand new clean filters object
+  const newFilters:any = {
+    listingType: 'BUY',
+    category: 'houses',
+    page: this.currentPage
+  };
+  
+  // Only add non-null values from the filter form
+  for(let key in filters) {
+    if (filters[key] !== null && filters[key] !== '' && filters[key] !== undefined) {
+      newFilters[key] = filters[key];
+    }
+  }
+  
+  // Completely replace the filters object
+  this.filters = newFilters;
+  
+  this.fetchListings(); */
   }
 
   fetchListings() {
+    console.log("sto per chiamare getListing: ",this.filters)
     this.restBackend.getListings(this.filters).subscribe((response:any) => {
       // Assuming the API returns pagination metadata
      /*  if (response && typeof response === 'object') {
@@ -312,7 +355,7 @@ export class SearchResultsComponent {
       
       this.leafletMap.addListingsToMap(this.listings);
       
-      this.resetLocationFilters();
+      //this.resetLocationFilters();
     });
   }
 
@@ -338,6 +381,10 @@ export class SearchResultsComponent {
     this.filters.centerLatitude = null;
     this.filters.centerLongitude = null;
     this.filters.radius = null;
+
+    /* delete this.filters.centerLatitude
+    delete this.filters.centerLongitude
+    delete this.filters.radius */
     
     console.log("Filtri di posizione reimpostati:", this.filters);
   }
@@ -365,7 +412,7 @@ export class SearchResultsComponent {
 
   searchFromPoint() {
     const markerData = this.leafletMap.getMarkerData();
-    const filters = this.filterBar.getFilters();
+    const filters = {...this.filterBar.getFilters()}
     
     // Reset to first page
     this.currentPage = 0;  // Reset to page 0
@@ -414,8 +461,11 @@ export class SearchResultsComponent {
       console.log("dati arrivati: ", this.listings);
       this.toggleSelection(); // Reimposto la mappa
       this.leafletMap.addListingsToMap(this.listings);
+
+      this.addressBar.clearSearch()
       
       this.resetLocationFilters();
+      
     });
   }
 

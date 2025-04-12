@@ -22,7 +22,7 @@ export class RestBackendService {
     console.log("sono getListings e mi è arrivatop:",filters)
     // Iteriamo sugli altri filtri e li aggiungiamo come parametri
     Object.keys(filters).forEach(key => {
-      if(filters[key]){
+      if(filters[key] !== null && filters[key] !== undefined){
         /* params = params.set(key, filters[key]); */
 
         let value = filters[key];

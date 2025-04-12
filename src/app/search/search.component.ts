@@ -17,7 +17,55 @@ import { FormsModule} from '@angular/forms';
 })
 export class SearchComponent {
 
+
+
   constructor(private router:Router) {}
+
+
+  filterConfig: { [key: string]: string[] } = {
+    houses: [
+        'listingType',
+        'priceMin',
+        'priceMax',
+        'energyClassMin',
+        'region',
+        'city',
+        'squareMetersMin',
+        'squareMetersMax',
+        'nRoomsMin',
+        'nRoomsMax',
+        'nBathroomsMin',
+        'nBathroomsMax',
+        'floorMin',
+        'floorMax'],
+    buildings: [
+      'listingType',
+      'priceMin',
+      'priceMax',
+      'region',
+      'city',
+      'squareMetersMin',
+      'squareMetersMax'],
+    garages: [
+      'listingType',
+      'priceMin',
+      'priceMax',
+      'region',
+      'city',
+      'squareMetersMin',
+      'squareMetersMax',
+      'floorMin',
+      'floorMax'],
+    lands: [
+      'listingType',
+      'priceMin',
+      'priceMax',
+      'region',
+      'city',
+      'squareMetersMin',
+      'squareMetersMax',
+      'building']
+  };
 
 
   filters: any = {
@@ -42,8 +90,12 @@ export class SearchComponent {
     radius: null
   };
 
-   priceValue: number = 80;
-   priceHighValue:number =90; 
+  availableFilters: string[] = this.filterConfig["houses"]; 
+
+  address:any;
+
+   priceValue: number = 0;
+   priceHighValue:number =200; 
    priceOptions: Options = {
     floor: 0,
     ceil: 200,
@@ -52,8 +104,8 @@ export class SearchComponent {
     }
   };
 
-  surfaceValue: number = 80;
-   surfaceHighValue:number =90; 
+  surfaceValue: number = 0;
+   surfaceHighValue:number =2000; 
    surfaceOptions: Options = {
     floor: 0,
     ceil: 2000,
@@ -79,6 +131,21 @@ export class SearchComponent {
     this.filters.surfaceMax = this.surfaceHighValue === 2000 ? null : this.surfaceHighValue;
   }
 
+  onCategoryChange(event:any) {
+
+    console.log(event.target.value);
+    this.availableFilters=this.filterConfig[event.target.value]
+    //this.filterForm // Reset filtri quando cambia categoria
+    this.resetFilters(event.target.value);
+    this.disableFilters();
+  }
+
+  addressClear() {
+    this.filters.centerLatitude=null;
+    this.filters.centerLongitude=null;
+    this.filters.radius=null;
+    this.address=null;
+  }
   
 
   recentSearchSelected(recent:any){
@@ -101,13 +168,18 @@ export class SearchComponent {
     this.filters.centerLatitude=parseFloat(place.lat);
     this.filters.centerLongitude=parseFloat(place.lon);
     this.filters.radius=place.radius;
+
+    this.address=place.display_name
     
   }
 
-  resetFilters(){
+  resetFilters(category:string){
+    let lat=this.filters.centerLatitude
+    let lon=this.filters.centerLongitude
+    let radius=this.filters.radius
     this.filters={
       listingType: 'BUY',
-      category: 'houses',
+      category: category,
       priceMin: null,
       priceMax: null,
       surfaceMin: null,
@@ -122,18 +194,41 @@ export class SearchComponent {
       floorMax: null,
       energyClassMin: null,
       building: false,
-      centerLatitude: null,
-      centerLongitude: null,
-      radius: null
+      centerLatitude: lat,
+      centerLongitude: lon,
+      radius: radius
     };
   }
 
+  disableFilters() {
+    // Aggiungi logica per resettare o disabilitare i controlli non necessari
+    for (const control in this.filters.controls) {
+      if (this.filters.controls.hasOwnProperty(control)) {
+        if (control === 'category') {
+          this.filters.controls[control].enable();
+        } else {
+          const controlEnabled = this.availableFilters.includes(control);
+  
+          if (controlEnabled) {
+            this.filters.controls[control].enable();
+          } else {
+            this.filters.controls[control].disable();
+            // Reset dei valori dei controlli disabilitati
+            //this.filterForm.controls[control].setValue(null);
+          }
+        }
+      }
+    }
+  }
+
   search() {
+
+    console.log("applicata ricerca filtri:",this.filters)
 
     // Update the filters with the current slider values before searching
     this.onPriceChange(null);
     this.onSurfaceChange(null);
 
-    this.router.navigate(['/results'], { state: { filters: this.filters } });
+    this.router.navigate(['/results'], { state: { filters: this.filters,address:this.address } });
   }
 }

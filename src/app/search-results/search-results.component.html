@@ -114,7 +114,7 @@
     <app-address-search (recentSearchSelected)="recentSearchSelected($event)" (addressSelected)="addressSelected($event)" (inputCleared)="resetLocationFilters()" class="w-200"></app-address-search>
   </div>
 
-  <app-filter-bar (filtersApplied)="onFiltersApplied($event)"></app-filter-bar>
+  <app-filter-bar (filtersApplied)="onFiltersApplied($event)" [externalFilters]="filtersFromSearch"></app-filter-bar>
 
   <!--Body-->
   <div class="flex-1 flex min-h-0">

@@ -105,10 +105,42 @@
                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
               </div>
 
-              <div>
+              @if(userProfile?.role === 'AGENT') {
+                  
+                <div>
+                  <label for="bio" class="block text-sm font-medium text-gray-700">Biografia</label>
+                  <textarea id="bio" formControlName="bio" 
+                         class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                         
+                  </textarea>
+                </div>
+               
+              }
+
+             <!--  <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input type="password" id="password" formControlName="password" 
                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              </div> -->
+
+              <div class="relative">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+              
+                <div class="flex">
+                <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 shadow-sm sm:text-sm border-gray-300 rounded-md">
+              
+                <!-- Occhio toggle -->
+                <button type="button"
+                        (click)="showPassword = !showPassword"
+                        class="text-gray-500 ml-1 hover:text-gray-700 focus:outline-none">
+                  @if(!showPassword){
+                    <fa-icon [icon]="faEye"></fa-icon>
+                  }@else{
+                    <fa-icon [icon]="faEyeSlash"></fa-icon>
+                  }
+                </button>
+              </div>
               </div>
               
               <!-- Campi per utente -->
@@ -183,8 +215,21 @@
                   <h3 class="text-sm font-medium text-gray-500">Data di nascita</h3>
                   <p class="mt-1 text-sm text-gray-900">{{ userProfile?.dob | date: 'dd/MM/yyyy' }}</p>
                 </div>
+
+                @if(userProfile?.role === 'AGENT') {
+                  
+                  <div>
+                    <h3 class="text-sm font-medium text-gray-500">Biografia</h3>
+                     <p class="mt-1 text-sm text-gray-900">{{userProfile?.bio}}</p>
+                  </div>
+                 
+                }
+
+
               </div>
             </div>
+
+           
             
             <!-- Informazioni specifiche per utente -->
             @if(userProfile?.role === 'CUSTOMER') {

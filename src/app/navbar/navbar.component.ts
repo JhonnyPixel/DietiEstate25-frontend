@@ -48,16 +48,6 @@ export class NavbarComponent implements OnInit{
 
   visitRequest:any={};
 
-  @Output() loginAdmin= new EventEmitter<boolean>()
-
-  activateAdminLogin(){
-    this.loginAdmin.emit(true)
-  }
-
-  deactiveAdminLogin(){
-    this.loginAdmin.emit(false)
-  }
-
   openAppointmentModal(visitRequest:any) {
 
     const converted: any[] = visitRequest.availabilities.map(({ day, timeSlots }:any) => ({

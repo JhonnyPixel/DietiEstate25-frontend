@@ -28,7 +28,7 @@ export const routes: Routes = [
         component:LoginComponent
     },
     {
-        path:"register",
+        path:"register/:type",
         title:"Register",
         component:RegisterComponent
     },

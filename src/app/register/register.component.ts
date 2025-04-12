@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component'; 
 import { FormGroup,FormControl,Validators,ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { error } from 'console';
 
 @Component({
   selector: 'app-register',
@@ -9,9 +12,19 @@ import { AuthService } from '../auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
 
-  constructor(private authService:AuthService){}
+  constructor(private authService:AuthService,private route:ActivatedRoute,private router:Router,private toaster:ToastrService){}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const type = params.get('type');
+      console.log('Tipo di registrazione cambiato:', type);
+  
+      this.adminRegister= (type==='adm')
+    });
+  }
+
 
   adminRegister:boolean=false
 
@@ -42,9 +55,17 @@ export class RegisterComponent {
         ragioneSociale: formValues.ragioneSociale!,
         partitaIva: formValues.partitaIva!,
       };
-      this.authService.registerAdmin(data);
+      this.authService.registerAdmin(data).subscribe(data=>{
+        console.log(data);
+        this.router.navigateByUrl("/login")
+        this.toaster.success('Registrazione andata a buon fine')
+      },
+      error=>{
+        this.toaster.error('Impossibile eseguire la registrazione')
+      })
     } else {
       console.error('Il modulo di registrazione non è valido');
+      this.toaster.error('Il modulo di registrazione non è valido')
     }
   }
   else{
@@ -56,7 +77,14 @@ export class RegisterComponent {
       email: formValues.email!,
       password: formValues.password!,
     };
-    this.authService.registerUser(data);
+    this.authService.registerUser(data).subscribe(data=>{
+      console.log(data);
+      this.router.navigateByUrl("/login")
+      this.toaster.success('Registrazione andata a buon fine')
+    },
+  error=>{
+    this.toaster.error('Impossibile eseguire la registrazione')
+  })
   }
 }
 

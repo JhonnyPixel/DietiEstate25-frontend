@@ -28,7 +28,7 @@ export class AuthService {
 
     console.log("register: ",data)
 
-    this.httpClient.post<{}>(url,{
+    return this.httpClient.post<{}>(url,{
       firstName : data.firstName,
       lastName : data.lastName,
       email : data.email,
@@ -36,8 +36,6 @@ export class AuthService {
       tempPassword : data.password,
       ragioneSociale : data.ragioneSociale,
       partitaIva : data.partitaIva
-    }).subscribe(data=>{
-      console.log(data)
     })
 
   }
@@ -55,14 +53,12 @@ export class AuthService {
 
     console.log("register: ",data)
 
-    this.httpClient.post<{}>(url,{
+    return this.httpClient.post<{}>(url,{
       firstName : data.firstName,
       lastName : data.lastName,
       email : data.email,
       dob : data.dateOfBirth,
       password : data.password
-    }).subscribe(data=>{
-      console.log(data)
     })
 
   }
@@ -98,6 +94,14 @@ export class AuthService {
 
   getAgencyId():string|null{
     return localStorage.getItem("agencyId")
+  }
+
+  getPartitaIva(){
+    return localStorage.getItem("partitaIva");
+  }
+
+  getRagioneSociale(){
+    return localStorage.getItem("ragioneSociale");
   }
 
   getEmail():string|null{
@@ -139,12 +143,7 @@ export class AuthService {
   } */
 
   logout(){
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("agencyId");
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
-    localStorage.removeItem("userData");
+    localStorage.clear()
 
     this.logoutSubject.next();
   }

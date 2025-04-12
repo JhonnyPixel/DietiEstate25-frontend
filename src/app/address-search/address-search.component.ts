@@ -205,6 +205,7 @@ export class AddressSearchComponent implements OnInit {
   recentSearches: any = [];
   nRecentSearches:number=5;
   isLoading = false;
+  isFocused=false;
   showDropdown = false; // Aggiungiamo un flag per controllare la visibilità del dropdown
   
   faClock=faClockRotateLeft
@@ -362,6 +363,7 @@ export class AddressSearchComponent implements OnInit {
   
   // Funzione per mostrare il dropdown quando l'input riceve il focus
   onFocus() {
+    this.isFocused=true
     this.showDropdown = true;
     // Se il campo è vuoto o ha meno di 3 caratteri, mostriamo le ricerche recenti
     if (!this.searchControl.value || this.searchControl.value.length < 3) {
@@ -373,6 +375,7 @@ export class AddressSearchComponent implements OnInit {
   onBlur() {
     // Aggiungiamo un piccolo ritardo per permettere il click sul dropdown
     setTimeout(() => {
+      this.isFocused=false
       this.showDropdown = false;
     }, 200);
   }

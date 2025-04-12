@@ -141,6 +141,9 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RestBackendService } from '../rest-backend.service';
 import { AccountsBackendService } from '../accounts-backend.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { faPenToSquare,faTrash } from '@fortawesome/free-solid-svg-icons';
 
 export interface Account {
   id: string;
@@ -155,7 +158,7 @@ export interface Account {
 
 @Component({
   selector: 'app-account-list',
-  imports: [FormsModule, NavbarComponent],
+  imports: [FormsModule, NavbarComponent,FontAwesomeModule],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.scss'
 })
@@ -224,6 +227,9 @@ export class AccountListComponent implements OnInit {
   showForm = false;
   isEditing = false;
   newAccount: Account = { id: '', name: '', lastname: '', email: '', dateOfBirth: '', password: '', profilePicture: '', type: 'Manager' };
+
+  faPen=faPenToSquare
+  faThrash=faTrash
 
   get managers(): Account[] {
     return this.accounts.filter(acc => acc.type === 'Manager');

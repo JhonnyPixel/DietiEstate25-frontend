@@ -395,9 +395,13 @@ export class CreateListingComponent implements OnInit {
   }
 
   onAddressSelected(data: any) {
+
+    const comune = data.address.city || data.address.town || data.address.village || data.address.hamlet;
+    const strada = data.address.road || data.address.pedestrian || data.address.footway || data.address.cycleway || data.address.path;
+
     this.propertyForm.get(['locationDto', 'region'])?.setValue(data.address.country);
-    this.propertyForm.get(['locationDto', 'city'])?.setValue(data.address.city);
-    this.propertyForm.get(['locationDto', 'address'])?.setValue(data.address.road);
+    this.propertyForm.get(['locationDto', 'city'])?.setValue(comune);
+    this.propertyForm.get(['locationDto', 'address'])?.setValue(strada);
     this.propertyForm.get(['locationDto', 'latitude'])?.setValue(Number(data.lat));
     this.propertyForm.get(['locationDto', 'longitude'])?.setValue(Number(data.lon));
     
