@@ -15,7 +15,7 @@ export class LeafletMapComponent implements OnInit{
   private defaultZoom:number = 15;
   private circle!: L.Circle;
   private radius: number = 500; // Raggio iniziale in metri
-  private isSelecting: boolean = false; // Controlla se l'utente sta selezionando un punto
+  private isSelecting: boolean = false; 
   private resizeMarker!: L.Marker;
 
   private resultsMarkers:L.Marker[]=[];
@@ -52,27 +52,7 @@ export class LeafletMapComponent implements OnInit{
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(this.map);
 
-  var greenIcon = leaflet.icon({
-    iconUrl: 'img/location.png',
-    shadowUrl: '',
 
-    iconSize:     [30, 30], // size of the icon
-    iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
-});
-
-  /* var marker = leaflet.marker([40.853294, 14.305573],{icon:greenIcon})
-
-  function onMarkerClick(e:any){
-    alert("ciao")
-    //codice per reagire al tocco del marker
-  }
-
-  marker.on("click",onMarkerClick) //registro l evento per il marker
-
-  marker.bindPopup("<br>Preview Annuncio</br>") //qui metteremo preview dell' annuncio
-
-  marker.addTo(this.map); */
 
   }
 
@@ -95,8 +75,22 @@ export class LeafletMapComponent implements OnInit{
     }
   }
 
+  private initializeRadius(): void {
+    const currentZoom = this.map.getZoom();
+    
+    // Formula per calcolare il raggio in base al livello di zoom
+    
+    this.radius = Math.round(10000 * Math.pow(0.5, currentZoom - 10));
+    
+    // Imposta limiti per il raggio (min e max)
+    //this.radius = Math.max(100, Math.min(this.radius, 10000));
+    
+    
+  }
+
   private addMarker(lat: number, lng: number): void {
    
+    this.initializeRadius()
 
     if (this.marker) {
       this.map.removeLayer(this.marker);
@@ -162,21 +156,18 @@ export class LeafletMapComponent implements OnInit{
     
     // Se il marker non esiste ancora, crealo
     if (!this.createMarker) {
-      // Crea un'icona personalizzata (opzionale)
       const customIcon = leaflet.icon({
-        iconUrl: 'assets/marker-icon.png', // Assicurati che questo file esista!
+        iconUrl: 'assets/marker-icon.png', 
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
-        // Se non hai un'icona personalizzata, puoi omettere questo blocco
-        // e leaflet userà l'icona di default
       });
       
       // Crea il marker e aggiungilo alla mappa
       try {
         this.createMarker = leaflet.marker(newLatLng, { 
           /* draggable: true, */
-          // icon: customIcon // Decommentare se usi un'icona personalizzata
+          // icon: customIcon 
         }).addTo(this.map);
         
         // Aggiungi un popup al marker
@@ -233,12 +224,12 @@ export class LeafletMapComponent implements OnInit{
             Prezzo: ${listing.price}€
           `);
   
-          // Aggiungi un ascoltatore di eventi per quando il marker viene cliccato
+          // ascoltatore di eventi per quando il marker viene cliccato
           marker.on('click', () => {
             this.resultMarkerClicked.emit(listing.id);
           });
   
-          // Aggiungi il marker alla mappa e al nostro array di risultati
+          // Aggiungi il marker alla mappa e all array di risultati
           marker.addTo(this.map);
           this.resultsMarkers.push(marker);
           this.markerPopups[listing.id] = marker;  // Mappa l'ID del listing al marker

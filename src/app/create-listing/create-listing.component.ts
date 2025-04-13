@@ -117,7 +117,6 @@ export class CreateListingComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Controlla se è in modalità modifica
     if (this.existingListing) {
       this.isEditMode = true;
       this.pageTitle = 'Modifica annuncio';
@@ -127,7 +126,6 @@ export class CreateListingComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // Se siamo in modalità modifica, aggiorna la searchbar dopo che la vista è stata inizializzata
     if (this.isEditMode && this.existingListing && this.existingListing.location) {
       setTimeout(() => {
         this.addressSearchBar.insertInput(this.existingListing.location.address || '');
@@ -143,7 +141,7 @@ export class CreateListingComponent implements OnInit {
     })
     console.log(event.target.value);
     this.availableFilters=this.filterConfig[event.target.value]
-    //this.filterForm // Reset filtri quando cambia categoria
+    //this.filterForm 
     this.resetControls();
   }
 
@@ -207,32 +205,23 @@ export class CreateListingComponent implements OnInit {
 
     // Carica foto se presenti
     if (this.existingListing.photos && this.existingListing.photos.length > 0) {
-      // Se le foto sono oggetti con url e id
-      if (typeof this.existingListing.photos[0] === 'object' && this.existingListing.photos[0].url) {
-        this.photoPreviews = this.existingListing.photos.map((photo: any) => ({
-          id: photo.id,
-          url: photo.url,
-          isNew: false
-        }));
-      } 
-      // Se le foto sono array di stringhe URL
-      else if (typeof this.existingListing.photos[0] === 'string') {
+     
         this.photoPreviews = this.existingListing.photos.map((url: string, index: number) => ({
           id: index, // Usando l'indice come id temporaneo
           url: url,
           isNew: false
         }));
-      }
+      
     }
 
     console.log("serrvizi:",this.propertyForm.value)
 
     // Aggiorna la posizione sulla mappa
     setTimeout(() => {
-      if (this.leafletMap && this.existingListing.locationDto) {
+      if (this.leafletMap && this.existingListing.location) {
         this.leafletMap.updateMarkerPosition(
-          this.existingListing.locationDto.latitude,
-          this.existingListing.locationDto.longitude
+          this.existingListing.location.latitude,
+          this.existingListing.location.longitude
         );
       }
     }, 500);
@@ -423,7 +412,6 @@ export class CreateListingComponent implements OnInit {
     console.log("dati form: ", this.propertyForm.value);
   }
 
-  // Metodo per annullare e tornare indietro
   cancel() {
     // Torna alla pagina precedente
     this.router.navigate(['/mylistings']);

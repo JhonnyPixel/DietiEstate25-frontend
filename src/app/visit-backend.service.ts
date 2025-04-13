@@ -27,13 +27,7 @@ export class VisitBackendService {
 
   getVisits(from:string,to:string){
 
-    // simulating an HTTP request
-       /*  return new Observable((observer:any) => {
-          setTimeout(() => {
-            observer.next(this.events);
-            observer.complete();
-            }, 200);
-        }); */
+    
  
     let url=`http://localhost:8080/api/visits`
 

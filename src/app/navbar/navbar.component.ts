@@ -8,6 +8,8 @@ import { NotificationService } from '../notification.service';
 import { AppointmentService } from '../appointment.service';
 import { NgClass } from '@angular/common';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-navbar',
   imports: [NotificationPanelComponent,NgClass,RouterLink,SelectAppointmentModalComponent,DenyAppointmentModalComponent],
@@ -16,7 +18,7 @@ import { NgClass } from '@angular/common';
 })
 export class NavbarComponent implements OnInit{
 
-  constructor(public authService:AuthService,private notifyService:NotificationService,private appointmentService:AppointmentService){
+  constructor(public authService:AuthService,private toaster:ToastrService,private notifyService:NotificationService,private appointmentService:AppointmentService){
     /* notifyService.getMessages().subscribe((data)=>{
       console.log("notifica arrivata: ",data)
     })  */
@@ -25,6 +27,7 @@ export class NavbarComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    if(this.authService.isUserLoggedIn()){
     this.notifyService.getSettaggi().subscribe(
       data=>{
         console.log(data);
@@ -33,6 +36,7 @@ export class NavbarComponent implements OnInit{
         this.recommendedListings=data.recommendedListings
       }
     )
+  }
   }
 
   
@@ -83,6 +87,16 @@ export class NavbarComponent implements OnInit{
     this.appointmentService.confirmAppointment(appointment,this.visitRequest.id).subscribe(
       data=>{
         console.log("Appuntamento creato con successo nel backend: ",data)
+        this.toaster.success("appuntamento confermato al giorno selezionato")
+      },
+      error=>{
+        
+        if(error.error.status===404){
+          console.log("Richiesta già gestita")
+          this.toaster.error("Richiesta già gestita")
+        }else{
+          this.toaster.error("Impossibile inviare la richiesta al momento")
+        }
       }
     )
   }
@@ -92,6 +106,16 @@ export class NavbarComponent implements OnInit{
     this.appointmentService.denyAppointment(motivation,this.visitRequest.id).subscribe(
       data=>{
         console.log("Appuntamento rifiutato con successo nel backend: ",data)
+        this.toaster.success("Rifiuto confermato con successo")
+      },
+      error=>{
+        
+        if(error.error.status===404){
+          console.log("Richiesta già gestita")
+          this.toaster.error("Richiesta già gestita")
+        }else{
+          this.toaster.error("Impossibile inviare la richiesta al momento")
+        }
       }
     )
   }

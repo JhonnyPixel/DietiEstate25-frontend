@@ -8,12 +8,13 @@ import { faSun, faCloudSun, faCloud, faCloudRain, faCloudBolt } from '@fortaweso
 import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { VisitBackendService } from '../visit-backend.service';
+import { NgClass } from '@angular/common';
 
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-appointment-modal',
-  imports: [DatePipe, FontAwesomeModule, FormsModule, ReactiveFormsModule],
+  imports: [DatePipe, FontAwesomeModule, FormsModule, ReactiveFormsModule,NgClass],
   templateUrl: './appointment-modal.component.html',
   styleUrl: './appointment-modal.component.scss'
 })
@@ -43,7 +44,6 @@ export class AppointmentModalComponent implements OnInit {
   ngOnInit() {
     this.availableDate = this.generateDates(16);
     
-    // Inizializza il form con una struttura diversa
     this.appointmentForm = this.fb.group({
       appointments: this.fb.array([])
     });
@@ -84,7 +84,6 @@ export class AppointmentModalComponent implements OnInit {
     }
   }
 
-  // Verifica se una data è selezionata
   isDateSelected(date: Date): boolean {
     return this.getAppointmentIndex(date) > -1;
   }
@@ -98,7 +97,6 @@ export class AppointmentModalComponent implements OnInit {
     });
   }
 
-  // Ottieni l'array degli appuntamenti
   getAppointmentsArray(): FormArray {
     return this.appointmentForm?.get('appointments') as FormArray;
   }

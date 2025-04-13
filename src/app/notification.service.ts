@@ -53,7 +53,7 @@ export class NotificationService {
     this.fetchOfflineNotifications();
     
     // Connetti ai WebSocket per notifiche in tempo reale
-    this.connectWebSocket();
+    //this.connectWebSocket();
   }
 
   // Recupera le notifiche ricevute quando l'utente era offline
@@ -162,7 +162,7 @@ export class NotificationService {
   }
 
   connect(username: string, token: string) {
-    const socket = new SockJS('/ws'); // Assicurati che l'URL sia corretto
+    const socket = new SockJS('/ws'); 
     this.stompClient = new Client({
       webSocketFactory: () => socket,
       connectHeaders: {

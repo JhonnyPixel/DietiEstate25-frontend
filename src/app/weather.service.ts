@@ -29,7 +29,7 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   getDetailedForecast(latitude: number, longitude: number): Observable<WeatherForecast[]> {
-    // Costruzione dell'URL con i parametri necessari per determinare le diverse condizioni meteo
+    // Costruzione dell url con i parametri necessari per determinare le diverse condizioni meteo
     const url = `${this.baseUrl}?latitude=${latitude}&longitude=${longitude}&daily=precipitation_sum,precipitation_probability_max,cloud_cover_mean,weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=16`;
 
     return this.http.get<any>(url).pipe(

@@ -1,179 +1,3 @@
-/* import { Component,ViewChild } from '@angular/core';
-import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
-import {FormsModule } from '@angular/forms';
-import { RestBackendService } from '../rest-backend.service';
-import { FilterBarComponent } from '../filter-bar/filter-bar.component';
-import { AddressSearchComponent } from '../address-search/address-search.component';
-import { Router, RouterLink } from '@angular/router';
-
-import { ResultItemComponent } from '../result-item/result-item.component';
-
-@Component({
-  selector: 'app-search-results',
-  imports: [LeafletMapComponent,FormsModule,FilterBarComponent,AddressSearchComponent,RouterLink,ResultItemComponent],
-  templateUrl: './search-results.component.html',
-  styleUrl: './search-results.component.scss'
-})
-export class SearchResultsComponent {
-
-
-  constructor(private restBackend:RestBackendService,private router:Router){}
-
-  @ViewChild(LeafletMapComponent) leafletMap!: LeafletMapComponent;
-  @ViewChild(FilterBarComponent) filterBar!: FilterBarComponent;
-
-  listings:Array<any>=[];
-
-  isSelecting:Boolean = false
-
-  focusedListingId:string=''
-
-
-  filters: any = {
-    listingType: 'BUY',
-    category: 'houses',
-    priceMin: null,
-    priceMax: null,
-    surfaceMin: null,
-    surfaceMax: null,
-    region: null,
-    city: null,
-    nRoomsMin: null,
-    nRoomsMax: null,
-    nBathroomsMin: null,
-    nBathroomsMax: null,
-    floorMin: null,
-    floorMax: null,
-    energyClassMin: null,
-    building: false,
-    centerLatitude: null,
-    centerLongitude: null,
-    radius: null
-  };
-
-  ngOnInit() {
-    const state = window.history.state;
-    const filters = state ? state.filters : null;
-    
-    console.log('sono in OnInit', state);
-    if (filters) {
-      console.log('Dati ricevuti:', filters);
-
-      this.onFiltersApplied(filters);
-
-    }
-  }
-
-
-  toggleSelection():void{
-    this.leafletMap.toggleSelection();
-    this.isSelecting= !this.isSelecting
-  }
-
-  onFiltersApplied(filters:any) {
-
-    for(let key in filters){
-      this.filters[key]=filters[key]
-    }
-    
-    this.restBackend.getListings(this.filters).subscribe(data=>{
-      console.log(data);
-      this.listings=(data as []);
-      console.log("dati arrivati: ",this.listings);
-      this.leafletMap.addListingsToMap(this.listings)
-
-      this.resetLocationFilters()
-    })
-    
-    console.log("Filtri applicati:", this.filters);
-
-    
-
-  }
-
-  resetLocationFilters(): void {
-    // Reset delle coordinate e del raggio
-    this.filters.centerLatitude = null;
-    this.filters.centerLongitude = null;
-    this.filters.radius = null;
-    
-    // this.filters.region = null;
-    // this.filters.city = null;
-    
-    console.log("Filtri di posizione reimpostati:", this.filters);
-    
-    // nel caso in futuro voglio rimuovere il marker dalla mappa
-    // if (this.leafletMap && this.leafletMap.clearMarkers) {
-    //  this.leafletMap.clearMarkers();
-    //}
-  }
-
-  recentSearchSelected(recent:any){
-    this.filters=recent;
-  }
-
-  addressSelected(place:any){
-    console.log("indirizzo selezionato mi è arrivato",place);
-    this.filters.centerLatitude=parseFloat(place.lat);
-    this.filters.centerLongitude=parseFloat(place.lon);
-    this.filters.radius=place.radius;
-    
-  }
-
-
-  searchFromPoint(){
-    const markerData=this.leafletMap.getMarkerData();
-
-    const filters=this.filterBar.getFilters();
-
-    filters.centerLatitude=markerData.coords.lat;
-    filters.centerLongitude=markerData.coords.lng;
-    filters.radius=markerData.radius;
-
-    //imposto a null i campi per la posizione
-    filters.region=null;
-    filters.city=null;
-
-
-    console.log("ricerca da punto",filters);
-
-    this.restBackend.getListings(filters).subscribe(data=>{
-      console.log(data);
-      this.listings=(data as []);
-      console.log("dati arrivati: ",this.listings);
-      this.toggleSelection(); //reimposto la mappa
-      this.leafletMap.addListingsToMap(this.listings)
-
-      this.resetLocationFilters()
-    })
-
-    
-
-
-  }
-
-
-  openListingDetails(listing: any): void {
-    console.log(listing)
-    
-    const categorySlug = {
-      HOUSE: 'houses',
-      BUILDING: 'buildings',
-      GARAGE: 'garages',
-      LAND: 'lands'
-    }[listing.category as 'HOUSE' | 'BUILDING' | 'GARAGE' | 'LAND'];
-    
-    this.router.navigate(['/listing', categorySlug,listing.id],{
-      state:{listingData:listing}
-    });
-  }
-
-  resultMarkedClicked(id:string) {
-    this.focusedListingId=id;
-  }
-
-}
- */
 
 import { Component, ViewChild } from '@angular/core';
 import { LeafletMapComponent } from '../leaflet-map/leaflet-map.component';
@@ -205,7 +29,7 @@ export class SearchResultsComponent {
   listings: Array<any> = [];
   
   // Pagination variables
-  currentPage: number = 0;  // Starting from page 0
+  currentPage: number = 0;  
   totalPages: number = 1;
   totalResults: number = 0;
   resultsPerPage: number = 10;
@@ -234,7 +58,7 @@ export class SearchResultsComponent {
     centerLatitude: null,
     centerLongitude: null,
     radius: null,
-    page: 0  // Starting from page 0
+    page: 0  
   };
 
   
@@ -267,7 +91,8 @@ export class SearchResultsComponent {
   }
 
   onFiltersApplied(filters: any) {
-    // Reset to first page when new filters are applied
+
+   
     this.currentPage = 0;  // Reset to page 0
 
     console.log("filtri applicati: ",filters);
@@ -282,60 +107,13 @@ export class SearchResultsComponent {
     this.fetchListings();
 
 
-      /* // Reset to first page when new filters are applied
-      console.log("filtri applicati: ",filters);
-  this.currentPage = 0;
-  
-  // Create a brand new clean filters object
-  const newFilters:any = {
-    listingType: 'BUY',
-    category: 'houses',
-    page: this.currentPage
-  };
-  
-  // Only add non-null values from the filter form
-  for(let key in filters) {
-    if (filters[key] !== null && filters[key] !== '' && filters[key] !== undefined) {
-      newFilters[key] = filters[key];
-    }
-  }
-  
-  // Completely replace the filters object
-  this.filters = newFilters;
-  
-  this.fetchListings(); */
+     
   }
 
   fetchListings() {
     console.log("sto per chiamare getListing: ",this.filters)
     this.restBackend.getListings(this.filters).subscribe((response:any) => {
-      // Assuming the API returns pagination metadata
-     /*  if (response && typeof response === 'object') {
-        if ('content' in response && Array.isArray(response.content)) {
-          this.listings = response.content;
-          
-          // Update pagination info if available
-          if ('pagination' in response) {
-            this.currentPage = response.pagination.currentPage || 0;
-            this.totalPages = response.pagination.totalPages || 1;
-            this.totalResults = response.pagination.totalResults || this.listings.length;
-            this.resultsPerPage = response.pagination.resultsPerPage || 10;
-          } else {
-            // If pagination info is not provided, just use the array
-            this.listings = response as [];
-            
-            // Temporary test values if needed
-            // this.totalPages = Math.ceil(this.listings.length / 10);
-            // this.totalResults = this.listings.length;
-          }
-        } else {
-          // Fallback if the expected structure is not present
-          this.listings = response as [];
-        }
-      } else {
-        this.listings = response as [];
-      }
-       */
+     
 
       console.log("risposta backend:",response)
 
@@ -429,26 +207,7 @@ export class SearchResultsComponent {
     console.log("ricerca da punto", filters);
 
     this.restBackend.getListings(filters).subscribe((response:any) => {
-      // Handle response with pagination
-      /* if (response && typeof response === 'object') {
-        if ('data' in response && Array.isArray(response.data)) {
-          this.listings = response.data;
-          
-          // Update pagination info if available
-          if ('pagination' in response) {
-            this.currentPage = response.pagination.currentPage || 0;
-            this.totalPages = response.pagination.totalPages || 1;
-            this.totalResults = response.pagination.totalResults || this.listings.length;
-            this.resultsPerPage = response.pagination.resultsPerPage || 10;
-          } else {
-            this.listings = response as [];
-          }
-        } else {
-          this.listings = response as [];
-        }
-      } else {
-        this.listings = response as [];
-      } */
+      
 
       this.listings = response.content;
 

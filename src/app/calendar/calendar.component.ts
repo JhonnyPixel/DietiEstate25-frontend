@@ -256,34 +256,16 @@ export class CalendarComponent implements AfterViewInit {
       
       // Iteriamo su ogni elemento nell'array restituito dal backend
       data.forEach((item:any, index:any) => {
-        /* // Creiamo un oggetto Date dal dateTime ricevuto
-        const startDate = new Date(item.dateTime);
         
-        // Creiamo la data di fine aggiungendo 2 ore
-        const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000);
-        
-        // Formattiamo le date nel formato richiesto da DayPilot "YYYY-MM-DDTHH:MM:SS"
-        const startDateTime = startDate.toISOString().substring(0, 19);
-        const endDateTime = endDate.toISOString().substring(0, 19);
-        
-        // Creiamo l'evento DayPilot
-        const event: EventData = {
-          id: index + 1, // Oppure potresti usare item.id se è un numero
-          start: startDateTime,
-          end: endDateTime,
-          text: `Prenotazione ${item.listingId}`,
-        };
-        
-        events.push(event); */
 
-      // Otteniamo la stringa datetime direttamente (senza conversione)
+      // Otteniamo la stringa datetime 
     const startDateTime = item.dateTime;
     
     // Per calcolare l'end time, analizziamo la stringa e aggiungiamo 2 ore
-    // senza passare per oggetti Date che potrebbero causare problemi di timezone
+    
     const startParts = startDateTime.split('T');
-    const datePart = startParts[0]; // es. "2025-04-06"
-    const timePart = startParts[1]; // es. "16:00:00"
+    const datePart = startParts[0]; 
+    const timePart = startParts[1]; 
     
     // Estrai ore, minuti, secondi
     const timeComponents = timePart.split(':');
@@ -301,11 +283,11 @@ export class CalendarComponent implements AfterViewInit {
     
     // Creiamo l'evento DayPilot
     const event: EventData = {
-      id: index + 1, // Oppure potresti usare item.id se è un numero
+      id: index + 1, 
       start: startDateTime,
       end: endDateTime,
       text: `Visita per ${item.listing.title}`,
-      // Eventuali altre proprietà dell'evento...
+      
       tags: {
         listingImageUrl: item.listing.photos && item.listing.photos.length > 0 
                         ? item.listing.photos[0].url 
@@ -319,8 +301,7 @@ export class CalendarComponent implements AfterViewInit {
       // Ora events contiene tutti gli eventi nel formato richiesto da DayPilot
       console.log(events);
       
-      // Qui puoi aggiungere il codice per aggiornare il calendario con gli eventi
-      // Ad esempio: this.calendar.update({events: events});
+     //aggiorno gli eventi del calenario
       this.events=events;
     });
    

@@ -33,11 +33,7 @@ export class ProfileService {
   }
 
   uploadProfilePic(image:any,userId:string=''){
-    /* let url=`http://localhost:8080/api/images/listings/${listingId}`
-
-    return this.httpClient.post(url,{
-      images:images
-    }) */
+  
    if(userId === '' ){
     userId=this.auth.getUserId()!
    }
@@ -47,7 +43,7 @@ export class ProfileService {
       const formData = new FormData();
       formData.append('file', image); 
 
-      return this.http.post(url, formData,{ responseType: 'text' }); // Angular imposta automaticamente il Content-Type giusto
+      return this.http.post(url, formData,{ responseType: 'text' });
   }
 
   deleteProfilePic(userId:string=''){

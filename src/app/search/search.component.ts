@@ -137,7 +137,7 @@ export class SearchComponent {
     this.availableFilters=this.filterConfig[event.target.value]
     //this.filterForm // Reset filtri quando cambia categoria
     this.resetFilters(event.target.value);
-    this.disableFilters();
+    //this.disableFilters();
   }
 
   addressClear() {
@@ -146,21 +146,60 @@ export class SearchComponent {
     this.filters.radius=null;
     this.address=null;
   }
+
+  getCategorySlug(cat:string){
+    const categorySlug = {
+      HOUSE: 'houses',
+      BUILDING: 'buildings',
+      GARAGE: 'garages',
+      LAND: 'lands'
+    }[cat as 'HOUSE' | 'BUILDING' | 'GARAGE' | 'LAND'];
+
+    return categorySlug
+  }
   
 
   recentSearchSelected(recent:any){
-    this.filters=recent;
+
+    const fieldMappings:any = {
+      'searchType':'category'
+    }
+    
+    Object.keys(recent).forEach(
+      property=>{
+        if (this.filters.hasOwnProperty(property)) {
+          this.filters[property]=recent[property]
+        }
+      }
+    )
+
+    //let mappedRecent:any = { ...this.filters };
+
+    Object.keys(fieldMappings).forEach(recentField => {
+      if (recent[recentField] !== undefined) {
+        // Copia il valore dal campo della ricerca recente al campo corrispondente dei filtri
+        if(fieldMappings[recentField]==='category'){
+          this.filters[fieldMappings[recentField]] = this.getCategorySlug(recent[recentField]);
+        }else{
+          this.filters[fieldMappings[recentField]] = recent[recentField];
+        }
+        
+      }
+    });
+
+
 
     console.log("riceca:",recent)
     console.log("filtri aggioranti",this.filters)
 
     //this.filters.category=recent.
+    this.availableFilters=this.filterConfig[this.filters.category]
 
     // Update slider values when a recent search is selected
-    /* this.priceValue = this.filters.priceMin ? this.filters.priceMin / 1000 : 0;
+    this.priceValue = this.filters.priceMin ? this.filters.priceMin / 1000 : 0;
     this.priceHighValue = this.filters.priceMax ? this.filters.priceMax / 1000 : 200;
     this.surfaceValue = this.filters.surfaceMin || 0;
-    this.surfaceHighValue = this.filters.surfaceMax || 2000; */
+    this.surfaceHighValue = this.filters.surfaceMax || 2000;
   }
 
   addressSelected(place:any){

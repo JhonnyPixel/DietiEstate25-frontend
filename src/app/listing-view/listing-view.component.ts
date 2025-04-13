@@ -15,10 +15,11 @@ import { RatingService } from '../rating.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth.service';
 import { NgClass } from '@angular/common';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-listing-view',
-  imports: [NgImageSliderModule,NgClass,AppointmentModalComponent,FontAwesomeModule,StarRatingModule,FormsModule],
+  imports: [NavbarComponent,NgImageSliderModule,NgClass,AppointmentModalComponent,FontAwesomeModule,StarRatingModule,FormsModule],
   templateUrl: './listing-view.component.html',
   styleUrl: './listing-view.component.scss'
 })
@@ -54,7 +55,7 @@ export class ListingViewComponent {
    faStar=faStar
    faBuilding=faBuilding
 
-  userRating: number = 0; // Memorizza il voto dell'utente
+  userRating: number = 4; // Memorizza il voto dell'utente
   userComment: string = ''; // Memorizza il commento
   showReviewForm: boolean = false; // Controlla la visibilità del dropdown
 
@@ -99,23 +100,23 @@ imageOption:Object={width: '100%', height: '300px', space: 4}
     thumbImage: 'img/apartment1.jpeg',
     alt: 'alt of image'
 }, {
-    image: 'img/apartment2.webp', // Support base64 image
-    thumbImage: 'img/apartment2.webp', // Support base64 image
-    alt: 'Image alt', //Optional: You can use this key if want to show image with alt
+    image: 'img/apartment2.webp', 
+    thumbImage: 'img/apartment2.webp', 
+    alt: 'Image alt', 
 },
 {
-  image: 'img/apartment2.webp', // Support base64 image
-  thumbImage: 'img/apartment2.webp', // Support base64 image
-  alt: 'Image alt', //Optional: You can use this key if want to show image with alt
+  image: 'img/apartment2.webp', 
+  thumbImage: 'img/apartment2.webp', 
+  alt: 'Image alt', 
 },{
-  image: 'img/apartment2.webp', // Support base64 image
-  thumbImage: 'img/apartment2.webp', // Support base64 image
-  alt: 'Image alt', //Optional: You can use this key if want to show image with alt
+  image: 'img/apartment2.webp', 
+  thumbImage: 'img/apartment2.webp', 
+  alt: 'Image alt', 
 },
 {
-  image: 'img/apartment2.webp', // Support base64 image
-  thumbImage: 'img/apartment2.webp', // Support base64 image
-  alt: 'Image alt', //Optional: You can use this key if want to show image with alt
+  image: 'img/apartment2.webp', 
+  thumbImage: 'img/apartment2.webp', 
+  alt: 'Image alt', 
 }]; */
 
 
@@ -188,31 +189,6 @@ toggleFavorite(){
   
 }
 
-/* weatherConditions = [
-  WeatherCondition.SUNNY,
-  WeatherCondition.PARTLY_CLOUDY,
-  WeatherCondition.CLOUDY,
-  WeatherCondition.RAIN,
-  WeatherCondition.THUNDERSTORM
-]; */
-
-/* getWeatherIcon(condition: WeatherCondition): string {
-  switch(condition) {
-    case WeatherCondition.SUNNY:
-      return 'wb_sunny';
-    case WeatherCondition.PARTLY_CLOUDY:
-      return 'partly_cloudy_day';
-    case WeatherCondition.CLOUDY:
-      return 'cloud';
-    case WeatherCondition.RAIN:
-      return 'water_drop';
-    case WeatherCondition.THUNDERSTORM:
-      return 'thunderstorm';
-    default:
-      return 'help';
-  }
-} */
-
   
 
   toggleReviewForm() {
@@ -236,7 +212,7 @@ toggleFavorite(){
       return;
     }
 
-    // Qui puoi inviare il rating e il commento al backend
+    //invio il rating e il commento al backend
     console.log('Recensione inviata:', {
       rating: this.userRating,
       comment: this.userComment

@@ -24,7 +24,6 @@ export class AuthService {
   }){
     let url="http://localhost:8080/api/agencies"
 
-    //let url="https://dietiestates25-875570932601.europe-west8.run.app/api/agencies"
 
     console.log("register: ",data)
 
@@ -49,7 +48,6 @@ export class AuthService {
   }){
     let url="http://localhost:8080/api/customers"
 
-    //let url="https://dietiestates25-875570932601.europe-west8.run.app/api/agencies"
 
     console.log("register: ",data)
 
@@ -69,7 +67,6 @@ export class AuthService {
   }){
     let url="http://localhost:8080/api/auth/login"
 
-    //let url="https://dietiestates25-875570932601.europe-west8.run.app/api/auth/login"
 
    return this.httpClient.post<{
     token:string,
@@ -138,9 +135,7 @@ export class AuthService {
     });
   }
 
- /*  getUserData():string|null{
-    return localStorage.getItem("userData")
-  } */
+
 
   logout(){
     localStorage.clear()
@@ -151,7 +146,6 @@ export class AuthService {
   getAgency(userId:string){
     let url="http://localhost:8080/api/agencies"
 
-    //let url="https://dietiestates25-875570932601.europe-west8.run.app/api/agencies"
     let params = new HttpParams().set('userId', userId);
 
     return this.httpClient.get<{

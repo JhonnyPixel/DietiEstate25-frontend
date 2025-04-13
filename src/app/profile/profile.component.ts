@@ -11,7 +11,9 @@ import { AccountsBackendService } from '../accounts-backend.service';
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye,faEyeSlash,faPen } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
+
 
 interface UserProfile {
   id?: string | number;
@@ -41,6 +43,7 @@ export class ProfileComponent implements OnInit {
 
   faEye=faEye
   faEyeSlash=faEyeSlash
+  faPen=faPen
 
   newProfilePic:File|null=null
   
@@ -49,7 +52,8 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private router:Router,
     public auth:AuthService,
-    private accountsService:AccountsBackendService
+    private accountsService:AccountsBackendService,
+    private toaster:ToastrService
   ) {
     this.profileForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -160,41 +164,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
- /*  saveProfile(): void {
-    if (this.profileForm.valid && this.userProfile) {
-      const updatedProfile = {
-        ...this.userProfile,
-        ...this.profileForm.value
-      };
-      
-      // Rimuovi campi non necessari in base al ruolo
-      if (this.userProfile.role !== 'CUSTOMER') {
-        delete updatedProfile.password;
-        delete updatedProfile.profilePicUrl;
-      }
-      
-      if (this.userProfile.role !== 'ADMIN') {
-        delete updatedProfile.tempPassword;
-        delete updatedProfile.ragioneSociale;
-        delete updatedProfile.partitaIva;
-      }
-
-   
-
-     this.accountsService.updateUser(updatedProfile).subscribe(
-      (response) => {
-        this.userProfile = updatedProfile;
-        this.isEditing = false;
-        // Mostra notifica di successo
-      },
-      error => {
-        console.error('Errore durante l\'aggiornamento del profilo', error);
-        // Mostra notifica di errore
-      }
-     )
-      
-    }
-  } */
+ 
 
     saveProfile(): void {
 
@@ -202,30 +172,7 @@ export class ProfileComponent implements OnInit {
 
       if(this.newProfilePic!==null){
 
-       /*  if(this.userProfile?.profilePicUrl){
-
-          this.profileService.deleteProfilePic().subscribe(
-            data=>{
-              console.log("foto profilo eliminata:",data)
-
-              this.profileService.uploadProfilePic(this.newProfilePic).subscribe(
-                data=>{
-                  console.log("foto profilo aggiunta: ",data)
-                }
-              )
-
-            }
-          )
-
-        }else{
-
-          this.profileService.uploadProfilePic(this.newProfilePic).subscribe(
-            data=>{
-              console.log("foto profilo aggiunta: ",data)
-            }
-          )
-
-        } */
+      
 
           this.profileService.uploadProfilePic(this.newProfilePic).subscribe(
             data=>{
@@ -268,10 +215,7 @@ export class ProfileComponent implements OnInit {
           return;
         }
         
-        // Aggiungi l'ID utente se necessario per l'aggiornamento
-        /* if (this.userProfile.id) {
-          changedFields['id'] = this.userProfile.id;
-        } */
+        
         
         // Escludi campi specifici che non devono essere inviati al backend
         const fieldsToExclude = ['id','role','profilePicUrl'];
@@ -286,7 +230,6 @@ export class ProfileComponent implements OnInit {
           (response) => {
 
             console.log("Dati cambiati con successo:",response)
-            // Aggiorna il profilo locale con i nuovi valori mantenendo il tipo originale
 
             if(changedFields['ragioneSociale']){
               localStorage.setItem('ragioneSociale',changedFields['ragioneSociale'])
@@ -304,7 +247,7 @@ export class ProfileComponent implements OnInit {
             else if (this.userProfile) {
               // Aggiorna solo i campi specifici che sono stati modificati
               Object.keys(changedFields).forEach(key => {
-                // Usa l'operatore di accesso indexato per aggirare il controllo di tipo
+
                 this.auth.setProfile(changedFields);
                 (this.userProfile as any)[key] = changedFields[key];
               });
@@ -312,9 +255,11 @@ export class ProfileComponent implements OnInit {
             
             this.isEditing = false;
             // Mostra notifica di successo
+            this.toaster.success('Modifiche applicate con successo')
           },
           error => {
             console.error('Errore durante l\'aggiornamento del profilo', error);
+            this.toaster.error('Qualcosa è andato storto')
             // Mostra notifica di errore
           }
         );

@@ -59,7 +59,6 @@
     @if(this.availableFilters.includes('description')){
 
     <label class="block text-sm font-medium text-gray-700 mt-4">Descrizione</label>
-    <!-- <textarea formControlName="description" class="w-full p-2 border border-gray-300 rounded mt-1 "></textarea> -->
     <textarea
     formControlName="description"
     class="w-full p-2 border border-gray-300 rounded mt-1 resize-y min-h-[200px]"></textarea>
@@ -150,26 +149,9 @@
       }
     </div>
 
-    <!-- <label class="block text-sm font-medium text-gray-700 mt-4">Foto</label>
-    <div class="flex">
-      <div>
-        <input type="file" (change)="onPhotoUpload($event)" multiple class="w-full p-2 border border-gray-300 rounded mt-1">
-      </div>
-      <div class="px-6">
-        <button type="button" (click)="clearAllPhotos()" class="mt-2 bg-gray-500 text-white p-2 rounded">Rimuovi tutte le foto</button>
-      </div>
-    </div>
     
-    <div class="grid grid-cols-3 md:grid-cols-6 gap-1 mt-2 relative">
-      @for(photo of photoPreviews; track photo) {
-        <div class="relative h-30 w-30 border-2 border-gray-300 rounded">
-          <img [src]="photo" class="w-full h-full object-cover absolute top-0 left-0">
-          <button type="button" (click)="removePhoto($index)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">×</button>
-        </div>
-      }
-    </div> -->
 
-    <!-- Sezione delle foto aggiornata -->
+    <!-- Sezione delle foto  -->
 <label class="block text-sm font-medium text-gray-700 mt-4">Foto</label>
 <div class="flex">
   <div>
