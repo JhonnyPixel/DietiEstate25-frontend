@@ -157,7 +157,7 @@ export class LeafletMapComponent implements OnInit{
     // Se il marker non esiste ancora, crealo
     if (!this.createMarker) {
       const customIcon = leaflet.icon({
-        iconUrl: 'assets/marker-icon.png', 
+        iconUrl: /* 'assets/marker-icon.png' */'img/location.png', 
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],

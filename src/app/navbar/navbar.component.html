@@ -2,7 +2,7 @@
     <div class="flex items-center justify-between px-1">
       <!-- Logo -->
       <div class="flex items-center">
-        <img src="img/logo.png" alt="Logo" class="w-28 ml-2" />
+        <img routerLink="/search" src="img/logo.png" alt="Logo" class="w-28 ml-2" />
       </div>
   
       <!-- Navigation Links -->
@@ -18,8 +18,11 @@
           
          
           <button (click)="toggleNotifiche()" class=" border-1 rounded-lg border-gray-300 px-5 py-1.5 text-black relative hover:bg-gray-100 hover:border-gray-100 transition">
-            <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5"></span>
-            <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5 animate-ping"></span>
+            
+            @if(this.notificationNumber>0){
+              <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5"></span>
+              <span class="block absolute rounded-full right-0 top-0 translate-x-[30%] translate-y-[-30%]  bg-[#FF9F1C] w-3.5 h-3.5 animate-ping"></span>
+            }
             Notifiche
           </button>
 
@@ -99,7 +102,7 @@
   </header>
 
   @if(isNotificationPanelOpen){
-    <app-notification-panel (close)="toggleNotifiche()" (openAppointmentSelect)="openAppointmentModal($event)" (openDenyAppointmentModal)="openDenyAppointmentModal($event)"></app-notification-panel> 
+    <app-notification-panel (close)="toggleNotifiche()" (openAppointmentSelect)="openAppointmentModal($event)" (openDenyAppointmentModal)="openDenyAppointmentModal($event)" (notificationsNumbers)="this.notificationNumber=$event"></app-notification-panel> 
     @if(appModal){
       <app-select-appointment-modal (modalClosed)="closeAppointmentModal()" (appointmentSelected)="confirmAppointment($event)" [userAppointments]="visitRequest.availabilites"></app-select-appointment-modal>
     }

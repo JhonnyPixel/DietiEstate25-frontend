@@ -17,13 +17,31 @@ export class NotificationPanelComponent implements OnInit{
   @Output() close= new EventEmitter<void>()
   @Output() openAppointmentSelect= new EventEmitter<any>()
   @Output() openDenyAppointmentModal= new EventEmitter<void>()
+  @Output() notificationsNumbers=new EventEmitter<number>()
 
   notifications:any[]=[]
 
   constructor(private notifyService:NotificationService,private router:Router){}
 
   ngOnInit(): void {
-    this.notifications=this.notifyService.getNotifications();
+    console.log("notifiche recuperate")
+    this.notifyService.fetchNotifications().subscribe(
+      (notifications) => {
+
+        this.notifications=notifications
+
+        this.notificationsNumbers.emit(notifications.length);
+
+        console.log('Notifiche offline recuperate:', notifications.length);
+
+        
+        console.log('Notifiche offline recuperate:', notifications);
+      },
+      (error) => {
+        console.error('Errore nel recupero delle notifiche offline:', error);
+      }
+    );
+    //this.notifications=this.notifyService.getNotifications();
   }
 
   

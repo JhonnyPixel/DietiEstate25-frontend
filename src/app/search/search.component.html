@@ -186,7 +186,7 @@
                           <div class="flex items-center space-x-2">
                             @if(availableFilters.includes('nRoomsMin')) {
                             <select id="nRoomsMin" name="nRoomsMin" [(ngModel)]="filters.nRoomsMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                              <option value="">Min</option>
+                              <option [ngValue]="null" value="">Min</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -199,7 +199,7 @@
                             <span class="text-gray-500">-</span> 
 
                             <select id="nRoomsMax" name="nRoomsMax" [(ngModel)]="filters.nRoomsMax" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                              <option value="">Max</option>
+                              <option [ngValue]="null" value="">Max</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3</option>
@@ -216,7 +216,7 @@
                           <div class="flex items-center space-x-2">
                             @if(availableFilters.includes('nBathroomsMin')) {
                             <select id="nBathroomsMin" name="nBathroomsMin" [(ngModel)]="filters.nBathroomsMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                              <option value="">Min</option>
+                              <option [ngValue]="null" value="">Min</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3+</option>
@@ -225,7 +225,7 @@
                           @if(availableFilters.includes('nBathroomsMax')) {
                             <span class="text-gray-500">-</span>
                             <select id="nBathroomsMax" name="nBathroomsMax"  [(ngModel)]="filters.nBathroomsMax" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                              <option value="">Max</option>
+                              <option [ngValue]="null" value="">Max</option>
                               <option value="1">1</option>
                               <option value="2">2</option>
                               <option value="3">3+</option>
@@ -243,7 +243,7 @@
                         <div class="flex items-center space-x-2">
                           @if(availableFilters.includes('floorMin')) {
                           <select id="floorMin" name="floorMin" [(ngModel)]="filters.floorMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Min</option>
+                            <option [ngValue]="null" value="">Min</option>
                             <option value="0">PT</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -254,12 +254,12 @@
                           @if(availableFilters.includes('floorMax')) {
                           <span class="text-gray-500">-</span>
                           <select id="floorMax" name="floorMax" [(ngModel)]="filters.floorMax" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Max</option>
-                            <option value="0">PT</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4+</option>
+                            <option [ngValue]="null" value="">Max</option>
+                            <option  value="0">PT</option>
+                            <option  value="1">1</option>
+                            <option  value="2">2</option>
+                            <option  value="3">3</option>
+                            <option  value="4">4+</option>
                           </select>
                         }
                         </div>
@@ -271,7 +271,7 @@
                       <div class="mb-4">
                         <label for="energyClassMin" class="block text-sm font-medium text-gray-700 mb-1">Classe Energetica min.</label>
                         <select id="energyClassMin" name="energyClassMin" [(ngModel)]="filters.energyClassMin" class="w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
-                          <option value="">Tutte</option>
+                          <option [ngValue]="null" value="">Tutte</option>
                           <option value="A4">A4</option>
                           <option value="A3">A3</option>
                           <option value="A2">A2</option>
@@ -323,7 +323,7 @@
                         <!-- Opzione 1 -->
                         <label class="cursor-pointer">
                           <input type="radio" [(ngModel)]="filters.listingType" name="listingTypeOption" value="BUY" class="hidden peer">
-                          <div class="px-1 py-2 rounded-xl  font-medium peer-checked:bg-orange-400 hover:bg-orange-100 transition-all duration-200" >
+                          <div class="px-1 py-2 rounded-xl  font-medium peer-checked:bg-[#FF9F1C] hover:bg-orange-100 transition-all duration-200" >
                             Acquista
                           </div>
                         </label>
@@ -331,7 +331,7 @@
                         <!-- Opzione 2 -->
                         <label class="cursor-pointer">
                           <input type="radio" [(ngModel)]="filters.listingType" name="listingTypeOption" value="RENT" class="hidden peer">
-                          <div class="px-1 py-2 rounded-xl  font-medium peer-checked:bg-orange-400  hover:bg-orange-100 transition-all duration-200">
+                          <div class="px-1 py-2 rounded-xl  font-medium peer-checked:bg-[#FF9F1C]  hover:bg-orange-100 transition-all duration-200">
                             Affitta
                           </div>
                         </label>

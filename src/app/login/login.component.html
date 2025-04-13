@@ -10,17 +10,17 @@
             <!--descrizione dei vantaggi-->
             <div class="flex flex-1 flex-col items-center justify-around">
                 <h2 class="text-2xl">Accedi per</h2>
-                <div class="flex items-center w-full p-3">
-                    <img src="ciao">
+                <div class="flex items-center w-full p-3" >
+                    <img src="img/Women-login.svg" class="mr-3">
                     <span>Salvare le tue ricerche</span>
                 </div>
                 <div class="flex items-center w-full p-3">
-                    <img src="ciao">
+                    <img src="img/Job-login.svg" class="mr-3">
                     <span>Ricevere notifiche sui tuoi immobili preferiti</span>
                 </div>
                 <div class="flex items-center w-full p-3">
-                    <img src="ciao">
-                    <span>Contattare facilemente gli agenti immobiliari</span>
+                    <img src="img/Businessman-login.svg" class="mr-3">
+                    <span>Contattare facilmente gli agenti immobiliari</span>
                 </div>
   
                 
@@ -62,7 +62,7 @@
 
   <!-- Form di accesso -->
   <div class="w-64 space-y-4">
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <form class="flex flex-col space-y-2" [formGroup]="loginForm" (ngSubmit)="login()">
     <!-- Input Email -->
     <input 
       type="email" 
@@ -78,7 +78,7 @@
       class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
     />
     <!-- Pulsante Accedi -->
-    <button type="submit" class="w-full p-3 bg-orange-500 text-white rounded-lg shadow-lg hover:bg-orange-600 transition">
+    <button type="submit" class="w-full p-3 bg-[#FF9F1C] text-white rounded-lg shadow-lg hover:bg-orange-600 transition">
       Accedi
     </button>
 

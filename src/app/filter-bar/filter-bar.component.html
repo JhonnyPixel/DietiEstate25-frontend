@@ -97,7 +97,7 @@
             formControlName="energyClassMin" 
             class="appearance-none w-full bg-gray-50 border border-gray-200 text-gray-700 py-2 px-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
           >
-            <option value="">Qualsiasi</option>
+            <option [ngValue]="null" value="">Qualsiasi</option>
             <option value="A4">A4</option>
             <option value="A3">A3</option>
             <option value="A2">A2</option>
@@ -174,6 +174,7 @@
         <label for="nRoomsMin" class="block text-sm font-semibold text-gray-700 mb-1">Stanze Min</label>
         <div class="relative">
           <input 
+            placeholder="Min"
             type="number" 
             id="nRoomsMin" 
             formControlName="nRoomsMin" 
@@ -190,6 +191,7 @@
         <label for="nRoomsMax" class="block text-sm font-semibold text-gray-700 mb-1">Stanze Max</label>
         <div class="relative">
           <input 
+            placeholder="Max"
             type="number" 
             id="nRoomsMax" 
             formControlName="nRoomsMax" 
@@ -206,6 +208,7 @@
         <label for="nBathroomsMin" class="block text-sm font-semibold text-gray-700 mb-1">Bagni Min</label>
         <div class="relative">
           <input 
+            placeholder="Min"
             type="number" 
             id="nBathroomsMin" 
             formControlName="nBathroomsMin" 
@@ -221,6 +224,7 @@
         <label for="nBathroomsMax" class="block text-sm font-semibold text-gray-700 mb-1">Bagni Max</label>
         <div class="relative">
           <input 
+            placeholder="Max"
             type="number" 
             id="nBathroomsMax" 
             formControlName="nBathroomsMax" 
@@ -237,6 +241,7 @@
         <label for="floorMin" class="block text-sm font-semibold text-gray-700 mb-1">Piano Min</label>
         <div class="relative">
           <input 
+            placeholder="Min"
             type="number" 
             id="floorMin" 
             formControlName="floorMin" 
@@ -253,6 +258,7 @@
         <label for="floorMax" class="block text-sm font-semibold text-gray-700 mb-1">Piano Max</label>
         <div class="relative">
           <input 
+            placeholder="Max"
             type="number" 
             id="floorMax" 
             formControlName="floorMax" 
@@ -287,8 +293,8 @@
 
 
 <!-- Bottone di ricerca -->
-<div class="rounded-xl bg-blue-500 text-white px-10 py-5 m-5 cursor-pointer hover:bg-blue-600">
-  <button (click)="applyFilter()">Cerca</button>
+<div (click)="applyFilter()" class="rounded-xl bg-blue-500 text-white px-10 py-5 m-5 cursor-pointer hover:bg-blue-600">
+  <button >Cerca</button>
 </div>
 
 </div>

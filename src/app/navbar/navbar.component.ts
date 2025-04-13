@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NotificationPanelComponent } from '../notification-panel/notification-panel.component';
 import { AuthService } from '../auth.service';
-import { RouterLink } from '@angular/router';
+import { RouterLink,Router } from '@angular/router';
 import { SelectAppointmentModalComponent } from '../select-appointment-modal/select-appointment-modal.component';
 import { DenyAppointmentModalComponent } from '../deny-appointment-modal/deny-appointment-modal.component';
 import { NotificationService } from '../notification.service';
@@ -18,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NavbarComponent implements OnInit{
 
-  constructor(public authService:AuthService,private toaster:ToastrService,private notifyService:NotificationService,private appointmentService:AppointmentService){
+  constructor(public authService:AuthService,public router:Router,private toaster:ToastrService,private notifyService:NotificationService,private appointmentService:AppointmentService){
     /* notifyService.getMessages().subscribe((data)=>{
       console.log("notifica arrivata: ",data)
     })  */
@@ -43,6 +43,7 @@ export class NavbarComponent implements OnInit{
 
   isNotificationPanelOpen:boolean=false
   
+  notificationNumber:number=0
 
   appModal:boolean=false
 
@@ -122,6 +123,8 @@ export class NavbarComponent implements OnInit{
 
   toggleNotifiche(){
     this.isNotificationPanelOpen=!this.isNotificationPanelOpen
+
+
   }
 
   // Variabile per gestire lo stato del dropdown

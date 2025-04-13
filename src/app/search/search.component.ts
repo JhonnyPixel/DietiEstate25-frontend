@@ -95,12 +95,20 @@ export class SearchComponent {
   address:any;
 
    priceValue: number = 0;
-   priceHighValue:number =200; 
+   priceHighValue:number =2000; 
    priceOptions: Options = {
     floor: 0,
-    ceil: 200,
+    ceil: 2000,
     translate: (value: number): string => {
-      return value === 0 ? '€0' : value === 200 ? '€2M+' : '€' + value + 'k';
+      if (value === 0) return '€0';
+      if (value === 2000) return '€2M+';
+  
+      if (value >= 1000) {
+        const mil = (value / 1000).toFixed(1);
+        return `€${mil}M`;
+      }
+  
+      return `€${value}k`;
     }
   };
 
@@ -122,7 +130,7 @@ export class SearchComponent {
    // Method to update price filters from slider
    onPriceChange(event: any): void {
     this.filters.priceMin = this.priceValue === 0 ? null : this.priceValue * 1000;
-    this.filters.priceMax = this.priceHighValue === 200 ? null : this.priceHighValue * 1000;
+    this.filters.priceMax = this.priceHighValue === 2000 ? null : this.priceHighValue * 1000;
   }
 
   // Method to update surface filters from slider
@@ -189,15 +197,13 @@ export class SearchComponent {
 
 
 
-    console.log("riceca:",recent)
-    console.log("filtri aggioranti",this.filters)
 
     //this.filters.category=recent.
     this.availableFilters=this.filterConfig[this.filters.category]
 
     // Update slider values when a recent search is selected
     this.priceValue = this.filters.priceMin ? this.filters.priceMin / 1000 : 0;
-    this.priceHighValue = this.filters.priceMax ? this.filters.priceMax / 1000 : 200;
+    this.priceHighValue = this.filters.priceMax ? this.filters.priceMax / 1000 : 2000;
     this.surfaceValue = this.filters.surfaceMin || 0;
     this.surfaceHighValue = this.filters.surfaceMax || 2000;
   }

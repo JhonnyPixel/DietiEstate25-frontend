@@ -74,6 +74,13 @@ export class NotificationService {
     );
   }
 
+   // Recupera le notifiche ricevute quando l'utente era offline
+   fetchNotifications(){
+    const token = this.authService.getToken();
+    
+    return this.http.get<any[]>(`http://localhost:8080/api/notifications?userId=${this.authService.getUserId()}`);
+  }
+
   modifyNotificationSettings(settings:{
     starredListings:boolean,
     visit: boolean,
