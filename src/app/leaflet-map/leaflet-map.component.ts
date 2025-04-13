@@ -40,6 +40,13 @@ export class LeafletMapComponent implements OnInit{
 
   map:any
 
+ customIcon = leaflet.icon({
+    iconUrl: /* 'assets/marker-icon.png' */'img/location.png', 
+    iconSize: [25, 25],
+    iconAnchor: [13, 21],
+    popupAnchor: [1, -34],
+  });
+
   configMap(){
 
     this.map=leaflet.map('map',{
@@ -98,7 +105,7 @@ export class LeafletMapComponent implements OnInit{
       this.map.removeLayer(this.resizeMarker);
     }
   
-    this.marker = leaflet.marker([lat, lng], { draggable: true }).addTo(this.map);
+    this.marker = leaflet.marker([lat, lng], { draggable: true,icon:this.customIcon }).addTo(this.map);
     this.circle = leaflet.circle([lat, lng], {
       radius: this.radius,
       color: 'blue',
@@ -156,18 +163,13 @@ export class LeafletMapComponent implements OnInit{
     
     // Se il marker non esiste ancora, crealo
     if (!this.createMarker) {
-      const customIcon = leaflet.icon({
-        iconUrl: /* 'assets/marker-icon.png' */'img/location.png', 
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-      });
+      
       
       // Crea il marker e aggiungilo alla mappa
       try {
         this.createMarker = leaflet.marker(newLatLng, { 
           /* draggable: true, */
-          // icon: customIcon 
+           icon: this.customIcon 
         }).addTo(this.map);
         
         // Aggiungi un popup al marker
@@ -209,13 +211,19 @@ export class LeafletMapComponent implements OnInit{
       this.deletePreviousResultsMarkers();
   
       const bounds = leaflet.latLngBounds([]);
+
+   
   
       listings.forEach((listing) => {
         const lat = listing.location.latitude;
         const lng = listing.location.longitude;
   
         if (lat && lng) {
-          const marker = leaflet.marker([lat, lng]);
+          
+
+          const marker = leaflet.marker([lat, lng],{
+            icon:this.customIcon
+          });
   
           // Crea un popup con le informazioni del listing
           marker.bindPopup(`
