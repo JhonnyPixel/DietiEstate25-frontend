@@ -15,7 +15,6 @@ export interface Account {
   email: string;
   dateOfBirth: string;
   password: string;
-  profilePicture: string;
   type: 'Manager' | 'Agente';
 }
 
@@ -50,7 +49,6 @@ export class AccountListComponent implements OnInit {
           email: agent.email,
           dateOfBirth: agent.dob,
           password: '',
-          profilePicture: agent.profilePicUrl || '',
           type: 'Agente'
         });
       }
@@ -72,7 +70,6 @@ export class AccountListComponent implements OnInit {
           email: manager.email,
           dateOfBirth: manager.dob,
           password: '',
-          profilePicture: manager.profilePicUrl || '',
           type: 'Manager'
         });
       }
@@ -88,7 +85,7 @@ export class AccountListComponent implements OnInit {
 
   showForm = false;
   isEditing = false;
-  newAccount: Account = { id: '', name: '', lastname: '', email: '', dateOfBirth: '', password: '', profilePicture: '', type: 'Manager' };
+  newAccount: Account = { id: '', name: '', lastname: '', email: '', dateOfBirth: '', password: '', type: 'Manager' };
 
   faPen=faPenToSquare
   faThrash=faTrash
@@ -109,7 +106,6 @@ export class AccountListComponent implements OnInit {
         email: this.newAccount.email,
         dob: this.newAccount.dateOfBirth,
         password: this.newAccount.password,
-        profilePicUrl: this.newAccount.profilePicture,
       }).subscribe((data: any) => {
         console.log("ho fatto la chiamata a createAgent: ", data)
 
@@ -125,7 +121,6 @@ export class AccountListComponent implements OnInit {
         email: this.newAccount.email,
         dob: this.newAccount.dateOfBirth,
         password: this.newAccount.password,
-        profilePicUrl: this.newAccount.profilePicture,
       }).subscribe((data: any) => {
         console.log("ho fatto la chiamata a createManager: ", data)
 
@@ -151,7 +146,6 @@ export class AccountListComponent implements OnInit {
         email: this.newAccount.email,
         dob: this.newAccount.dateOfBirth,
         password: this.newAccount.password,
-        profilePicUrl: this.newAccount.profilePicture,
       }).subscribe((response: any) => {
         console.log("Agent updated: ", response);
         const index = this.accounts.findIndex(acc => acc.id === this.newAccount.id);
@@ -168,7 +162,6 @@ export class AccountListComponent implements OnInit {
         email: this.newAccount.email,
         dob: this.newAccount.dateOfBirth,
         password: this.newAccount.password,
-        profilePicUrl: this.newAccount.profilePicture,
       }).subscribe((response: any) => {
         console.log("Manager updated: ", response);
         const index = this.accounts.findIndex(acc => acc.id === this.newAccount.id);
@@ -182,7 +175,7 @@ export class AccountListComponent implements OnInit {
   }
 
   resetForm() {
-    this.newAccount = { id: '', name: '', lastname: '', email: '', dateOfBirth: '', password: '', profilePicture: '', type: 'Manager' };
+    this.newAccount = { id: '', name: '', lastname: '', email: '', dateOfBirth: '', password: '', type: 'Manager' };
     /* this.showForm = false; */
     this.isEditing = false;
   }

@@ -12,8 +12,8 @@
     <input [(ngModel)]="newAccount.email" placeholder="Email" type="email" class="border p-2 w-full mb-2" />
     <input [(ngModel)]="newAccount.dateOfBirth" placeholder="Data di Nascita" type="date" class="border p-2 w-full mb-2" />
     <input [(ngModel)]="newAccount.password" placeholder="Password" type="password" class="border p-2 w-full mb-2" />
-    <input [(ngModel)]="newAccount.profilePicture" placeholder="URL Immagine Profilo" class="border p-2 w-full mb-2" />
-    <select [(ngModel)]="newAccount.type" class="border p-2 w-full mb-2" [disabled]="isEditing">
+<!--     <input [(ngModel)]="newAccount.profilePicture" placeholder="URL Immagine Profilo" class="border p-2 w-full mb-2" />
+ -->    <select [(ngModel)]="newAccount.type" class="border p-2 w-full mb-2" [disabled]="isEditing">
       <option value="Manager">Manager</option>
       <option value="Agente">Agente</option>
     </select>
