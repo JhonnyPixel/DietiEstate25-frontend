@@ -1,4 +1,5 @@
 
+import { environment } from '../../enviroments/enviroment';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
@@ -102,7 +103,7 @@ export class AddressSearchComponent implements OnInit {
   
   loadRecentSearches(): void {
     const userId = this.auth.getUserId();
-    this.http.get<AddressSuggestion[]>(`http://localhost:8080/api/recent-searches/${userId}`).pipe(
+    this.http.get<AddressSuggestion[]>(`${environment.apiUrl}/recent-searches/${userId}`).pipe(
       catchError(error => {
         console.error('Error loading recent searches:', error);
         return of([]);
