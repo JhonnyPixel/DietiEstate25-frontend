@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
+import { environment } from '../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class AppointmentService {
 
   confirmAppointment(appointment:any,id:string){
 
-    let url=`http://localhost:8080/api/visit-requests/${id}/accept`
+    let url=`${environment.apiUrl}/visit-requests/${id}/accept`
 
     let convertedDateTime=this.createISODateTime(appointment.date,appointment.hour) //converti
 
@@ -23,7 +24,7 @@ export class AppointmentService {
 
   denyAppointment(motivation:any,id:string){
 
-    let url=`http://localhost:8080/api/visit-requests/${id}/reject`
+    let url=`${environment.apiUrl}/visit-requests/${id}/reject`
 
 
     return this.http.post(url,motivation)

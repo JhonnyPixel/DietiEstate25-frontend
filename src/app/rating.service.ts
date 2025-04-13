@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class RatingService {
 
   createAgentRating(id:string,value:number,comment:string){
 
-    let url="http://localhost:8080/api/agent-review"
+    let url=`${environment.apiUrl}/agent-review`
 
     return this.httpClient.post<{}>(url,{
       agentId:id,

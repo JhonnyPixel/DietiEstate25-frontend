@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
+import { environment } from '../enviroments/enviroment';
 
 
 @Injectable({
@@ -22,7 +23,7 @@ export class AuthService {
     ragioneSociale:string,
     partitaIva:string
   }){
-    let url="http://localhost:8080/api/agencies"
+    let url=`${environment.apiUrl}/agencies`
 
 
     console.log("register: ",data)
@@ -46,7 +47,7 @@ export class AuthService {
     email:string,
     password:string
   }){
-    let url="http://localhost:8080/api/customers"
+    let url=`${environment.apiUrl}/customers`
 
 
     console.log("register: ",data)
@@ -65,7 +66,7 @@ export class AuthService {
     email:string,
     password:string
   }){
-    let url="http://localhost:8080/api/auth/login"
+    let url= `${environment.apiUrl}/auth/login`
 
 
    return this.httpClient.post<{
@@ -144,7 +145,7 @@ export class AuthService {
   }
 
   getAgency(userId:string){
-    let url="http://localhost:8080/api/agencies"
+    let url=`${environment.apiUrl}/agencies`
 
     let params = new HttpParams().set('userId', userId);
 

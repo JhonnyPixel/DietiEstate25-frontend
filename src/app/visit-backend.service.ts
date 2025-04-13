@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { environment } from '../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class VisitBackendService {
 
     
  
-    let url=`http://localhost:8080/api/visits`
+    let url=`${environment.apiUrl}/visits`
 
     const id=this.authService.getUserId();
 
@@ -44,7 +45,7 @@ export class VisitBackendService {
   }
 
   createRequest(data:any){
-    let url=`http://localhost:8080/api/visit-requests`
+    let url=`${environment.apiUrl}/visit-requests`
 
     return this.httpClient.post(url,data);
     

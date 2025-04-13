@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 
+import { environment } from '../enviroments/enviroment';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +19,7 @@ export class ProfileService {
 
   getUserProfile(){
 
-    let url="http://localhost:8080/api"
+    let url=environment.apiUrl
 
     const id=this.auth.getUserId()
     const agencyId=this.auth.getAgencyId()
@@ -38,7 +41,7 @@ export class ProfileService {
     userId=this.auth.getUserId()!
    }
 
-      const url = `http://localhost:8080/api/images/users/${userId}`;
+      const url = `${environment.apiUrl}/images/users/${userId}`;
 
       const formData = new FormData();
       formData.append('file', image); 
@@ -52,7 +55,7 @@ export class ProfileService {
       userId=this.auth.getUserId()!
     }
 
-    const url = `http://localhost:8080/api/images/users/${userId}`;
+    const url = `${environment.apiUrl}/images/users/${userId}`;
 
     return this.http.delete(url)
   }

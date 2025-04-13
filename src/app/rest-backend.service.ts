@@ -2,6 +2,7 @@ import { HttpClient,HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { first } from 'rxjs';
+import { environment } from '../enviroments/enviroment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class RestBackendService {
   }
 
   getListings(filters:any){
-    let url=`http://localhost:8080/api/listings/${filters["category"]}`
+    let url=`${environment.apiUrl}/listings/${filters["category"]}`
 
     
     let params = new HttpParams().set('listingType', filters["listingType"]);
@@ -36,7 +37,7 @@ export class RestBackendService {
   }
 
   getListing(type:string,listingId:string){
-    let url=`http://localhost:8080/api/listings/${type}/${listingId}`
+    let url=`${environment.apiUrl}/listings/${type}/${listingId}`
 
     return this.httpClient.get<{}>(url);
     
@@ -44,21 +45,21 @@ export class RestBackendService {
 
 
   getStarredListings(){
-    let url=`http://localhost:8080/api/starred-listings`
+    let url=`${environment.apiUrl}/starred-listings`
 
     let params = new HttpParams().set('userId', this.authService.getUserId()!);
     return this.httpClient.get(url,{params});
   }
 
   addStarredListing(listingId:string){
-    let url=`http://localhost:8080/api/starred-listings`
+    let url=`${environment.apiUrl}/starred-listings`
 
     let params = new HttpParams().set('userId', this.authService.getUserId()!);
     return this.httpClient.post(url,listingId,{params});
   }
 
   removeStarredListing(listingId:string){
-    let url=`http://localhost:8080/api/starred-listings`
+    let url=`${environment.apiUrl}/starred-listings`
 
     let params = new HttpParams().set('userId', this.authService.getUserId()!);
     params = params.set('listingId', listingId);
@@ -73,7 +74,7 @@ export class RestBackendService {
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
     params= params.set('page',page); 
 
-    let url=`http://localhost:8080/api/listings/houses`
+    let url=`${environment.apiUrl}/listings/houses`
 
     return this.httpClient.get<any>(url,{params});
   }
@@ -82,7 +83,7 @@ export class RestBackendService {
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
     params= params.set('page',page);
 
-    let url=`http://localhost:8080/api/listings/buildings`
+    let url=`${environment.apiUrl}/listings/buildings`
 
     return this.httpClient.get<any>(url,{params});
   }
@@ -91,7 +92,7 @@ export class RestBackendService {
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
     params= params.set('page',page);
 
-    let url=`http://localhost:8080/api/listings/lands`
+    let url=`${environment.apiUrl}/listings/lands`
 
     return this.httpClient.get<any>(url,{params});
   }
@@ -100,32 +101,32 @@ export class RestBackendService {
     let params = new HttpParams().set('agentId', this.authService.getUserId()!);
     params= params.set('page',page);
 
-    let url=`http://localhost:8080/api/listings/garages`
+    let url=`${environment.apiUrl}/listings/garages`
 
     return this.httpClient.get<any>(url,{params});
   }
 
   deleteHouse(id:string){
 
-    let url=`http://localhost:8080/api/listings/houses/${id}`
+    let url=`${environment.apiUrl}/listings/houses/${id}`
 
     return this.httpClient.delete<any>(url);
   }
 
   deleteBuilding(id:string){
-    let url=`http://localhost:8080/api/listings/buildings/${id}`
+    let url=`${environment.apiUrl}/listings/buildings/${id}`
 
     return this.httpClient.delete<any>(url);
   }
 
   deleteLand(id:string){
-    let url=`http://localhost:8080/api/listings/lands/${id}`
+    let url=`${environment.apiUrl}/listings/lands/${id}`
 
     return this.httpClient.delete<any>(url);
   }
 
   deleteGarage(id:string){
-    let url=`http://localhost:8080/api/listings/garages/${id}`
+    let url=`${environment.apiUrl}/listings/garages/${id}`
 
     return this.httpClient.delete<any>(url);
   }
@@ -134,7 +135,7 @@ export class RestBackendService {
   createListing(data:any){
     
 
-      const url = `http://localhost:8080/api/listings/${data["category"]}`;
+      const url = `${environment.apiUrl}/listings/${data["category"]}`;
       console.log("Sono createListing e mi è arrivato questo:", data);
     
       const body: any = {};
@@ -177,7 +178,7 @@ export class RestBackendService {
   : "unknown";
 
 
-    let url=`http://localhost:8080/api/listings/${category}/${id}`
+    let url=`${environment.apiUrl}/listings/${category}/${id}`
 
     console.log("sono updateLisitng e mi è arrivato questo: ",data)
 
@@ -214,7 +215,7 @@ export class RestBackendService {
 
   uploadListingImages(listingId:string,images:any[]){
     
-      const url = `http://localhost:8080/api/images/listings/${listingId}`;
+      const url = `${environment.apiUrl}/images/listings/${listingId}`;
 
       const formData = new FormData();
       images.forEach((file) => {
@@ -226,7 +227,7 @@ export class RestBackendService {
 
   deleteListingImages(listingId:string,images:any[]){
 
-    let url=`http://localhost:8080/api/images/listings/${listingId}`
+    let url=`${environment.apiUrl}/images/listings/${listingId}`
 
     return this.httpClient.delete(url,{
       body:images
@@ -236,7 +237,7 @@ export class RestBackendService {
 
   createAgent(data:any){
     let agencyId=this.authService.getAgencyId();
-    let url=`http://localhost:8080/api/agencies/${agencyId}/agents`
+    let url=`${environment.apiUrl}/agencies/${agencyId}/agents`
 
 
     console.log("sono createAgent e mi è arrivato questo: ",data)
@@ -246,7 +247,7 @@ export class RestBackendService {
   
   createManager(data:any){
     let agencyId=this.authService.getAgencyId();
-    let url=`http://localhost:8080/api/agencies/${agencyId}/managers`
+    let url=`${environment.apiUrl}/agencies/${agencyId}/managers`
 
 
     console.log("sono createAgent e mi è arrivato questo: ",data)

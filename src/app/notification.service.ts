@@ -18,6 +18,8 @@ import {Client} from '@stomp/stompjs';
 
 import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
 
+import { environment } from '../enviroments/enviroment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -60,7 +62,7 @@ export class NotificationService {
   private fetchOfflineNotifications(): void {
     const token = this.authService.getToken();
     
-    this.http.get<any[]>(`http://localhost:8080/api/notifications?userId=${this.authService.getUserId()}`).subscribe(
+    this.http.get<any[]>(`${environment.apiUrl}/notifications?userId=${this.authService.getUserId()}`).subscribe(
       (notifications) => {
         this.notificationsSubject.next(notifications);
 
@@ -78,7 +80,7 @@ export class NotificationService {
    fetchNotifications(){
     const token = this.authService.getToken();
     
-    return this.http.get<any[]>(`http://localhost:8080/api/notifications?userId=${this.authService.getUserId()}`);
+    return this.http.get<any[]>(`${environment.apiUrl}/notifications?userId=${this.authService.getUserId()}`);
   }
 
   modifyNotificationSettings(settings:{
@@ -87,7 +89,7 @@ export class NotificationService {
     recommendedListings: boolean
   }){
 
-    let url=`http://localhost:8080/api/notifications/settings?userId=${this.authService.getUserId()}`
+    let url=`${environment.apiUrl}/notifications/settings?userId=${this.authService.getUserId()}`
 
     return this.http.put(url,settings)
 
@@ -102,7 +104,7 @@ export class NotificationService {
       return of(this.settaggi); // se già caricati, restituisce subito i dati come observable
     } else {
 
-      let url=`http://localhost:8080/api/notifications/settings?userId=${this.authService.getUserId()}`
+      let url=`${environment.apiUrl}/notifications/settings?userId=${this.authService.getUserId()}`
       
       return this.http.get(url).pipe(
         tap(dati => {
